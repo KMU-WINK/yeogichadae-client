@@ -9,7 +9,7 @@ const config = {
   tabWidth: 2,
   trailingComma: 'all',
   useTabs: false,
-  plugins: ['@trivago/prettier-plugin-sort-imports'],
+  plugins: ['@trivago/prettier-plugin-sort-imports', 'prettier-plugin-tailwindcss'],
   importOrder: [
     '^react',
     '^next',
@@ -20,6 +20,7 @@ const config = {
     '^@/hooks',
     '^@/lib',
     '^@/style',
+    '^@/public',
     '^[./]',
     '<THIRD_PARTY_MODULES>',
   ],

@@ -1,0 +1,10 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'standalone',
+  // TODO: placeholder.svg 삭제 후, 삭제해야 할 옵션
+  images: {
+    unoptimized: true,
+  },
+};
+
+export default nextConfig;

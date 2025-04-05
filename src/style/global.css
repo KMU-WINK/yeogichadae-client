@@ -1,1 +1,74 @@
-@import "tailwindcss";
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css');
+
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: Pretendard, sans-serif;
+
+  --color-background: #ffffff;
+  --color-foreground: #242930;
+
+  --color-primary: #1976fb;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #f8fafc;
+  --color-secondary-foreground: #1976fb;
+
+  --color-destructive: #f03d3d;
+  --color-destructive-foreground: #ffffff;
+
+  --color-muted: #f8fafc;
+  --color-muted-foreground: #737b85;
+
+  --color-accent: #ebf5ff;
+  --color-accent-foreground: #1976fb;
+
+  --color-popover: #ffffff;
+  --color-popover-foreground: #242930;
+
+  --color-card: #ffffff;
+  --color-card-foreground: #242930;
+
+  --color-border: #e8ecef;
+  --color-input: #e8ecef;
+  --color-ring: #1976fb;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-medium tracking-tight;
+  }
+
+  .sinc-card {
+    @apply border-border/40 rounded-2xl border bg-white shadow-xs transition-shadow duration-200 hover:shadow-md;
+  }
+
+  .sinc-input {
+    @apply border-input bg-background text-foreground ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring rounded-xl px-4 py-3 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden;
+  }
+
+  .sinc-badge {
+    @apply rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+}
