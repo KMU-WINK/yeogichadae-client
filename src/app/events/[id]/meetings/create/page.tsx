@@ -54,7 +54,7 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
       <div className="mx-auto max-w-2xl">
         <Link
           href={`/events/${params.id}`}

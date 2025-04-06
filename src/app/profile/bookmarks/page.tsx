@@ -93,7 +93,7 @@ export default function BookmarksPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
       <Link href="/profile" className="text-primary mb-6 inline-flex items-center hover:underline">
         <ArrowLeft className="mr-1 h-4 w-4" />
         프로필로 돌아가기

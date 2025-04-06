@@ -96,7 +96,7 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
       <div className="mx-auto max-w-2xl">
         <Link href="/" className="text-primary mb-6 inline-flex items-center hover:underline">
           <ArrowLeft className="mr-1 h-4 w-4" />

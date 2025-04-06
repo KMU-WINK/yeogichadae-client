@@ -53,7 +53,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
       <motion.div
         className="mb-8 flex items-center justify-between"
         initial={{ opacity: 0, y: -20 }}
@@ -230,6 +230,7 @@ export default function ProfilePage() {
                     <Image
                       src="/placeholder.svg?height=120&width=240"
                       alt="서울 재즈 페스티벌"
+                      fill
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     <Badge className="sinc-badge text-foreground absolute top-2 right-2 bg-white/90">
@@ -249,6 +250,7 @@ export default function ProfilePage() {
                     <Image
                       src="/placeholder.svg?height=120&width=240"
                       alt="서울 국제 영화제"
+                      fill
                       className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     <Badge className="sinc-badge text-foreground absolute top-2 right-2 bg-white/90">

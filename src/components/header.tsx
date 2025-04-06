@@ -81,7 +81,7 @@ export default function Header() {
           : 'bg-background/60 backdrop-blur-xs',
       )}
     >
-      <div className="container mx-auto w-full px-4 sm:px-6 md:px-8">
+      <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
             <Link href="/" className="text-primary group relative text-xl font-bold">

@@ -128,7 +128,7 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="container mx-auto px-4 sm:px-6 md:px-8">
+        <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <motion.h1
               className="mb-6 text-4xl font-bold md:text-5xl"
@@ -180,7 +180,7 @@ export default function Home() {
 
       {/* 인기 행사 섹션 */}
       <section className="py-12 md:py-16">
-        <div className="container mx-auto px-4 sm:px-6 md:px-8">
+        <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
           <motion.div
             className="mb-8 flex items-center justify-between"
             initial={{ opacity: 0 }}
@@ -274,7 +274,7 @@ export default function Home() {
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        <div className="container mx-auto px-4 sm:px-6 md:px-8">
+        <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <motion.h2
               className="mb-4 text-2xl font-bold md:text-3xl"
@@ -318,7 +318,7 @@ export default function Home() {
       {/* 전체 행사 목록 */}
       <div ref={allEventsRef}></div>
       <section className="bg-gray-50 py-12 md:py-16">
-        <div className="container mx-auto px-4 sm:px-6 md:px-8">
+        <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
           <motion.h2
             className="mb-8 text-2xl font-bold md:text-3xl"
             initial={{ opacity: 0 }}

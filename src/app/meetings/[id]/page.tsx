@@ -104,7 +104,7 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
       <motion.div
         className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row"
         initial={{ opacity: 0, y: -20 }}
@@ -166,6 +166,7 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
                 <Image
                   src={meetingData.event.image || '/placeholder.svg'}
                   alt={meetingData.event.title}
+                  fill
                   className="h-full w-full object-cover"
                 />
               </div>

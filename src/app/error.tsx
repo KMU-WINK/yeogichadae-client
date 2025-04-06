@@ -13,7 +13,7 @@ interface ErrorProps {
 
 export default function Error({ reset }: ErrorProps) {
   return (
-    <div className="container mx-auto px-4 py-20 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-20 sm:px-6 md:px-8">
       <div className="flex flex-col items-center justify-center text-center">
         <div className="mb-6 rounded-full bg-red-100 p-6 text-red-600">
           <TriangleAlert className="size-12" />

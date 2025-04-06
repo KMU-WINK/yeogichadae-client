@@ -205,7 +205,7 @@ export default function ChatDetailPage(props: { params: Promise<{ id: string }> 
   return (
     <div className="flex h-[calc(100vh-4rem)] flex-col">
       <div className="border-b">
-        <div className="container mx-auto flex items-center justify-between px-4 py-2 sm:px-6 md:px-8">
+        <div className="container mx-auto flex max-w-screen-xl items-center justify-between px-4 py-2 sm:px-6 md:px-8">
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" asChild className="rounded-full">
               <Link href="/chats">

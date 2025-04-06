@@ -230,7 +230,7 @@ export default function CalendarPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
       <motion.div
         className="mb-8 flex items-center justify-between"
         initial={{ opacity: 0, y: -20 }}

@@ -117,7 +117,7 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-10 sm:px-6 md:px-8">
+      <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
         <div className="flex h-[60vh] items-center justify-center">
           <div className="border-primary h-12 w-12 animate-spin rounded-full border-t-2 border-b-2"></div>
         </div>
@@ -127,7 +127,7 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
 
   if (!userData) {
     return (
-      <div className="container mx-auto px-4 py-10 sm:px-6 md:px-8">
+      <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
         <div className="py-16 text-center">
           <h1 className="mb-4 text-3xl font-bold">사용자를 찾을 수 없습니다</h1>
           <p className="text-muted-foreground mb-8">요청하신 사용자 프로필이 존재하지 않습니다.</p>
@@ -162,7 +162,7 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
       <Link href="/profile" className="text-primary mb-6 inline-flex items-center hover:underline">
         <ArrowLeft className="mr-1 h-4 w-4" />내 프로필로 돌아가기
       </Link>
@@ -299,6 +299,7 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
                       <Image
                         src="/placeholder.svg?height=120&width=240"
                         alt="서울 재즈 페스티벌"
+                        fill
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       <Badge className="sinc-badge absolute top-2 right-2 bg-emerald-100 text-emerald-700">
