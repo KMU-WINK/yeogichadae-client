@@ -184,9 +184,6 @@ const districts = [
   '중랑구',
 ];
 
-// TODO: 필터 카테고리 여러개 선택 되도록
-// TODO: 캘린더에 행사 있으면 표시 (개수별 색 알림)
-// TODO: 캘린더 호버 및 각종 이벤트시 이상함.
 export default function CalendarPage() {
   const [date, setDate] = useState<Date | undefined>(new Date('2023-03-31'));
   const [categoriesSelected, setCategoriesSelected] = useState<string[]>(['전체']);

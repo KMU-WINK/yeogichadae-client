@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRef } from 'react';
 
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -172,7 +172,6 @@ const chatRoomsData = [
 // TODO: 핸드폰일 때 채팅방 목록 및 채팅방 안에 스크롤 생김
 // TODO: 뒤로가기 작동 안함
 // TODO: 사람 프로필 눌렀을 떄 상세 페이지로 이동
-// TODO: 채팅방 들어오면 가장 아래로 스크롤되도록
 export default function ChatsPage() {
   const [activeChats] = useState(chatRoomsData);
   const [searchQuery, setSearchQuery] = useState('');
@@ -203,7 +202,7 @@ export default function ChatsPage() {
 
   useEffect(() => {
     if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+      bottomRef.current.scrollIntoView({ behavior: 'instant' });
     }
   }, [chatId, selectedChatData]);
 
@@ -356,7 +355,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -372,7 +371,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="음악사랑"/>
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="음악사랑" />
                         <AvatarFallback className="bg-primary/10 text-primary">음악</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -388,7 +387,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -425,7 +424,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -444,7 +443,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -463,7 +462,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -482,7 +481,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -501,7 +500,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -516,7 +515,7 @@ export default function ChatsPage() {
                       </div>
                     </div>
                   </div>
-                  <div ref={bottomRef}/>
+                  <div ref={bottomRef} />
                 </div>
 
                 <div className="border-t p-3">

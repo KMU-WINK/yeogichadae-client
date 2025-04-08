@@ -11,14 +11,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 
 import { motion } from 'framer-motion';
@@ -110,7 +102,6 @@ const meetingsData = [
   },
 ];
 
-// TODO: 필터 적용 버튼 누르면 실질적 필터링
 export default function MeetingsPage(props: { params: Promise<{ id: string }> }) {
   const params = use(props.params);
   const [showOnlyJoinable, setShowOnlyJoinable] = useState(false);
@@ -119,7 +110,7 @@ export default function MeetingsPage(props: { params: Promise<{ id: string }> })
   const [genderFilter, setGenderFilter] = useState<string | null>('전체');
   const [isFilterOpen, setFilterOpen] = useState(false);
 
-  useEffect(() => {
+  const applyFilter = () => {
     let filtered = meetingsData;
 
     if (showOnlyJoinable) {
@@ -152,7 +143,11 @@ export default function MeetingsPage(props: { params: Promise<{ id: string }> })
     }
 
     setFilteredMeetings(filtered);
-  }, [showOnlyJoinable, ageRange, genderFilter]);
+  };
+
+  useEffect(() => {
+    applyFilter();
+  }, [showOnlyJoinable]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -265,6 +260,7 @@ export default function MeetingsPage(props: { params: Promise<{ id: string }> })
               <Button
                 className="mt-2 w-full"
                 onClick={() => {
+                  applyFilter();
                   setFilterOpen(false);
                 }}
               >
