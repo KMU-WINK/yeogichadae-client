@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -15,7 +16,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 
 import { cn } from '@/lib/utils';
 
@@ -58,8 +66,11 @@ const notifications = [
 const isLoggedIn = true;
 
 export default function Header() {
+  const router = useRouter();
+
   const [isScrolled, setIsScrolled] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const unreadCount = notifications.filter((n) => !n.isRead).length;
 
@@ -82,7 +93,7 @@ export default function Header() {
       )}
     >
       <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-14 items-center justify-between sm:h-16">
           <div className="flex items-center gap-8">
             <Link href="/" className="text-primary group relative text-xl font-bold">
               <span className="relative z-10">Seoul IN Culture</span>
@@ -122,6 +133,7 @@ export default function Header() {
                 <Link href="/chats">
                   <Button variant="ghost" size="icon" className="relative rounded-full">
                     <MessageSquare className="h-5 w-5" />
+                    <div className="absolute top-1 right-1.5 size-2 animate-pulse rounded-full bg-red-500" />
                     <span className="sr-only">채팅</span>
                   </Button>
                 </Link>
@@ -129,13 +141,18 @@ export default function Header() {
                 {/* 알림 팝오버 */}
                 <Popover open={isNotificationOpen} onOpenChange={setIsNotificationOpen}>
                   <PopoverTrigger asChild>
-                    <Button variant="ghost" size="icon" className="relative rounded-full">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="relative rounded-full"
+                      onClick={(e) => {
+                        // TODO: 모바일일때만 바로 이동
+                        e.preventDefault();
+                        router.push('/notifications');
+                      }}
+                    >
                       <Bell className="h-5 w-5" />
-                      {unreadCount > 0 && (
-                        <Badge className="bg-primary absolute -top-1 -right-1 flex h-5 w-5 animate-pulse items-center justify-center p-0 text-white">
-                          {unreadCount}
-                        </Badge>
-                      )}
+                      <div className="absolute top-1 right-2 size-2 animate-pulse rounded-full bg-red-500" />
                       <span className="sr-only">알림</span>
                     </Button>
                   </PopoverTrigger>
@@ -223,12 +240,13 @@ export default function Header() {
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative ml-1 h-auto p-0">
-                      <Avatar className="border-primary/10 h-9 w-9 border-2 transition-transform duration-300 hover:scale-110">
+                    <Button
+                      variant="ghost"
+                      className="relative hidden h-auto p-0 hover:bg-transparent sm:block"
+                    >
+                      <Avatar className="h-9 w-9 transition-transform duration-300 hover:scale-110">
                         <AvatarImage src="/placeholder.svg?height=36&width=36" />
-                        <AvatarFallback className="bg-primary/10 text-primary">
-                          사용자
-                        </AvatarFallback>
+                        <AvatarFallback>사용자</AvatarFallback>
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
@@ -247,7 +265,7 @@ export default function Header() {
               </>
             ) : (
               <LoginModal>
-                <Button className="flex items-center gap-2 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg">
+                <Button className="hidden items-center gap-2 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg sm:flex">
                   <LogIn className="h-4 w-4" />
                   로그인
                 </Button>
@@ -255,61 +273,75 @@ export default function Header() {
             )}
 
             {/* Mobile Navigation */}
-            <Sheet>
+            <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
               <SheetTrigger asChild className="ml-1 md:hidden">
                 <Button variant="ghost" size="icon" className="rounded-full">
                   <Menu className="h-5 w-5" />
                   <span className="sr-only">메뉴</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[280px] sm:w-[350px]">
-                <nav className="mt-10 flex flex-col gap-6">
-                  <div className="mb-2 border-b pb-6">
-                    {isLoggedIn ? (
-                      <>
-                        <div className="mb-6 flex items-center gap-3">
-                          <Avatar className="border-primary/10 h-10 w-10 border-2">
-                            <AvatarImage src="/placeholder.svg?height=40&width=40" />
-                            <AvatarFallback className="bg-primary/10 text-primary">
-                              사용자
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="font-medium">문화매니아</div>
-                        </div>
-                        <Button variant="outline" className="text-destructive w-full rounded-xl">
-                          로그아웃
-                        </Button>
-                      </>
-                    ) : (
-                      <LoginModal>
-                        <Button className="flex w-full items-center justify-center gap-2 rounded-xl">
-                          <LogIn className="h-4 w-4" />
-                          로그인
-                        </Button>
-                      </LoginModal>
-                    )}
+              <SheetContent side="right" className="w-[280px] pt-10 pb-5 sm:w-[350px]">
+                <nav className="flex h-full flex-col justify-between">
+                  <div className="flex flex-col gap-6">
+                    <div className="mb-2 border-b pb-6">
+                      {isLoggedIn ? (
+                        <>
+                          <Link
+                            href="/profile"
+                            className="flex items-center gap-3"
+                            onClick={() => setIsMobileOpen(false)}
+                          >
+                            <Avatar className="h-10 w-10">
+                              <AvatarImage src="/placeholder.svg?height=40&width=40" />
+                              <AvatarFallback>사용자</AvatarFallback>
+                            </Avatar>
+                            <div className="text-lg font-medium">문화매니아</div>
+                          </Link>
+                        </>
+                      ) : (
+                        <LoginModal>
+                          <Button
+                            className="flex w-full items-center justify-center gap-2 rounded-xl"
+                            onClick={() => setIsMobileOpen(false)}
+                          >
+                            <LogIn className="h-4 w-4" />
+                            로그인
+                          </Button>
+                        </LoginModal>
+                      )}
+                    </div>
+                    <Link
+                      href="/"
+                      className="hover:text-primary text-lg font-medium transition-colors"
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      메인
+                    </Link>
+                    <Link
+                      href="/calendar"
+                      className="hover:text-primary text-lg font-medium transition-colors"
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      행사캘린더
+                    </Link>
+                    <Link
+                      href="/my-meetings"
+                      className="hover:text-primary text-lg font-medium transition-colors"
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      내 모임
+                    </Link>
                   </div>
-                  <Link
-                    href="/"
-                    className="hover:text-primary text-xl font-medium transition-colors"
-                    onClick={() => document.body.click()}
-                  >
-                    메인
-                  </Link>
-                  <Link
-                    href="/calendar"
-                    className="hover:text-primary text-xl font-medium transition-colors"
-                    onClick={() => document.body.click()}
-                  >
-                    행사캘린더
-                  </Link>
-                  <Link
-                    href="/my-meetings"
-                    className="hover:text-primary text-xl font-medium transition-colors"
-                    onClick={() => document.body.click()}
-                  >
-                    내 모임
-                  </Link>
+
+                  {isLoggedIn && (
+                    <Button
+                      variant="outline"
+                      className="text-destructive w-full rounded-xl"
+                      onClick={() => setIsMobileOpen(false)}
+                    >
+                      로그아웃
+                    </Button>
+                  )}
                 </nav>
               </SheetContent>
             </Sheet>

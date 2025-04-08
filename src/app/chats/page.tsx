@@ -11,7 +11,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 import { motion } from 'framer-motion';
-import { ArrowLeft, MessageSquare, Search } from 'lucide-react';
+import { ArrowLeft, Info, MessageSquare, Search } from 'lucide-react';
+import { parseAsInteger, useQueryState } from 'nuqs';
 
 // 채팅방 데이터 (실제로는 API에서 가져올 것)
 const chatRoomsData = [
@@ -60,17 +61,124 @@ const chatRoomsData = [
     },
     unreadCount: 0,
   },
+  {
+    id: 4,
+    meetingId: 4,
+    title: '마라톤 완주 도전',
+    eventTitle: '서울 마라톤',
+    meetingTime: '2023-04-16 08:00',
+    participants: 5,
+    maxPeople: 5,
+    lastMessage: {
+      sender: '러닝맨',
+      content: '모두 수고하셨습니다! 다음에 또 함께해요~',
+      timestamp: '2023-04-16 14:30',
+    },
+    unreadCount: 0,
+  },
+  {
+    id: 5,
+    meetingId: 5,
+    title: '마라톤 완주 도전',
+    eventTitle: '서울 마라톤',
+    meetingTime: '2023-04-16 08:00',
+    participants: 5,
+    maxPeople: 5,
+    lastMessage: {
+      sender: '러닝맨',
+      content: '모두 수고하셨습니다! 다음에 또 함께해요~',
+      timestamp: '2023-04-16 14:30',
+    },
+    unreadCount: 0,
+  },
+  {
+    id: 6,
+    meetingId: 6,
+    title: '마라톤 완주 도전',
+    eventTitle: '서울 마라톤',
+    meetingTime: '2023-04-16 08:00',
+    participants: 5,
+    maxPeople: 5,
+    lastMessage: {
+      sender: '러닝맨',
+      content: '모두 수고하셨습니다! 다음에 또 함께해요~',
+      timestamp: '2023-04-16 14:30',
+    },
+    unreadCount: 0,
+  },
+  {
+    id: 7,
+    meetingId: 7,
+    title: '마라톤 완주 도전',
+    eventTitle: '서울 마라톤',
+    meetingTime: '2023-04-16 08:00',
+    participants: 5,
+    maxPeople: 5,
+    lastMessage: {
+      sender: '러닝맨',
+      content: '모두 수고하셨습니다! 다음에 또 함께해요~',
+      timestamp: '2023-04-16 14:30',
+    },
+    unreadCount: 0,
+  },
+  {
+    id: 8,
+    meetingId: 8,
+    title: '마라톤 완주 도전',
+    eventTitle: '서울 마라톤',
+    meetingTime: '2023-04-16 08:00',
+    participants: 5,
+    maxPeople: 5,
+    lastMessage: {
+      sender: '러닝맨',
+      content: '모두 수고하셨습니다! 다음에 또 함께해요~',
+      timestamp: '2023-04-16 14:30',
+    },
+    unreadCount: 0,
+  },
+  {
+    id: 9,
+    meetingId: 9,
+    title: '마라톤 완주 도전',
+    eventTitle: '서울 마라톤',
+    meetingTime: '2023-04-16 08:00',
+    participants: 5,
+    maxPeople: 5,
+    lastMessage: {
+      sender: '러닝맨',
+      content: '모두 수고하셨습니다! 다음에 또 함께해요~',
+      timestamp: '2023-04-16 14:30',
+    },
+    unreadCount: 0,
+  },
+  {
+    id: 10,
+    meetingId: 10,
+    title: '마라톤 완주 도전',
+    eventTitle: '서울 마라톤',
+    meetingTime: '2023-04-16 08:00',
+    participants: 5,
+    maxPeople: 5,
+    lastMessage: {
+      sender: '러닝맨',
+      content: '모두 수고하셨습니다! 다음에 또 함께해요~',
+      timestamp: '2023-04-16 14:30',
+    },
+    unreadCount: 0,
+  },
 ];
 
+// TODO: 핸드폰일 때 채팅방 목록 및 채팅방 안에 스크롤 생김
+// TODO: 뒤로가기 작동 안함
+// TODO: 사람 프로필 눌렀을 떄 상세 페이지로 이동
+// TODO: 채팅방 들어오면 가장 아래로 스크롤되도록
 export default function ChatsPage() {
   const [activeChats] = useState(chatRoomsData);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedChat, setSelectedChat] = useState<number | null>(null);
   const [message, setMessage] = useState('');
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const chatId = searchParams.get('id');
+  const [chatId, setChatId] = useQueryState('id', parseAsInteger);
 
   // 검색 필터링
   const filteredChats = activeChats.filter(
@@ -81,19 +189,19 @@ export default function ChatsPage() {
 
   useEffect(() => {
     if (chatId) {
-      const chat = filteredChats.find((c) => c.id.toString() === chatId);
+      const chat = filteredChats.find((c) => c.id === chatId);
       if (chat) {
-        setSelectedChat(chat.id);
+        setChatId(chat.id);
       }
     }
   }, [chatId, filteredChats]);
 
   // 선택된 채팅방 정보
-  const selectedChatData = activeChats.find((chat) => chat.id === selectedChat);
+  const selectedChatData = activeChats.find((chat) => chat.id === chatId);
 
   // 메시지 전송 핸들러
   const handleSendMessage = () => {
-    if (!message.trim() || !selectedChat) return;
+    if (!message.trim() || !chatId) return;
 
     // 실제로는 API 호출하여 메시지 전송
     console.log(`메시지 전송: ${message}`);
@@ -126,24 +234,14 @@ export default function ChatsPage() {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   const handleChatClick = (chatId: number) => {
-    setSelectedChat(chatId);
-    router.push(`/chats?id=${chatId}`);
+    setChatId(chatId);
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
-      <motion.div
-        className="mb-8 flex items-center justify-between"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className="text-3xl font-bold">채팅</h1>
-      </motion.div>
-
+    <div className="container mx-auto max-w-screen-xl px-4 py-10 pt-4 sm:px-6 sm:pt-10 md:px-8">
       <div className="grid h-[calc(100vh-12rem)] grid-cols-1 gap-6 md:grid-cols-3">
         {/* 채팅방 목록 (모바일에서는 선택된 채팅방이 없을 때만 표시) */}
-        {(!isMobile || !selectedChat) && (
+        {(!isMobile || !chatId) && (
           <motion.div
             className="flex h-full flex-col overflow-hidden rounded-xl border md:col-span-1"
             initial={{ opacity: 0, x: -20 }}
@@ -171,7 +269,7 @@ export default function ChatsPage() {
                       key={chat.id}
                       variants={itemVariants}
                       className={`hover:bg-secondary/30 cursor-pointer border-b p-3 transition-colors ${
-                        selectedChat === chat.id ? 'bg-secondary/50' : ''
+                        chatId === chat.id ? 'bg-secondary/50' : ''
                       }`}
                       onClick={() => handleChatClick(chat.id)}
                     >
@@ -208,14 +306,14 @@ export default function ChatsPage() {
         )}
 
         {/* 채팅 내용 (모바일에서는 선택된 채팅방이 있을 때만 표시) */}
-        {(!isMobile || selectedChat) && (
+        {(!isMobile || chatId) && (
           <motion.div
             className="flex h-full flex-col overflow-hidden rounded-xl border md:col-span-2"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            {selectedChat ? (
+            {chatId ? (
               <>
                 <div className="flex items-center justify-between border-b p-3">
                   {isMobile && (
@@ -240,7 +338,7 @@ export default function ChatsPage() {
                   </div>
                   <Link href={`/meetings/${selectedChatData?.meetingId}`}>
                     <Button variant="ghost" size="sm">
-                      모임 정보
+                      <Info />
                     </Button>
                   </Link>
                 </div>
@@ -303,10 +401,110 @@ export default function ChatsPage() {
                       <div className="mr-2 space-y-1">
                         <div className="bg-primary text-primary-foreground rounded-2xl rounded-tr-none px-4 py-2">
                           <p className="text-sm">
-                            좋은 생각이에요! 정문에서 만나는 게 좋을 것 같습니다.
+                            좋은 생각이에요! 정문에서 만나는 게 좋을 것 좋은 생각이에요! 정문에서
+                            만나는 게 좋을 것 같습니다.좋은 생각이에요! 정문에서 만나는 게 좋을 것
+                            같습니다.좋은 생각이에요! 정문에서 만나는 게 좋을 것 같습니다.좋은
+                            생각이에요! 정문에서 만나는 게 좋을 것 같습니다.좋은 생각이에요!
+                            정문에서 만나는 게 좋을 것 같습니다.좋은 생각이에요! 정문에서 만나는 게
+                            좋을 것 같습니다.좋은 생각이에요! 정문에서 만나는 게 좋을 것 같습니다.
                           </p>
                         </div>
                         <p className="text-muted-foreground text-right text-xs">10:22</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-start">
+                    <div className="flex max-w-[80%]">
+                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-1">
+                        <p className="text-xs">재즈매니아</p>
+                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
+                          <p className="text-sm">
+                            모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게
+                            생각하시나요?
+                          </p>
+                        </div>
+                        <p className="text-muted-foreground text-xs">10:20</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-start">
+                    <div className="flex max-w-[80%]">
+                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-1">
+                        <p className="text-xs">재즈매니아</p>
+                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
+                          <p className="text-sm">
+                            모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게
+                            생각하시나요?
+                          </p>
+                        </div>
+                        <p className="text-muted-foreground text-xs">10:20</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-start">
+                    <div className="flex max-w-[80%]">
+                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-1">
+                        <p className="text-xs">재즈매니아</p>
+                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
+                          <p className="text-sm">
+                            모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게
+                            생각하시나요?
+                          </p>
+                        </div>
+                        <p className="text-muted-foreground text-xs">10:20</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-start">
+                    <div className="flex max-w-[80%]">
+                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-1">
+                        <p className="text-xs">재즈매니아</p>
+                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
+                          <p className="text-sm">
+                            모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게
+                            생각하시나요?
+                          </p>
+                        </div>
+                        <p className="text-muted-foreground text-xs">10:20</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-start">
+                    <div className="flex max-w-[80%]">
+                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
+                      </Avatar>
+                      <div className="space-y-1">
+                        <p className="text-xs">재즈매니아</p>
+                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
+                          <p className="text-sm">
+                            모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게
+                            생각하시나요?
+                          </p>
+                        </div>
+                        <p className="text-muted-foreground text-xs">10:20</p>
                       </div>
                     </div>
                   </div>

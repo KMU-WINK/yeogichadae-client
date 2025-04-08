@@ -10,17 +10,27 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 
 import { motion } from 'framer-motion';
-import { Calendar, Users } from 'lucide-react';
+import { Calendar, Filter, Plus, Users } from 'lucide-react';
 
 // 행사 데이터 (실제로는 API에서 가져올 것)
 const eventData = {
   id: 1,
   title: '서울 재즈 페스티벌 2023',
 };
+
+const genderOptions = ['전체', '남성', '여성'];
 
 // 모임 데이터 (실제로는 API에서 가져올 것)
 const meetingsData = [
@@ -100,12 +110,14 @@ const meetingsData = [
   },
 ];
 
+// TODO: 필터 적용 버튼 누르면 실질적 필터링
 export default function MeetingsPage(props: { params: Promise<{ id: string }> }) {
   const params = use(props.params);
   const [showOnlyJoinable, setShowOnlyJoinable] = useState(false);
   const [filteredMeetings, setFilteredMeetings] = useState(meetingsData);
   const [ageRange, setAgeRange] = useState<[number, number]>([15, 70]);
-  const [genderFilter, setGenderFilter] = useState<string | null>(null);
+  const [genderFilter, setGenderFilter] = useState<string | null>('전체');
+  const [isFilterOpen, setFilterOpen] = useState(false);
 
   useEffect(() => {
     let filtered = meetingsData;
@@ -174,23 +186,94 @@ export default function MeetingsPage(props: { params: Promise<{ id: string }> })
       >
         <div>
           <h1 className="text-3xl font-bold">모임 목록</h1>
-          <p className="text-muted-foreground mt-1">{eventData.title} 행사의 모임 목록입니다</p>
+          <p className="text-muted-foreground mt-1 text-sm">
+            {eventData.title} 행사의 모임 목록입니다
+          </p>
         </div>
-        <div className="flex gap-2">
+        <div className="hidden gap-2 sm:flex">
           <Link href={`/events/${params.id}/meetings/create`}>
             <Button className="rounded-xl shadow-md transition-all duration-300 hover:shadow-lg">
+              <Plus />
               모임 만들기
             </Button>
           </Link>
         </div>
+        <div className="fixed right-0 bottom-4 z-50 px-4 py-2 sm:hidden">
+          <div className="flex sm:hidden">
+            <Link href={`/events/${params.id}/meetings/create`}>
+              <Button className="rounded-xl shadow-md transition-all duration-300 hover:shadow-lg">
+                <Plus />
+                모임 만들기
+              </Button>
+            </Link>
+          </div>
+        </div>
       </motion.div>
 
       <motion.div
-        className="mb-6 space-y-4"
+        className="mb-6 flex gap-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
+        <Popover open={isFilterOpen} onOpenChange={setFilterOpen}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="flex items-center gap-2 rounded-xl">
+              <Filter className="h-4 w-4" />
+              <span>필터</span>
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80 p-4">
+            <div className="space-y-4">
+              <div>
+                <Label className="mb-2 text-sm font-medium">나이</Label>
+                <div className="px-2">
+                  <div className="mb-2 flex justify-between text-sm">
+                    <span>{ageRange[0]}세</span>
+                    <span>{ageRange[1]}세</span>
+                  </div>
+                  <Slider
+                    value={ageRange}
+                    min={15}
+                    max={70}
+                    step={1}
+                    disabled={showOnlyJoinable}
+                    onValueChange={(value) => setAgeRange(value as [number, number])}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <h3 className="mb-2 text-sm font-medium">성별</h3>
+                <div className="flex flex-wrap gap-2">
+                  {genderOptions.map((option) => (
+                    <Badge
+                      key={option}
+                      className={`cursor-pointer px-2 py-1 text-xs transition-all duration-200 ${
+                        genderFilter === option
+                          ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                          : 'bg-secondary text-foreground hover:bg-secondary/80'
+                      }`}
+                      onClick={() => setGenderFilter(option)}
+                    >
+                      {option}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <Button
+                className="mt-2 w-full"
+                onClick={() => {
+                  setFilterOpen(false);
+                }}
+              >
+                필터 적용
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
+
         <div className="flex items-center space-x-2">
           <Checkbox
             id="joinable"
@@ -198,52 +281,8 @@ export default function MeetingsPage(props: { params: Promise<{ id: string }> })
             onCheckedChange={(checked) => setShowOnlyJoinable(checked as boolean)}
           />
           <Label htmlFor="joinable" className="cursor-pointer text-sm font-medium">
-            내가 참여할 수 있는 모임만 보기
+            참여 가능 모임만 보기
           </Label>
-        </div>
-
-        <div
-          className={`grid grid-cols-1 gap-4 pt-4 transition-opacity duration-300 md:grid-cols-2 ${showOnlyJoinable ? 'pointer-events-none opacity-50' : ''}`}
-        >
-          <div className="bg-secondary/30 space-y-3 rounded-xl p-4">
-            <Label className="text-sm font-medium">나이 범위</Label>
-            <div className="px-2">
-              <div className="mb-2 flex justify-between text-sm">
-                <span>{ageRange[0]}세</span>
-                <span>{ageRange[1]}세</span>
-              </div>
-              <Slider
-                value={ageRange}
-                min={15}
-                max={70}
-                step={1}
-                disabled={showOnlyJoinable}
-                onValueChange={(value) => setAgeRange(value as [number, number])}
-              />
-            </div>
-          </div>
-
-          <div className="bg-secondary/30 space-y-3 rounded-xl p-4">
-            <Label className="text-sm font-medium">성별</Label>
-            <RadioGroup
-              value={genderFilter || ''}
-              onValueChange={(value) => setGenderFilter(value || null)}
-              disabled={showOnlyJoinable}
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="" id="all" disabled={showOnlyJoinable} />
-                <Label htmlFor="all">전체</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="male" id="male" disabled={showOnlyJoinable} />
-                <Label htmlFor="male">남성</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="female" id="female" disabled={showOnlyJoinable} />
-                <Label htmlFor="female">여성</Label>
-              </div>
-            </RadioGroup>
-          </div>
         </div>
       </motion.div>
 
@@ -257,61 +296,65 @@ export default function MeetingsPage(props: { params: Promise<{ id: string }> })
           filteredMeetings.map((meeting) => (
             <motion.div key={meeting.id} variants={itemVariants}>
               <Link href={`/meetings/${meeting.id}`}>
-                <Card className="cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-md">
+                <Card className="sinc-card rounded-2xl">
                   <CardContent className="p-6">
                     <div className="flex flex-col gap-4 md:flex-row">
                       <div className="flex-1">
-                        <div className="mb-2 flex flex-wrap items-center gap-2">
+                        <div className="flex flex-col-reverse gap-1 sm:flex-row sm:gap-4">
                           <h3 className="text-lg font-medium">{meeting.title}</h3>
-                          <Badge
-                            className={`sinc-badge ${
-                              meeting.status === '모집중'
-                                ? 'bg-emerald-100 text-emerald-700'
-                                : 'bg-gray-100 text-gray-700'
-                            }`}
-                          >
-                            {meeting.status}
-                          </Badge>
-                          {!meeting.canJoin && meeting.status === '모집중' && (
+                          <div className="flex flex-wrap items-center gap-2">
                             <Badge
-                              variant="outline"
-                              className="sinc-badge border-amber-200 bg-amber-50 text-amber-700"
+                              className={`sinc-badge text-xs ${
+                                meeting.status === '모집중'
+                                  ? 'bg-emerald-100 text-emerald-700'
+                                  : 'bg-gray-100 text-gray-700'
+                              }`}
                             >
-                              참여 조건 미충족
+                              {meeting.status}
                             </Badge>
-                          )}
+                            {!meeting.canJoin && meeting.status === '모집중' && (
+                              <Badge
+                                variant="outline"
+                                className="sinc-badge border-amber-200 bg-amber-50 text-xs text-amber-700"
+                              >
+                                참여 조건 미충족
+                              </Badge>
+                            )}
+                            {(meeting.minAge || meeting.maxAge || meeting.gender) && (
+                              <div className="flex flex-wrap gap-1">
+                                {meeting.minAge && meeting.maxAge && (
+                                  <Badge variant="outline" className="text-xs">
+                                    {meeting.minAge}~{meeting.maxAge}세
+                                  </Badge>
+                                )}
+                                {meeting.gender && (
+                                  <Badge variant="outline" className="text-xs">
+                                    {meeting.gender === 'male' ? '남성' : '여성'}만
+                                  </Badge>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
                         <p className="text-muted-foreground mb-4 line-clamp-2 text-sm">
                           {meeting.content}
                         </p>
-                        <div className="grid grid-cols-1 gap-2 text-sm md:grid-cols-3">
+                        <div className="grid grid-cols-2 gap-2 text-sm md:grid-cols-3">
                           <div className="flex items-center gap-2">
                             <Calendar className="text-primary h-4 w-4" />
-                            <span>{meeting.meetingTime}</span>
+                            <span className="text-xs text-neutral-600 sm:text-sm">
+                              {meeting.meetingTime}
+                            </span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Users className="text-primary h-4 w-4" />
-                            <span>
+                            <span className="text-xs text-neutral-600 sm:text-sm">
                               {meeting.participants}/{meeting.maxPeople} 명 참여중
                             </span>
                           </div>
                         </div>
-                        {(meeting.minAge || meeting.maxAge || meeting.gender) && (
-                          <div className="mt-2 flex flex-wrap gap-1">
-                            {meeting.minAge && meeting.maxAge && (
-                              <Badge variant="outline" className="text-xs">
-                                {meeting.minAge}~{meeting.maxAge}세
-                              </Badge>
-                            )}
-                            {meeting.gender && (
-                              <Badge variant="outline" className="text-xs">
-                                {meeting.gender === 'male' ? '남성' : '여성'}만
-                              </Badge>
-                            )}
-                          </div>
-                        )}
                       </div>
-                      <div className="flex flex-col justify-between gap-4">
+                      <div className="hidden flex-col justify-between gap-4 md:flex">
                         <div className="flex items-center gap-2">
                           <Avatar className="border-primary/10 h-10 w-10 border-2">
                             <AvatarImage src={meeting.host.avatar} alt={meeting.host.nickname} />
@@ -319,25 +362,7 @@ export default function MeetingsPage(props: { params: Promise<{ id: string }> })
                           </Avatar>
                           <div>
                             <div className="text-sm font-medium">{meeting.host.nickname}</div>
-                            <div className="text-muted-foreground text-xs">
-                              매너 점수: {meeting.host.mannerScore}
-                            </div>
                           </div>
-                        </div>
-                        <div
-                          className={`rounded-xl px-3 py-2 text-center ${
-                            meeting.status === '모집완료'
-                              ? 'bg-gray-100 text-gray-700'
-                              : !meeting.canJoin
-                                ? 'bg-amber-50 text-amber-700'
-                                : 'bg-primary text-primary-foreground'
-                          }`}
-                        >
-                          {meeting.status === '모집완료'
-                            ? '모집 완료'
-                            : !meeting.canJoin
-                              ? '참여 불가'
-                              : '참여 가능'}
                         </div>
                       </div>
                     </div>

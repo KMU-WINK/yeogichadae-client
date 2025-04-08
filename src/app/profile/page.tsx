@@ -20,7 +20,7 @@ const userData = {
   gender: 'male',
   age: 28,
   mannerScore: 4.7,
-  createdAt: '2022-05-15',
+  createdAt: '2022년 05월 15일',
   bookmarkedEvents: 12,
   participatedMeetings: 8,
   hostedMeetings: 3,
@@ -85,8 +85,8 @@ export default function ProfilePage() {
                 </AvatarFallback>
               </Avatar>
             </div>
-            <h2 className="mb-1 text-2xl font-bold">{userData.nickname}</h2>
-            <p className="text-muted-foreground mb-2">가입일: {userData.createdAt}</p>
+            <h2 className="mb-3 text-2xl font-bold">{userData.nickname}</h2>
+            <p className="text-muted-foreground text-sm">가입일: {userData.createdAt}</p>
             <p className="text-muted-foreground mb-4">{userData.email}</p>
 
             <div className="mb-2 flex justify-center">
@@ -104,7 +104,7 @@ export default function ProfilePage() {
               <Progress value={userData.experience} className="h-2" />
             </div>
 
-            <div className="mb-6 space-y-3 text-left">
+            <div className="mb-6 flex items-start justify-around text-left sm:flex-col">
               <div className="hover:bg-secondary/50 flex items-center gap-2 rounded-lg p-2 transition-colors">
                 <MapPin className="text-primary h-5 w-5" />
                 <span>{userData.district}</span>
@@ -170,7 +170,9 @@ export default function ProfilePage() {
                         <AvatarFallback className="bg-primary/10 text-primary">JM</AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="font-medium">재즈매니아</div>
+                        <div className="line-clamp-1 font-medium">
+                          재즈매니아재즈매니아재즈매니아재즈매니아
+                        </div>
                         <div className="text-muted-foreground text-xs">2023-05-30</div>
                       </div>
                     </div>
@@ -183,9 +185,16 @@ export default function ProfilePage() {
                       ))}
                     </div>
                   </div>
-                  <p className="text-sm">
+                  <p className="line-clamp-3 text-sm">
                     시간 약속을 잘 지키고 모임 분위기를 즐겁게 이끌어주셨어요. 다음에도 같이
-                    모임하고 싶습니다!
+                    모임하고 싶습니다!시간 약속을 잘 지키고 모임 분위기를 즐겁게 이끌어주셨어요.
+                    다음에도 같이 모임하고 싶습니다!시간 약속을 잘 지키고 모임 분위기를 즐겁게
+                    이끌어주셨어요. 다음에도 같이 모임하고 싶습니다!시간 약속을 잘 지키고 모임
+                    분위기를 즐겁게 이끌어주셨어요. 다음에도 같이 모임하고 싶습니다!시간 약속을 잘
+                    지키고 모임 분위기를 즐겁게 이끌어주셨어요. 다음에도 같이 모임하고 싶습니다!시간
+                    약속을 잘 지키고 모임 분위기를 즐겁게 이끌어주셨어요. 다음에도 같이 모임하고
+                    싶습니다!시간 약속을 잘 지키고 모임 분위기를 즐겁게 이끌어주셨어요. 다음에도
+                    같이 모임하고 싶습니다!
                   </p>
                 </div>
 
@@ -205,7 +214,7 @@ export default function ProfilePage() {
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-4 w-4 ${i < 4 ? 'fill-primary text-primary' : 'text-muted'}`}
+                          className={`h-4 w-4 ${i < 4 ? 'fill-primary text-primary' : 'text-neutral-300'}`}
                         />
                       ))}
                     </div>
@@ -224,8 +233,11 @@ export default function ProfilePage() {
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="text-xl font-medium">찜한 행사</h2>
               </div>
-              <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md">
+              <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <Link
+                  href="/events/1"
+                  className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
+                >
                   <div className="relative aspect-video">
                     <Image
                       src="/placeholder.svg?height=120&width=240"
@@ -243,7 +255,7 @@ export default function ProfilePage() {
                     </h3>
                     <p className="text-muted-foreground mt-1 text-xs">2023-05-27 ~ 2023-05-29</p>
                   </div>
-                </div>
+                </Link>
 
                 <div className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md">
                   <div className="relative aspect-video">
@@ -268,8 +280,8 @@ export default function ProfilePage() {
 
               <Link href="/profile/bookmarks">
                 <Button
-                  variant="ghost"
-                  className="hover:bg-primary/5 hover:text-primary mt-4 flex w-full items-center justify-center gap-2 rounded-xl transition-all duration-200"
+                  variant="outline"
+                  className="flex w-full items-center justify-center rounded-xl"
                 >
                   <span>모든 찜한 행사 보기</span>
                   <ArrowRight className="h-4 w-4" />

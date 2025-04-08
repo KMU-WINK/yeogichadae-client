@@ -31,9 +31,10 @@ const districts = Object.values(District);
 // 비용 필터 옵션
 const feeOptions = ['전체', '무료', '유료'];
 
+// TODO: 행사 위치 누르면 네이버지도로 이동
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [category, setCategory] = useState<string>('전체');
+  const [category, setCategory] = useState<string[]>([]);
   const [feeOption, setFeeOption] = useState('전체');
   const [filteredEvents, setFilteredEvents] = useState(events);
 
@@ -67,8 +68,8 @@ export default function Home() {
     }
 
     // 카테고리 필터링
-    if (category !== '전체') {
-      result = result.filter((event) => event.category === category);
+    if (!category.includes('전체')) {
+      result = result.filter((event) => category.includes(event.category));
     }
 
     // 지역구 필터링
@@ -84,6 +85,7 @@ export default function Home() {
     setFilteredEvents(result);
   }, [searchQuery, category, selectedDistricts, feeOption]);
 
+  // TODO: 스크롤 모바일 환경에서 좀 더 아래로 가게 하기
   const scrollToAllEvents = () => {
     allEventsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -131,7 +133,7 @@ export default function Home() {
         <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <motion.h1
-              className="mb-6 text-4xl font-bold md:text-5xl"
+              className="mb-6 text-3xl font-bold sm:text-5xl"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -141,15 +143,17 @@ export default function Home() {
               함께할 친구를 찾아보세요
             </motion.h1>
             <motion.p
-              className="text-muted-foreground mb-8 text-lg"
+              className="text-muted-foreground mb-8 sm:text-lg"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              서울시 문화행사 정보를 확인하고 같은 관심사를 가진 사람들과 함께 즐겨보세요
+              서울시 문화행사 정보를 확인하고
+              <br className="block sm:hidden" />
+              같은 관심사를 가진 사람들과 함께 즐겨보세요
             </motion.p>
             <motion.div
-              className="flex justify-center gap-2"
+              className="flex flex-col items-center justify-center gap-3 pt-4 sm:flex-row sm:pt-0"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
@@ -182,7 +186,7 @@ export default function Home() {
       <section className="py-12 md:py-16">
         <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
           <motion.div
-            className="mb-8 flex items-center justify-between"
+            className="mb-4 flex items-center justify-between"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
@@ -202,6 +206,7 @@ export default function Home() {
             initial="hidden"
             animate="visible"
           >
+            {/* TODO: 모바일은 3개만 하기 */}
             {events.slice(0, 6).map((event) => (
               <motion.div key={event.id} variants={itemVariants}>
                 <Link href={`/events/${event.id}`} className="group">
@@ -250,13 +255,12 @@ export default function Home() {
                       <div className="text-sm">
                         <span className="text-primary font-medium">12개</span>의 모임 진행중
                       </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="text-primary hover:text-primary/80 h-auto p-0 hover:bg-transparent"
+                      <Link
+                        href={`/events/${event.id}/meetings`}
+                        className="text-primary hover:text-primary/80 h-auto rounded-md p-0 text-sm font-medium hover:bg-transparent"
                       >
                         자세히 보기
-                      </Button>
+                      </Link>
                     </div>
                   </div>
                 </Link>
@@ -268,6 +272,7 @@ export default function Home() {
 
       {/* CTA 섹션 */}
       <motion.section
+        ref={allEventsRef}
         className="bg-primary/5 py-12 md:py-16"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -294,33 +299,15 @@ export default function Home() {
             >
               관심있는 행사를 찾고, 함께할 사람들을 모아 특별한 경험을 만들어보세요
             </motion.p>
-
-            <motion.div
-              className="flex justify-center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <Button
-                size="lg"
-                className="flex h-12 items-center gap-2 rounded-xl text-base shadow-lg transition-all duration-300 hover:shadow-xl"
-                onClick={scrollToAllEvents}
-              >
-                <span>행사 찾아보기</span>
-                <ArrowDown className="h-5 w-5" />
-              </Button>
-            </motion.div>
           </div>
         </div>
       </motion.section>
 
       {/* 전체 행사 목록 */}
-      <div ref={allEventsRef}></div>
-      <section className="bg-gray-50 py-12 md:py-16">
+      <section className="bg-gray-50 py-10 md:py-16">
         <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
           <motion.h2
-            className="mb-8 text-2xl font-bold md:text-3xl"
+            className="mb-4 text-2xl font-bold md:text-3xl"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -357,11 +344,11 @@ export default function Home() {
                   <Badge
                     key="전체"
                     className={`cursor-pointer px-3 py-1.5 text-sm transition-all duration-200 ${
-                      category === '전체'
+                      category.includes('전체')
                         ? 'bg-primary text-primary-foreground hover:bg-primary/90'
                         : 'bg-secondary text-foreground hover:bg-secondary/80'
                     }`}
-                    onClick={() => setCategory('전체')}
+                    onClick={() => setCategory(['전체'])}
                   >
                     전체
                   </Badge>
@@ -369,11 +356,17 @@ export default function Home() {
                     <Badge
                       key={cat}
                       className={`cursor-pointer px-3 py-1.5 text-sm transition-all duration-200 ${
-                        category === cat
+                        category.includes(cat)
                           ? 'bg-primary text-primary-foreground hover:bg-primary/90'
                           : 'bg-secondary text-foreground hover:bg-secondary/80'
                       }`}
-                      onClick={() => setCategory(cat)}
+                      onClick={() =>
+                        setCategory((prev) =>
+                          prev.includes(cat)
+                            ? prev.filter((c) => c !== cat)
+                            : [...prev, cat].filter((c) => c !== '전체'),
+                        )
+                      }
                     >
                       {cat}
                     </Badge>
@@ -491,13 +484,12 @@ export default function Home() {
                       <div className="text-xs">
                         <span className="text-primary font-medium">12개</span>의 모임
                       </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="text-primary hover:text-primary/80 h-auto p-0 text-xs hover:bg-transparent"
+                      <Link
+                        href={`/events/${event.id}/meetings`}
+                        className="text-primary hover:text-primary/80 h-auto rounded-md p-0 text-sm font-medium hover:bg-transparent"
                       >
-                        자세히
-                      </Button>
+                        자세히 보기
+                      </Link>
                     </div>
                   </div>
                 </Link>
@@ -506,7 +498,7 @@ export default function Home() {
           </div>
 
           {filteredEvents.length === 0 && (
-            <div className="py-16 text-center">
+            <div className="py-8 text-center sm:py-16">
               <p className="text-muted-foreground text-lg">검색 결과가 없습니다</p>
               <p className="text-muted-foreground mt-2 text-sm">
                 다른 검색어나 필터를 시도해보세요

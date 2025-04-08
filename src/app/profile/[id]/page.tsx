@@ -66,14 +66,6 @@ const usersData = {
         content: '친절하고 매너가 좋았습니다. 재즈에 대한 지식이 풍부해서 많이 배웠어요.',
         date: '2023-04-20',
       },
-      {
-        id: 3,
-        reviewerName: '페스티벌고',
-        reviewerAvatar: '/placeholder.svg?height=40&width=40',
-        rating: 5,
-        content: '정말 즐거운 시간이었습니다. 모임을 잘 이끌어주셔서 감사합니다!',
-        date: '2023-03-15',
-      },
     ],
   },
   '3': {
@@ -163,10 +155,6 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
 
   return (
     <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
-      <Link href="/profile" className="text-primary mb-6 inline-flex items-center hover:underline">
-        <ArrowLeft className="mr-1 h-4 w-4" />내 프로필로 돌아가기
-      </Link>
-
       <motion.div
         className="mb-8 flex items-center justify-between"
         initial={{ opacity: 0, y: -20 }}
@@ -202,7 +190,7 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
               </div>
             </div>
 
-            <div className="mb-6 space-y-3 text-left">
+            <div className="mb-6 flex items-start justify-around text-left sm:flex-col">
               <div className="hover:bg-secondary/50 flex items-center gap-2 rounded-lg p-2 transition-colors">
                 <MapPin className="text-primary h-5 w-5" />
                 <span>{userData.district}</span>
@@ -231,14 +219,6 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
                 <div className="text-muted-foreground text-xs">주최 모임</div>
               </div>
             </div>
-            <Link href={`/profile/${userData.id}`}>
-              <Button
-                variant="ghost"
-                className="hover:bg-primary/5 hover:text-primary transition-all duration-200"
-              >
-                프로필
-              </Button>
-            </Link>
           </div>
         </motion.div>
 
@@ -252,6 +232,7 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
             <div className="sinc-card p-6">
               <h2 className="mb-4 text-xl font-medium">받은 후기</h2>
               <div className="space-y-4">
+                {/* TODO: 유저 프로필 누르면 상세 페이지 조회*/}
                 {userData.reviews.map((review) => (
                   <div key={review.id} className="bg-secondary/30 rounded-xl p-4">
                     <div className="mb-3 flex items-start justify-between">
@@ -263,7 +244,7 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <div className="font-medium">{review.reviewerName}</div>
+                          <div className="line-clamp-1 font-medium">{review.reviewerName}</div>
                           <div className="text-muted-foreground text-xs">{review.date}</div>
                         </div>
                       </div>
@@ -271,12 +252,12 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
                         {Array.from({ length: 5 }).map((_, i) => (
                           <Star
                             key={i}
-                            className={`h-4 w-4 ${i < review.rating ? 'fill-primary text-primary' : 'text-muted'}`}
+                            className={`h-4 w-4 ${i < review.rating ? 'fill-primary text-primary' : 'text-neutral-300'}`}
                           />
                         ))}
                       </div>
                     </div>
-                    <p className="text-sm">{review.content}</p>
+                    <p className="line-clamp-3 text-sm">{review.content}</p>
                   </div>
                 ))}
 
@@ -294,7 +275,10 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
               <h2 className="mb-4 text-xl font-medium">주최한 모임</h2>
               {userData.hostedMeetings > 0 ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md">
+                  <Link
+                    href="/meetings/1"
+                    className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
+                  >
                     <div className="relative aspect-video">
                       <Image
                         src="/placeholder.svg?height=120&width=240"
@@ -312,7 +296,7 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
                       </h3>
                       <p className="text-muted-foreground mt-1 text-xs">2023-05-27 14:00</p>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               ) : (
                 <div className="text-muted-foreground py-8 text-center">

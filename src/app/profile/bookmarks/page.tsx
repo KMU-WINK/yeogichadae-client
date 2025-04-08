@@ -94,11 +94,6 @@ export default function BookmarksPage() {
 
   return (
     <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
-      <Link href="/profile" className="text-primary mb-6 inline-flex items-center hover:underline">
-        <ArrowLeft className="mr-1 h-4 w-4" />
-        프로필로 돌아가기
-      </Link>
-
       <motion.h1
         className="mb-8 text-3xl font-bold"
         initial={{ opacity: 0, y: -20 }}
@@ -164,13 +159,12 @@ export default function BookmarksPage() {
                       <span className="text-primary font-medium">{event.meetingsCount}개</span>의
                       모임 진행중
                     </div>
-                    <Button
-                      size="sm"
-                      variant="ghost"
-                      className="text-primary hover:text-primary/80 h-auto p-0 hover:bg-transparent"
+                    <Link
+                      href={`/events/${event.id}/meetings`}
+                      className="text-primary hover:text-primary/80 h-auto rounded-md p-0 text-sm font-medium hover:bg-transparent"
                     >
                       자세히 보기
-                    </Button>
+                    </Link>
                   </div>
                 </div>
               </Link>

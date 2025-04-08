@@ -19,7 +19,7 @@ const reviewsData = [
     reviewerAvatar: '/placeholder.svg?height=40&width=40',
     rating: 5,
     content:
-      '시간 약속을 잘 지키고 모임 분위기를 즐겁게 이끌어주셨어요. 다음에도 같이 모임하고 싶습니다!',
+      '시간 약속을 잘 지키고 모임 분위기를 즐겁게 이끌어주셨어요. 다음에도 같이 모임하고 싶습니다!시간 약속을 잘 지키고 모임 분위기를 즐겁게 이끌어주셨어요. 다음에도 같이 모임하고 싶습니다!시간 약속을 잘 지키고 모임 분위기를 즐겁게 이끌어주셨어요. 다음에도 같이 모임하고 싶습니다!시간 약속을 잘 지키고 모임 분위기를 즐겁게 이끌어주셨어요. 다음에도 같이 모임하고 싶습니다!',
     date: '2023-05-30',
     meetingId: 1,
     meetingTitle: '재즈 페스티벌 같이 즐겨요',
@@ -76,13 +76,8 @@ export default function ReviewsPage() {
 
   return (
     <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
-      <Link href="/profile" className="text-primary mb-6 inline-flex items-center hover:underline">
-        <ArrowLeft className="mr-1 h-4 w-4" />
-        프로필로 돌아가기
-      </Link>
-
       <motion.h1
-        className="mb-8 text-3xl font-bold"
+        className="mb-4 flex text-3xl font-bold"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -92,15 +87,17 @@ export default function ReviewsPage() {
 
       <div className="mb-6">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1">
-            <Star className="fill-primary text-primary h-5 w-5" />
-            <span className="text-lg font-medium">평균 평점: 4.7</span>
+          <div className="flex">
+            <div className="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-3 py-1.5">
+              <Star className="fill-primary h-4 w-4" />
+              <span className="font-medium">4.7</span>
+            </div>
           </div>
           <div className="text-muted-foreground text-sm">총 {reviews.length}개의 후기</div>
         </div>
       </div>
 
-      {reviews.length > 0 ? (
+      {reviewsData.length > 0 ? (
         <motion.div
           className="space-y-6"
           variants={containerVariants}
@@ -132,7 +129,7 @@ export default function ReviewsPage() {
                     {Array.from({ length: 5 }).map((_, i) => (
                       <Star
                         key={i}
-                        className={`h-5 w-5 ${i < review.rating ? 'fill-primary text-primary' : 'text-muted'}`}
+                        className={`h-5 w-5 ${i < review.rating ? 'fill-primary text-primary' : 'text-neutral-300'}`}
                       />
                     ))}
                   </div>
@@ -143,9 +140,9 @@ export default function ReviewsPage() {
                 <div className="border-t pt-4">
                   <Link
                     href={`/meetings/${review.meetingId}`}
-                    className="text-primary text-sm hover:underline"
+                    className="text-sm text-neutral-500 hover:underline"
                   >
-                    {review.meetingTitle} 모임에서 받은 후기
+                    {review.meetingTitle}
                   </Link>
                 </div>
               </div>
@@ -153,8 +150,8 @@ export default function ReviewsPage() {
           ))}
         </motion.div>
       ) : (
-        <div className="sinc-card p-16 text-center">
-          <div className="mb-3 text-5xl">⭐</div>
+        <div className="sinc-card flex flex-col items-center py-16">
+          <Star size={48} className="mb-3" />
           <h3 className="mb-2 text-xl font-medium">받은 후기가 없습니다</h3>
           <p className="text-muted-foreground mb-6">모임에 참여하고 후기를 받아보세요</p>
           <Link href="/">

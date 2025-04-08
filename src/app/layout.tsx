@@ -9,6 +9,8 @@ import '@/lib/register-service-worker';
 
 import '@/style/global.css';
 
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
+
 interface LayoutProps {
   children: ReactNode;
 }
@@ -22,7 +24,9 @@ export default function RootLayout({ children }: LayoutProps) {
       <body className="bg-background min-h-screen">
         <Header />
         <SonnerProvider />
-        <main className="pt-16">{children}</main>
+        <NuqsAdapter>
+          <main className="pt-14 sm:pt-16">{children}</main>
+        </NuqsAdapter>
       </body>
     </html>
   );
