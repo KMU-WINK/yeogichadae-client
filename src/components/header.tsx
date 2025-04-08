@@ -17,6 +17,8 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+
 import { cn } from '@/lib/utils';
 
 import { LoginModal } from './login-modal';
@@ -59,6 +61,8 @@ const isLoggedIn = true;
 
 export default function Header() {
   const router = useRouter();
+
+  const isMobile = useMediaQuery('(max-width: 639px)'); // Tailwind 기준 sm 이하
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
@@ -136,9 +140,10 @@ export default function Header() {
                       size="icon"
                       className="relative rounded-full"
                       onClick={(e) => {
-                        // TODO: 모바일일때만 바로 이동
-                        e.preventDefault();
-                        router.push('/notifications');
+                        if (isMobile) {
+                          e.preventDefault();
+                          router.push('/notifications');
+                        }
                       }}
                     >
                       <Bell className="h-5 w-5" />
@@ -154,6 +159,7 @@ export default function Header() {
                           variant="ghost"
                           size="sm"
                           className="text-primary h-auto p-0 text-xs"
+                          onClick={() => setIsNotificationOpen(false)}
                         >
                           모두 읽음 표시
                         </Button>
@@ -220,7 +226,12 @@ export default function Header() {
                     </div>
                     <div className="border-t p-2">
                       <Link href="/notifications">
-                        <Button variant="ghost" size="sm" className="text-primary w-full">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-primary w-full"
+                          onClick={() => setIsNotificationOpen(false)}
+                        >
                           모든 알림 보기
                         </Button>
                       </Link>
