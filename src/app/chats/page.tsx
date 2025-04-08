@@ -170,7 +170,6 @@ const chatRoomsData = [
   },
 ];
 
-// TODO: 사람 프로필 눌렀을 떄 상세 페이지로 이동
 export default function ChatsPage() {
   const [activeChats] = useState(chatRoomsData);
   const [searchQuery, setSearchQuery] = useState('');
@@ -352,51 +351,22 @@ export default function ChatsPage() {
                   {/* 메시지 예시 */}
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
-                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
-                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
-                      </Avatar>
+                      <Link href="/profile/2">
+                        <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
+                          <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                          <AvatarFallback className="bg-primary/10 text-primary">
+                            재즈
+                          </AvatarFallback>
+                        </Avatar>
+                      </Link>
                       <div className="space-y-1">
-                        <p className="text-xs">재즈매니아</p>
+                        <Link href="/profile/2">
+                          <p className="text-xs">재즈매니아</p>
+                        </Link>
                         <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
                           <p className="text-sm">안녕하세요! 모임에 참여해주셔서 감사합니다.</p>
                         </div>
                         <p className="text-muted-foreground text-xs">10:15</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-start">
-                    <div className="flex max-w-[80%]">
-                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="음악사랑" />
-                        <AvatarFallback className="bg-primary/10 text-primary">음악</AvatarFallback>
-                      </Avatar>
-                      <div className="space-y-1">
-                        <p className="text-xs">음악사랑</p>
-                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
-                          <p className="text-sm">안녕하세요! 재즈 페스티벌 기대되네요.</p>
-                        </div>
-                        <p className="text-muted-foreground text-xs">10:17</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-start">
-                    <div className="flex max-w-[80%]">
-                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
-                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
-                      </Avatar>
-                      <div className="space-y-1">
-                        <p className="text-xs">재즈매니아</p>
-                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
-                          <p className="text-sm">
-                            모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게
-                            생각하시나요?
-                          </p>
-                        </div>
-                        <p className="text-muted-foreground text-xs">10:20</p>
                       </div>
                     </div>
                   </div>
@@ -419,100 +389,6 @@ export default function ChatsPage() {
                     </div>
                   </div>
 
-                  <div className="flex justify-start">
-                    <div className="flex max-w-[80%]">
-                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
-                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
-                      </Avatar>
-                      <div className="space-y-1">
-                        <p className="text-xs">재즈매니아</p>
-                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
-                          <p className="text-sm">
-                            모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게
-                            생각하시나요?
-                          </p>
-                        </div>
-                        <p className="text-muted-foreground text-xs">10:20</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-start">
-                    <div className="flex max-w-[80%]">
-                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
-                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
-                      </Avatar>
-                      <div className="space-y-1">
-                        <p className="text-xs">재즈매니아</p>
-                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
-                          <p className="text-sm">
-                            모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게
-                            생각하시나요?
-                          </p>
-                        </div>
-                        <p className="text-muted-foreground text-xs">10:20</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-start">
-                    <div className="flex max-w-[80%]">
-                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
-                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
-                      </Avatar>
-                      <div className="space-y-1">
-                        <p className="text-xs">재즈매니아</p>
-                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
-                          <p className="text-sm">
-                            모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게
-                            생각하시나요?
-                          </p>
-                        </div>
-                        <p className="text-muted-foreground text-xs">10:20</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-start">
-                    <div className="flex max-w-[80%]">
-                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
-                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
-                      </Avatar>
-                      <div className="space-y-1">
-                        <p className="text-xs">재즈매니아</p>
-                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
-                          <p className="text-sm">
-                            모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게
-                            생각하시나요?
-                          </p>
-                        </div>
-                        <p className="text-muted-foreground text-xs">10:20</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-start">
-                    <div className="flex max-w-[80%]">
-                      <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
-                        <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
-                      </Avatar>
-                      <div className="space-y-1">
-                        <p className="text-xs">재즈매니아</p>
-                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
-                          <p className="text-sm">
-                            모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게
-                            생각하시나요?
-                          </p>
-                        </div>
-                        <p className="text-muted-foreground text-xs">10:20</p>
-                      </div>
-                    </div>
-                  </div>
                   <div ref={bottomRef} />
                 </div>
 

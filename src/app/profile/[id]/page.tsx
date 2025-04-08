@@ -232,11 +232,10 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
             <div className="sinc-card p-6">
               <h2 className="mb-4 text-xl font-medium">받은 후기</h2>
               <div className="space-y-4">
-                {/* TODO: 유저 프로필 누르면 상세 페이지 조회*/}
                 {userData.reviews.map((review) => (
                   <div key={review.id} className="bg-secondary/30 rounded-xl p-4">
                     <div className="mb-3 flex items-start justify-between">
-                      <div className="flex items-center gap-2">
+                      <Link href="/profile/2" className="flex items-center gap-2">
                         <Avatar className="border-primary/10 h-10 w-10 border-2">
                           <AvatarImage src={review.reviewerAvatar} />
                           <AvatarFallback className="bg-primary/10 text-primary">
@@ -247,7 +246,7 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
                           <div className="line-clamp-1 font-medium">{review.reviewerName}</div>
                           <div className="text-muted-foreground text-xs">{review.date}</div>
                         </div>
-                      </div>
+                      </Link>
                       <div className="flex items-center">
                         {Array.from({ length: 5 }).map((_, i) => (
                           <Star
