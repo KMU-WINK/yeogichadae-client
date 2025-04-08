@@ -33,7 +33,7 @@ const feeOptions = ['전체', '무료', '유료'];
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [category, setCategory] = useState<string[]>([]);
+  const [category, setCategory] = useState<string[]>(['전체']);
   const [feeOption, setFeeOption] = useState('전체');
   const [filteredEvents, setFilteredEvents] = useState(events);
 
@@ -84,7 +84,6 @@ export default function Home() {
     setFilteredEvents(result);
   }, [searchQuery, category, selectedDistricts, feeOption]);
 
-  // TODO: 스크롤 모바일 환경에서 좀 더 아래로 가게 하기
   const scrollToAllEvents = () => {
     allEventsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -269,41 +268,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA 섹션 */}
-      <motion.section
-        ref={allEventsRef}
-        className="bg-primary/5 py-12 md:py-16"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <motion.h2
-              className="mb-4 text-2xl font-bold md:text-3xl"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              나만의 모임을 만들어보세요
-            </motion.h2>
-            <motion.p
-              className="text-muted-foreground mb-8"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-            >
-              관심있는 행사를 찾고, 함께할 사람들을 모아 특별한 경험을 만들어보세요
-            </motion.p>
-          </div>
-        </div>
-      </motion.section>
-
       {/* 전체 행사 목록 */}
-      <section className="bg-gray-50 py-10 md:py-16">
+      <section
+        ref={allEventsRef}
+        className="scroll-mt-14 bg-gray-50 py-10 sm:scroll-mt-16 md:py-16"
+      >
         <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
           <motion.h2
             className="mb-4 text-2xl font-bold md:text-3xl"
