@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 
+import { cn } from '@/lib/utils';
+
 import { Star } from 'lucide-react';
 
 // 모임 데이터 (실제로는 API에서 가져올 것)
@@ -55,6 +57,7 @@ export default function ReviewsPage() {
   const [selectedReview, setSelectedReview] = useState<{
     content: string;
     rating: number;
+    targetId: number;
     reviewerId: number;
     reviewerName: string;
     date: string;
@@ -92,24 +95,23 @@ export default function ReviewsPage() {
           <CardDescription>함께 모임에 참여한 멤버들에 대한 후기를 작성해주세요</CardDescription>
         </CardHeader>
         <CardContent>
-          {/*TODO: 이미 평가한 사람 클릭해도 outline 주기*/}
           <div className="space-y-6">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {meetingData.members.map((member) => (
                 <Card
                   key={member.id}
-                  className={`cursor-pointer transition-all ${
-                    selectedMember === member.id
-                      ? 'ring-primary ring-2'
-                      : member.isReviewed
-                        ? 'opacity-50'
-                        : ''
-                  }`}
+                  className={cn(
+                    'cursor-pointer transition-all',
+                    selectedMember === member.id && 'ring-primary ring-2',
+                    selectedReview?.targetId === member.id && 'ring-2 ring-black',
+                    member.isReviewed && 'opacity-50',
+                  )}
                   onClick={() => {
                     if (member.isReviewed) {
                       // 이미 리뷰가 작성된 멤버인 경우 리뷰 내용 표시
                       const review = {
                         reviewerId: 1, // 현재 로그인한 사용자 ID
+                        targetId: 3,
                         reviewerName: '문화매니아', // 현재 로그인한 사용자 닉네임
                         rating: 5,
                         content: '정말 즐거운 시간이었습니다. 다음에도 함께하고 싶어요!',
