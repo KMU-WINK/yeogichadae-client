@@ -34,7 +34,7 @@ interface Event {
 
 // 날짜별 이벤트 데이터 (실제로는 API에서 가져올 것)
 const eventsByDate: Record<string, Event[]> = {
-  '2023-06-14': [
+  '2025-04-01': [
     {
       id: 2,
       title: '서울 국제 도서전',
@@ -45,7 +45,7 @@ const eventsByDate: Record<string, Event[]> = {
       mainImage: '/placeholder.svg?height=80&width=120',
     },
   ],
-  '2023-07-05': [
+  '2025-04-02': [
     {
       id: 3,
       title: '서울 국제 영화제',
@@ -55,8 +55,17 @@ const eventsByDate: Record<string, Event[]> = {
       isFree: false,
       mainImage: '/placeholder.svg?height=80&width=120',
     },
+    {
+      id: 9,
+      title: '서울 마라톤1',
+      category: '스포츠',
+      district: '중구',
+      place: '광화문광장',
+      isFree: false,
+      mainImage: '/placeholder.svg?height=80&width=120',
+    }
   ],
-  '2023-11-03': [
+  '2025-04-03': [
     {
       id: 4,
       title: '서울 빛초롱 축제',
@@ -66,8 +75,27 @@ const eventsByDate: Record<string, Event[]> = {
       isFree: true,
       mainImage: '/placeholder.svg?height=80&width=120',
     },
+    {
+      id: 10,
+      title: 'K-핸드메이드페어 2025',
+      category: '음악',
+      district: '마포구',
+      place: 'K-핸드메이드페어 2025',
+      isFree: false,
+      mainImage:
+          'https://culture.seoul.go.kr/cmmn/file/getImage.do?atchFileId=42afe00583eb4b0983dba37a04a41222&thumb=Y',
+    },
+    {
+      id: 11,
+      title: '서울 국제 미술전',
+      category: '전시',
+      district: '종로구',
+      place: '서울시립미술관',
+      isFree: false,
+      mainImage: '/placeholder.svg?height=80&width=120',
+    }
   ],
-  '2023-12-06': [
+  '2025-04-04': [
     {
       id: 5,
       title: '서울 디자인 페스티벌',
@@ -161,7 +189,9 @@ const districts = [
 // TODO: 캘린더 호버 및 각종 이벤트시 이상함.
 export default function CalendarPage() {
   const [date, setDate] = useState<Date | undefined>(new Date('2023-03-31'));
-  const [category, setCategory] = useState('전체');
+  // const [category, setCategory] = useState('전체');
+  const [categoriesSelected, setCategoriesSelected] = useState<string[]>(['전체']);
+
   const [feeOption, setFeeOption] = useState('전체');
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const formattedDate = date ? format(date, 'yyyy-MM-dd') : '';
@@ -179,12 +209,37 @@ export default function CalendarPage() {
     setSelectedDistricts(selectedDistricts.filter((d) => d !== district));
   };
 
+  // 카테고리 선택 함수
+  const toggleCategory = (cat: string) => {
+    if (cat === '전체') {
+      setCategoriesSelected(['전체']);
+    } else {
+      setCategoriesSelected((prev) => {
+        if (prev.includes(cat)) {
+          const filtered = prev.filter((c) => c !== cat);
+          return filtered.length === 0 ? ['전체'] : filtered;
+        } else {
+          const withoutAll = prev.filter((c) => c !== '전체');
+          return [...withoutAll, cat];
+        }
+      });
+    }
+  };
+
   // 이벤트 필터링 적용
   const applyFilters = () => {
     let events = formattedDate in eventsByDate ? eventsByDate[formattedDate] : [];
 
-    if (category !== '전체') {
-      events = events.filter((event) => event.category === category);
+    // if (category !== '전체') {
+    //   events = events.filter((event) => event.category === category);
+    // }
+    if (
+        categoriesSelected.length > 0 &&
+        !categoriesSelected.includes('전체')
+    ) {
+      events = events.filter((event) =>
+          categoriesSelected.includes(event.category)
+      );
     }
 
     if (selectedDistricts.length > 0) {
@@ -204,10 +259,17 @@ export default function CalendarPage() {
   }, [formattedDate]);
 
   // 이벤트가 있는 날짜에 표시할 함수
-  const hasEventDate = (day: Date) => {
+  // const hasEventDate = (day: Date) => {
+  //   const formatted = format(day, 'yyyy-MM-dd');
+  //   return formatted in eventsByDate;
+  // };
+
+  // 이벤트 개수 카운트
+  const getEventCountForDate = (day: Date): number => {
     const formatted = format(day, 'yyyy-MM-dd');
-    return formatted in eventsByDate;
+    return eventsByDate[formatted]?.length || 0;
   };
+
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -253,19 +315,35 @@ export default function CalendarPage() {
               <div>
                 <h3 className="mb-2 text-sm font-medium">카테고리</h3>
                 <div className="flex flex-wrap gap-2">
-                  {categories.map((cat) => (
-                    <Badge
-                      key={cat}
-                      className={`cursor-pointer px-2 py-1 text-xs transition-all duration-200 ${
-                        category === cat
-                          ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                          : 'bg-secondary text-foreground hover:bg-secondary/80'
-                      }`}
-                      onClick={() => setCategory(cat)}
-                    >
-                      {cat}
-                    </Badge>
-                  ))}
+                  {/*{categories.map((cat) => (*/}
+                  {/*  <Badge*/}
+                  {/*    key={cat}*/}
+                  {/*    className={`cursor-pointer px-2 py-1 text-xs transition-all duration-200 ${*/}
+                  {/*      category === cat*/}
+                  {/*        ? 'bg-primary text-primary-foreground hover:bg-primary/90'*/}
+                  {/*        : 'bg-secondary text-foreground hover:bg-secondary/80'*/}
+                  {/*    }`}*/}
+                  {/*    onClick={() => setCategory(cat)}*/}
+                  {/*  >*/}
+                  {/*    {cat}*/}
+                  {/*  </Badge>*/}
+                  {/*))}*/}
+                  {categories.map((cat) => {
+                    const isSelected = categoriesSelected.includes(cat);
+                    return (
+                        <Badge
+                            key={cat}
+                            onClick={() => toggleCategory(cat)}
+                            className={`cursor-pointer px-3 py-1.5 text-sm rounded-full ${
+                                isSelected
+                                    ? 'bg-blue-500 text-white'
+                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                        >
+                          {cat}
+                        </Badge>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -354,9 +432,20 @@ export default function CalendarPage() {
               className="mx-auto rounded-xl"
               fixedWeeks={true}
               ISOWeek={false}
+              // modifiers={{
+              //   hasEvent: (date) => hasEventDate(date),
+              // }}
               modifiers={{
-                hasEvent: (date) => hasEventDate(date),
+                event1: (date) => getEventCountForDate(date) === 1,
+                event2: (date) => getEventCountForDate(date) === 2,
+                event3plus: (date) => getEventCountForDate(date) >= 3,
               }}
+              modifiersClassNames={{
+                event1: 'event-count-1',
+                event2: 'event-count-2',
+                event3plus: 'event-count-3plus',
+              }}
+
               modifiersStyles={{
                 hasEvent: {
                   fontWeight: 'bold',
@@ -365,8 +454,9 @@ export default function CalendarPage() {
                 },
                 today: {
                   backgroundColor: 'transparent',
-                  color: 'hsl(var(--primary))',
-                  fontWeight: 'bold',
+                  // color: 'hsl(var(--primary))',
+                  color: 'red',
+                  fontWeight: 'bolder',
                   border: '1px solid hsl(var(--primary))',
                 },
                 selected: {
@@ -374,6 +464,9 @@ export default function CalendarPage() {
                   color: 'white',
                   fontWeight: 'bold',
                 },
+                event1: { backgroundColor: '#dbeafe', color: '#1e40af' },       // light blue
+                event2: { backgroundColor: '#93c5fd', color: '#1e3a8a' },       // medium blue
+                event3plus: { backgroundColor: '#3b82f6', color: 'white' }
               }}
               styles={
                 {
