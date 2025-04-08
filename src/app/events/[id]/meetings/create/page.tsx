@@ -5,6 +5,7 @@ import { use, useState } from 'react';
 
 import Link from 'next/link';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
@@ -26,7 +27,9 @@ import { cn } from '@/lib/utils';
 
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { ArrowLeft, CalendarIcon, Clock } from 'lucide-react';
+import { ArrowLeft, CalendarIcon, Clock, Loader2 } from 'lucide-react';
+
+const genderOptions = ['전체', '남성', '여성'];
 
 // 행사 데이터 (실제로는 API에서 가져올 것)
 const eventData = {
@@ -46,6 +49,7 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
   const [ageRange, setAgeRange] = useState([20, 40]);
   const [useGenderFilter, setUseGenderFilter] = useState(false);
   const [gender, setGender] = useState<string | null>(null);
+  const [genderFilter, setGenderFilter] = useState<string | null>('전체');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,18 +60,8 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
   return (
     <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
       <div className="mx-auto max-w-2xl">
-        <Link
-          href={`/events/${params.id}`}
-          className="text-primary mb-6 inline-flex items-center hover:underline"
-        >
-          <ArrowLeft className="mr-1 h-4 w-4" />
-          행사로 돌아가기
-        </Link>
-
         <h1 className="mb-2 text-3xl font-bold">모임 만들기</h1>
-        <p className="text-muted-foreground mb-6">
-          {eventData.title} 행사에 대한 모임을 만들어보세요.
-        </p>
+        <p className="text-muted-foreground mb-6">{eventData.title}</p>
 
         <div className="sinc-card">
           <div className="p-6">
@@ -80,7 +74,7 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
                   <Input
                     id="title"
                     placeholder="모임 제목을 입력하세요"
-                    className="sinc-input"
+                    className="sinc-input mt-1"
                     required
                   />
                 </div>
@@ -92,7 +86,7 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
                   <Textarea
                     id="content"
                     placeholder="모임에 대한 설명을 입력하세요"
-                    className="sinc-input min-h-[120px]"
+                    className="sinc-input mt-1 min-h-[120px]"
                     required
                   />
                 </div>
@@ -105,7 +99,7 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
                         <Button
                           variant="outline"
                           className={cn(
-                            'w-full justify-start rounded-xl text-left font-normal',
+                            'mt-1 w-full justify-start rounded-xl text-left font-normal',
                             !date && 'text-muted-foreground',
                           )}
                         >
@@ -119,11 +113,6 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
                           selected={date}
                           onSelect={setDate}
                           locale={ko}
-                          disabled={(date) => {
-                            const start = new Date(eventData.startDate);
-                            const end = new Date(eventData.endDate);
-                            return date < start || date > end;
-                          }}
                           className="rounded-xl"
                         />
                       </PopoverContent>
@@ -132,20 +121,10 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
 
                   <div className="space-y-2.5">
                     <Label className="text-base">모임 시간</Label>
-                    <div className="flex items-center gap-2">
-                      <Select value={time} onValueChange={setTime}>
-                        <SelectTrigger className="w-full rounded-xl">
-                          <SelectValue placeholder="시간 선택" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Array.from({ length: 24 }).map((_, i) => (
-                            <SelectItem key={i} value={`${i.toString().padStart(2, '0')}:00`}>
-                              {i.toString().padStart(2, '0')}:00
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <Clock className="text-primary h-5 w-5" />
+                    <div className="mt-1 flex items-center gap-2">
+                      <Input type="number" value={9} />
+                      <p>:</p>
+                      <Input type="number" value={30} />
                     </div>
                   </div>
                 </div>
@@ -155,7 +134,7 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
                     최대 인원
                   </Label>
                   <Select defaultValue="4">
-                    <SelectTrigger className="rounded-xl">
+                    <SelectTrigger className="mt-1 rounded-xl">
                       <SelectValue placeholder="인원 선택" />
                     </SelectTrigger>
                     <SelectContent>
@@ -172,7 +151,7 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-base font-medium">연령대 필터</h3>
-                      <p className="text-muted-foreground text-sm">
+                      <p className="text-muted-foreground mt-1 text-xs sm:mt-0 sm:text-sm">
                         특정 연령대만 참여 가능하도록 설정
                       </p>
                     </div>
@@ -207,7 +186,7 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
                   <div className="flex items-center justify-between">
                     <div>
                       <h3 className="text-base font-medium">성별 필터</h3>
-                      <p className="text-muted-foreground text-sm">
+                      <p className="text-muted-foreground mt-1 text-xs sm:mt-0 sm:text-sm">
                         특정 성별만 참여 가능하도록 설정
                       </p>
                     </div>
@@ -215,29 +194,27 @@ export default function CreateMeetingPage(props: { params: Promise<{ id: string 
                   </div>
 
                   {useGenderFilter && (
-                    <RadioGroup value={gender || ''} onValueChange={setGender} className="pt-2">
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="male" id="male" />
-                        <Label htmlFor="male">남성만</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="female" id="female" />
-                        <Label htmlFor="female">여성만</Label>
-                      </div>
-                    </RadioGroup>
+                    <div className="flex flex-wrap gap-2">
+                      {genderOptions.map((option) => (
+                        <Badge
+                          key={option}
+                          className={`cursor-pointer px-2 py-1 text-xs transition-all duration-200 ${
+                            genderFilter === option
+                              ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                              : 'bg-secondary text-foreground hover:bg-secondary/80'
+                          }`}
+                          onClick={() => setGenderFilter(option)}
+                        >
+                          {option}
+                        </Badge>
+                      ))}
+                    </div>
                   )}
                 </div>
               </div>
 
-              <div className="flex flex-col gap-3 pt-4 sm:flex-row">
-                <Link href={`/events/${params.id}`}>
-                  <Button variant="outline" type="button" className="rounded-xl">
-                    취소
-                  </Button>
-                </Link>
-                <Button type="submit" className="rounded-xl sm:ml-auto">
-                  모임 만들기
-                </Button>
+              <div className="flex justify-end">
+                <Button>모임 만들기</Button>
               </div>
             </form>
           </div>

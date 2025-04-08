@@ -1,0 +1,19 @@
+{
+  "theme_color": "#1976fb",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "sizes": "1024x1024",
+      "src": "/icon/icon.png",
+      "type": "image/png"
+    }
+  ],
+  "orientation": "any",
+  "display": "standalone",
+  "dir": "auto",
+  "lang": "ko-KR",
+  "name": "Seoul IN Culture",
+  "short_name": "Seoul IN Culture",
+  "start_url": "/",
+  "scope": "."
+}

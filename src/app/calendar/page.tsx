@@ -34,17 +34,6 @@ interface Event {
 
 // 날짜별 이벤트 데이터 (실제로는 API에서 가져올 것)
 const eventsByDate: Record<string, Event[]> = {
-  '2023-05-27': [
-    {
-      id: 1,
-      title: '서울 재즈 페스티벌 2023',
-      category: '음악',
-      district: '마포구',
-      place: '난지한강공원',
-      isFree: false,
-      mainImage: '/placeholder.svg?height=80&width=120',
-    },
-  ],
   '2023-06-14': [
     {
       id: 2,
@@ -102,6 +91,16 @@ const eventsByDate: Record<string, Event[]> = {
   ],
   '2023-03-31': [
     {
+      id: 1,
+      title: 'K-핸드메이드페어 2025',
+      category: '음악',
+      district: '마포구',
+      place: 'K-핸드메이드페어 2025',
+      isFree: false,
+      mainImage:
+        'https://culture.seoul.go.kr/cmmn/file/getImage.do?atchFileId=42afe00583eb4b0983dba37a04a41222&thumb=Y',
+    },
+    {
       id: 7,
       title: '서울 벚꽃 축제',
       category: '축제',
@@ -157,6 +156,9 @@ const districts = [
   '중랑구',
 ];
 
+// TODO: 필터 카테고리 여러개 선택 되도록
+// TODO: 캘린더에 행사 있으면 표시 (개수별 색 알림)
+// TODO: 캘린더 호버 및 각종 이벤트시 이상함.
 export default function CalendarPage() {
   const [date, setDate] = useState<Date | undefined>(new Date('2023-03-31'));
   const [category, setCategory] = useState('전체');
@@ -342,8 +344,8 @@ export default function CalendarPage() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <div className="sinc-card p-6">
-            <h2 className="mb-4 text-xl font-medium">날짜 선택</h2>
+          <div className="sinc-card flex flex-col items-center p-6">
+            <h2 className="mb-4 self-start text-xl font-medium">날짜 선택</h2>
             <Calendar
               mode="single"
               selected={date}
@@ -420,7 +422,7 @@ export default function CalendarPage() {
                     <motion.div
                       key={event.id}
                       variants={itemVariants}
-                      className="hover:bg-secondary/50 flex cursor-pointer gap-4 rounded-xl p-4 transition-colors"
+                      className="hover:bg-secondary/50 flex cursor-pointer gap-4 rounded-xl px-2 py-4 transition-colors"
                     >
                       <div className="relative h-20 w-32 shrink-0 overflow-hidden rounded-lg">
                         <Image
@@ -433,7 +435,7 @@ export default function CalendarPage() {
                       </div>
                       <div className="flex-1">
                         <div className="mb-1.5 flex items-center gap-2">
-                          <Badge className="sinc-badge text-foreground border bg-white">
+                          <Badge className="sinc-badge text-foreground border bg-white outline outline-neutral-200">
                             {event.category}
                           </Badge>
                           <Badge
@@ -442,12 +444,10 @@ export default function CalendarPage() {
                             {event.isFree ? '무료' : '유료'}
                           </Badge>
                         </div>
-                        <h3 className="mb-1 text-lg font-medium">{event.title}</h3>
+                        <h3 className="mb-1 line-clamp-1 text-lg font-medium">{event.title}</h3>
                         <div className="text-muted-foreground flex items-center text-sm">
                           <MapPin className="mr-1 h-4 w-4" />
-                          <span>
-                            {event.district} {event.place}
-                          </span>
+                          <span className="line-clamp-1">{event.place}</span>
                         </div>
                       </div>
                     </motion.div>

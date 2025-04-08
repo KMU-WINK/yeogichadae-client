@@ -87,10 +87,10 @@ export default function ReviewsPage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl space-y-8">
+    <div className="container mx-auto max-w-2xl space-y-4 px-4 py-10 sm:px-6 md:px-8">
       <div>
         <h1 className="text-3xl font-bold">모임 후기 작성</h1>
-        <p className="text-muted-foreground mt-1">
+        <p className="text-muted-foreground mt-1 text-sm">
           {meetingData.eventTitle} - {meetingData.title}
         </p>
       </div>
@@ -101,6 +101,7 @@ export default function ReviewsPage() {
           <CardDescription>함께 모임에 참여한 멤버들에 대한 후기를 작성해주세요</CardDescription>
         </CardHeader>
         <CardContent>
+          {/*TODO: 이미 평가한 사람 클릭해도 outline 주기*/}
           <div className="space-y-6">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {meetingData.members.map((member) => (
@@ -123,6 +124,7 @@ export default function ReviewsPage() {
                         content: '정말 즐거운 시간이었습니다. 다음에도 함께하고 싶어요!',
                         date: '2023-04-20',
                       };
+                      setSelectedMember(null);
                       setSelectedReview(review);
                     } else if (!member.isReviewed) {
                       setSelectedMember(member.id);
@@ -174,7 +176,7 @@ export default function ReviewsPage() {
                         key={star}
                         type="button"
                         onClick={() => setRating(star)}
-                        className="focus:outline-hidden"
+                        className="cursor-pointer focus:outline-hidden"
                       >
                         <Star
                           className={`h-8 w-8 ${
@@ -198,14 +200,11 @@ export default function ReviewsPage() {
                     placeholder="후기를 작성해주세요"
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    className="min-h-[120px]"
+                    className="min-h-[100px] resize-none"
                   />
                 </div>
 
                 <div className="flex justify-end gap-2">
-                  <Button variant="outline" onClick={() => setSelectedMember(null)}>
-                    취소
-                  </Button>
                   <Button
                     onClick={handleSubmit}
                     disabled={rating === 0 || comment.trim() === '' || isSubmitting}
@@ -243,11 +242,6 @@ export default function ReviewsPage() {
             )}
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Link href={`/my-meetings`}>
-            <Button variant="outline">내 모임 목록으로</Button>
-          </Link>
-        </CardFooter>
       </Card>
     </div>
   );

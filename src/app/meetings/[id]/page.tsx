@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 
 import { currentUserId, meetingParticipants, meetings } from '@/__mock__';
 import { motion } from 'framer-motion';
-import { Calendar, Info, MapPin, MessageSquare, Share2, Users } from 'lucide-react';
+import { Calendar, Info, MapPin, MessageSquare, Share2, Star, Users } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function MeetingDetailPage(props: { params: Promise<{ id: string }> }) {
@@ -29,7 +29,8 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
   const isParticipating = participants.some((p) => p.user.id === currentUserId);
 
   // 현재 사용자가 호스트인지 확인
-  const isHost = host?.user.id === currentUserId;
+  // const isHost = host?.user.id === currentUserId;
+  const isHost = true;
 
   // 모임이 가득 찼는지 확인
   const isFull = participants.length >= meetingData.maxPeople;
@@ -126,18 +127,15 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
         </div>
         <div className="mt-2 flex w-full flex-wrap justify-end gap-2 md:mt-0 md:w-auto">
           <Button
-            variant="ghost"
-            className="hover:bg-primary/5 hover:text-primary flex items-center gap-2 rounded-xl transition-all duration-200"
+            variant="outline"
+            className="flex items-center gap-2 rounded-xl"
             onClick={handleShare}
           >
             <Share2 className="h-4 w-4" />
             <span>공유하기</span>
           </Button>
           <Link href={`/events/${meetingData.event.id}`}>
-            <Button
-              variant="ghost"
-              className="hover:bg-primary/5 hover:text-primary flex items-center gap-2 rounded-xl transition-all duration-200"
-            >
+            <Button variant="outline" className="flex items-center gap-2 rounded-xl">
               <Info className="h-4 w-4" />
               <span>행사 정보</span>
             </Button>
@@ -167,13 +165,13 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
                   src={meetingData.event.image || '/placeholder.svg'}
                   alt={meetingData.event.title}
                   fill
-                  className="h-full w-full object-cover"
+                  className="object-contain"
                 />
               </div>
 
               <h3 className="mb-4 text-lg font-medium">{meetingData.event.title}</h3>
 
-              <div className="mb-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+              <div className="mb-6 grid grid-cols-1 gap-5 text-sm md:grid-cols-2">
                 <div className="flex items-start gap-3">
                   <Calendar className="text-primary mt-0.5 h-5 w-5 shrink-0" />
                   <div>
@@ -225,24 +223,54 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
               )}
             </div>
           </div>
+        </motion.div>
 
-          <motion.div
-            className="sinc-card"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
+        <motion.div
+          className="space-y-6"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          {!isHost && (
+            <div className="sinc-card">
+              <div className="p-6">
+                <h2 className="mb-4 text-xl font-medium">
+                  {isParticipating ? '모임 나가기' : '모임 참여하기'}
+                </h2>
+                {isParticipating ? (
+                  <>
+                    <Button
+                      variant="destructive"
+                      className="w-full rounded-xl shadow-md transition-all duration-300 hover:shadow-lg"
+                      onClick={handleLeaveGroup}
+                    >
+                      모임 나가기
+                    </Button>
+                  </>
+                ) : isFull ? (
+                  <Button disabled className="w-full rounded-xl shadow-md">
+                    모집이 마감되었습니다
+                  </Button>
+                ) : (
+                  <Button className="w-full rounded-xl shadow-md transition-all duration-300 hover:shadow-lg">
+                    모임 참여하기
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+          <div className="sinc-card">
             <div className="p-6">
-              <h2 className="mb-4 text-xl font-medium">참여 멤버</h2>
-              <p className="text-muted-foreground mb-6">
-                현재 {participants.length}명이 참여 중입니다
+              <h2 className="mb-1 text-xl font-medium">참여 멤버</h2>
+              <p className="text-muted-foreground mb-3 text-sm">
+                현재 {participants.length}명이 참여 중입니다.
               </p>
 
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="flex flex-col gap-1">
                 {participants.map((participant) => (
                   <motion.div key={participant.id} variants={itemVariants}>
                     <Link href={`/profile/${participant.user.id}`}>
-                      <div className="hover:bg-secondary/50 flex items-center gap-3 rounded-xl p-3 transition-colors">
+                      <div className="hover:bg-secondary/50 flex items-center gap-3 rounded-xl p-3 px-1 transition-colors sm:px-3">
                         <Avatar className="border-primary/10 h-10 w-10 border-2">
                           <AvatarImage
                             src={participant.user.avatar}
@@ -261,7 +289,6 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
                               </Badge>
                             )}
                           </div>
-                          <div className="text-muted-foreground text-sm">매너 점수: 4.8</div>
                         </div>
                       </div>
                     </Link>
@@ -269,87 +296,17 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
                 ))}
               </div>
             </div>
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          className="space-y-6"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          <div className="sinc-card">
-            <div className="p-6">
-              <h2 className="mb-4 text-xl font-medium">주최자 정보</h2>
-              {host && (
-                <Link href={`/profile/${host.user.id}`}>
-                  <div className="hover:bg-secondary/50 mb-4 flex items-center gap-3 rounded-xl p-3 transition-colors">
-                    <Avatar className="border-primary/10 h-12 w-12 border-2">
-                      <AvatarImage src={host.user.avatar} alt={host.user.nickname} />
-                      <AvatarFallback className="bg-primary/10 text-primary">
-                        {host.user.nickname.slice(0, 2)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="font-medium">{host.user.nickname}</div>
-                      <div className="text-muted-foreground text-sm">매너 점수: 4.8</div>
-                    </div>
-                  </div>
-                </Link>
-              )}
-
-              <Link href={`/profile/${host?.user.id}`}>
-                <Button
-                  variant="outline"
-                  className="w-full rounded-xl shadow-xs transition-all duration-300 hover:shadow-sm"
-                >
-                  프로필 보기
-                </Button>
-              </Link>
-            </div>
           </div>
 
-          <div className="sinc-card">
-            <div className="p-6">
-              <h2 className="mb-4 text-xl font-medium">모임 참여하기</h2>
-              {isParticipating ? (
-                <>
-                  <div className="bg-secondary/50 mb-4 rounded-xl py-4 text-center">
-                    이미 참여 중인 모임입니다
-                  </div>
-                  <Button
-                    variant="destructive"
-                    className="w-full rounded-xl shadow-md transition-all duration-300 hover:shadow-lg"
-                    onClick={handleLeaveGroup}
-                  >
-                    모임 나가기
-                  </Button>
-                </>
-              ) : isFull ? (
-                <div className="bg-secondary/50 rounded-xl py-6 text-center">
-                  모집이 마감되었습니다
-                </div>
-              ) : (
-                <>
-                  <div className="text-muted-foreground mb-4">
-                    모임에 참여하면 채팅방에 입장할 수 있습니다
-                  </div>
-                  <Button className="w-full rounded-xl shadow-md transition-all duration-300 hover:shadow-lg">
-                    모임 참여하기
-                  </Button>
-                </>
-              )}
-            </div>
-          </div>
-
+          {/*TODO: 모임장 위임 및 모임 삭제 및 모임 완료 모달*/}
           {isHost && (
             <div className="sinc-card">
               <div className="p-6">
                 <h2 className="mb-4 text-xl font-medium">모임 관리</h2>
                 <div className="space-y-3">
                   <Button
-                    variant="outline"
-                    className="w-full rounded-xl border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                    variant="default"
+                    className="w-full rounded-xl"
                     onClick={handleCompleteGroup}
                   >
                     모임 완료하기

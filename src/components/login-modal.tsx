@@ -4,6 +4,7 @@ import type React from 'react';
 import { useState } from 'react';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -13,6 +14,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+
+import KakaoLoginButton from '@/public/icon/kakao-login.png';
 
 import { motion } from 'framer-motion';
 
@@ -37,36 +40,31 @@ export function LoginModal({ children }: LoginModalProps) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="overflow-hidden rounded-2xl p-0 sm:max-w-md">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="bg-primary/5 p-6">
-            <DialogHeader>
-              <DialogTitle className="text-center text-2xl font-bold">Seoul IN Culture</DialogTitle>
-            </DialogHeader>
-            <p className="text-muted-foreground mt-2 text-center">
-              서울의 문화행사를 함께 즐길 친구를 찾아보세요
-            </p>
-          </div>
-
-          <div className="p-6">
+          <div className="p-6 py-12">
             <div className="space-y-4">
               <p className="text-center font-medium">간편하게 로그인하고 서비스를 이용해보세요</p>
 
-              <Button
-                className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#FEE500] text-black shadow-md transition-all duration-300 hover:bg-[#FEE500]/90 hover:shadow-lg"
-                onClick={handleKakaoLogin}
-              >
+              <Link href="/" className="flex items-center justify-center">
                 <Image
-                  src="/placeholder.svg?height=24&width=24"
+                  src={KakaoLoginButton}
                   alt="카카오 로고"
-                  width={24}
-                  height={24}
-                  className="rounded-full"
+                  width={300}
+                  height={45}
+                  className="w-[270px]"
                 />
-                <span>카카오로 시작하기</span>
-              </Button>
+              </Link>
+
+              {/*<Button*/}
+              {/*  className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#FEE500] text-black shadow-md transition-all duration-300 hover:bg-[#FEE500]/90 hover:shadow-lg"*/}
+              {/*  onClick={handleKakaoLogin}*/}
+              {/*>*/}
+              {/*  */}
+              {/*  <span>카카오로 시작하기</span>*/}
+              {/*</Button>*/}
 
               <p className="text-muted-foreground text-center text-xs">
                 로그인 시{' '}

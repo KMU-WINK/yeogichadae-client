@@ -4,7 +4,8 @@ export const events: Event[] = [
   {
     id: 'event1',
     category: EventCategory.콘서트,
-    image: '/placeholder.svg?height=400&width=800',
+    image:
+      'https://culture.seoul.go.kr/cmmn/file/getImage.do?atchFileId=42afe00583eb4b0983dba37a04a41222&thumb=Y',
     title: '서울 재즈 페스티벌 2023',
     startDate: '2023-05-27T10:00:00Z',
     endDate: '2023-05-29T22:00:00Z',

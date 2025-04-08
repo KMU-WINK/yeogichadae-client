@@ -71,11 +71,11 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
       >
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <Badge className="sinc-badge text-foreground border bg-white">
+            <Badge className="sinc-badge text-foreground border bg-white text-xs outline outline-neutral-200 sm:text-sm">
               {eventData.category}
             </Badge>
             <Badge
-              className={`sinc-badge ${eventData.free ? 'bg-emerald-100 text-emerald-700' : 'bg-primary/10 text-primary'}`}
+              className={`sinc-badge text-xs sm:text-sm ${eventData.free ? 'bg-emerald-100 text-emerald-700' : 'bg-primary/10 text-primary'}`}
             >
               {eventData.free ? '무료' : '유료'}
             </Badge>
@@ -114,7 +114,7 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
           src={eventData.image || '/placeholder.svg'}
           alt={eventData.title}
           fill
-          className="object-cover"
+          className="object-contain"
         />
       </motion.div>
 
@@ -129,7 +129,7 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
             <h2 className="mb-4 text-xl font-medium">행사 정보</h2>
             <p className="mb-6 text-base leading-relaxed">{eventData.host}</p>
 
-            <div className="mb-8 grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div className="mb-8 grid grid-cols-1 gap-5 text-sm sm:grid-cols-2">
               <div className="flex items-start gap-3">
                 <Calendar className="text-primary mt-0.5 h-5 w-5 shrink-0" />
                 <div>
@@ -209,7 +209,6 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
         >
           <div className="sinc-card p-6">
             <h2 className="mb-4 text-xl font-medium">모임</h2>
-            <p className="text-muted-foreground mb-6">이 행사에 함께 갈 사람들을 찾아보세요</p>
             <div className="flex flex-col space-y-2">
               <Link href={`/events/${eventData.id}/meetings/create`}>
                 <Button className="bg-primary hover:bg-primary/90 flex w-full items-center justify-center gap-2 rounded-xl text-white shadow-xs transition-all duration-200 hover:shadow-sm">
@@ -219,8 +218,8 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
               </Link>
               <Link href={`/events/${eventData.id}/meetings`}>
                 <Button
-                  variant="ghost"
-                  className="hover:bg-primary/5 hover:text-primary flex w-full items-center justify-center gap-2 rounded-xl transition-all duration-200"
+                  variant="outline"
+                  className="flex w-full items-center justify-center gap-2 rounded-xl transition-all duration-200"
                 >
                   <ArrowRight className="h-4 w-4" />
                   <span>모든 모임 보기</span>

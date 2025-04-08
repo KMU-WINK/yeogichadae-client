@@ -134,13 +134,13 @@ export default function MyMeetingsPage() {
           <TabsList className="mb-8 grid h-auto w-full max-w-md grid-cols-2 rounded-xl p-1">
             <TabsTrigger
               value="active"
-              className="data-[state=active]:bg-primary rounded-lg py-3 data-[state=active]:text-white"
+              className="data-[state=active]:bg-primary cursor-pointer rounded-lg py-3 data-[state=active]:text-white"
             >
               활성 모임
             </TabsTrigger>
             <TabsTrigger
               value="past"
-              className="data-[state=active]:bg-primary rounded-lg py-3 data-[state=active]:text-white"
+              className="data-[state=active]:bg-primary cursor-pointer rounded-lg py-3 data-[state=active]:text-white"
             >
               지난 모임
             </TabsTrigger>
@@ -202,15 +202,15 @@ export default function MyMeetingsPage() {
                           <div className="flex flex-wrap gap-3">
                             <Button
                               variant="ghost"
-                              className="hover:bg-primary/5 hover:text-primary flex items-center gap-2 rounded-xl transition-all duration-200"
+                              className="bg-primary hover:bg-primary/90 flex items-center gap-2 rounded-xl text-white hover:text-white"
                               onClick={(e) => handleChatClick(e, meeting.id)}
                             >
                               <MessageSquare className="h-4 w-4" />
                               <span>채팅방</span>
                             </Button>
                             <Button
-                              variant="ghost"
-                              className="hover:bg-primary/5 hover:text-primary flex items-center gap-2 rounded-xl transition-all duration-200"
+                              variant="outline"
+                              className="flex items-center gap-2 rounded-xl"
                               onClick={(e) => handleShare(e, meeting.id)}
                             >
                               <Share2 className="h-4 w-4" />
@@ -292,8 +292,8 @@ export default function MyMeetingsPage() {
                           </div>
                           <div className="flex flex-wrap gap-3">
                             <Button
-                              variant="ghost"
-                              className="hover:bg-primary/5 hover:text-primary flex items-center gap-2 rounded-xl transition-all duration-200"
+                              variant="outline"
+                              className="flex w-full items-center gap-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 sm:w-fit"
                               onClick={(e) => handleReviewClick(e, meeting.id)}
                             >
                               <Calendar className="h-4 w-4" />
