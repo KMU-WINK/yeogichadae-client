@@ -17,6 +17,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+
 import { events } from '@/__mock__';
 import { District, EventCategory } from '@/__mock__/types';
 import { motion } from 'framer-motion';
@@ -40,7 +42,8 @@ export default function Home() {
   const allEventsRef = useRef<HTMLDivElement>(null);
 
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
-
+  const isMobile = useMediaQuery('(max-width: 639px)'); // Tailwind 기준 sm 이하
+  const displayEvents = isMobile ? events.slice(0, 4) : events.slice(0, 6);
   // 지역구 추가 함수
   const addDistrict = (district: string) => {
     if (!selectedDistricts.includes(district)) {
@@ -204,8 +207,7 @@ export default function Home() {
             initial="hidden"
             animate="visible"
           >
-            {/* TODO: 모바일은 3개만 하기 */}
-            {events.slice(0, 6).map((event) => (
+            {displayEvents.map((event) => (
               <motion.div key={event.id} variants={itemVariants}>
                 <Link href={`/events/${event.id}`} className="group">
                   <div className="sinc-card flex h-full flex-col overflow-hidden transition-all duration-300 hover:shadow-lg">
