@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -179,6 +180,7 @@ export default function ChatsPage() {
 
   const router = useRouter();
   const [chatId, setChatId] = useQueryState('id', parseAsInteger);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
 
   // 검색 필터링
   const filteredChats = activeChats.filter(
@@ -198,6 +200,12 @@ export default function ChatsPage() {
 
   // 선택된 채팅방 정보
   const selectedChatData = activeChats.find((chat) => chat.id === chatId);
+
+  useEffect(() => {
+    if (bottomRef.current) {
+      bottomRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [chatId, selectedChatData]);
 
   // 메시지 전송 핸들러
   const handleSendMessage = () => {
@@ -348,7 +356,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -364,7 +372,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="음악사랑" />
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="음악사랑"/>
                         <AvatarFallback className="bg-primary/10 text-primary">음악</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -380,7 +388,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -417,7 +425,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -436,7 +444,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -455,7 +463,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -474,7 +482,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -493,7 +501,7 @@ export default function ChatsPage() {
                   <div className="flex justify-start">
                     <div className="flex max-w-[80%]">
                       <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
+                        <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아"/>
                         <AvatarFallback className="bg-primary/10 text-primary">재즈</AvatarFallback>
                       </Avatar>
                       <div className="space-y-1">
@@ -508,6 +516,7 @@ export default function ChatsPage() {
                       </div>
                     </div>
                   </div>
+                  <div ref={bottomRef}/>
                 </div>
 
                 <div className="border-t p-3">
