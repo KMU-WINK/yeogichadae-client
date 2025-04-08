@@ -63,7 +63,7 @@ const eventsByDate: Record<string, Event[]> = {
       place: '광화문광장',
       isFree: false,
       mainImage: '/placeholder.svg?height=80&width=120',
-    }
+    },
   ],
   '2025-04-03': [
     {
@@ -83,7 +83,7 @@ const eventsByDate: Record<string, Event[]> = {
       place: 'K-핸드메이드페어 2025',
       isFree: false,
       mainImage:
-          'https://culture.seoul.go.kr/cmmn/file/getImage.do?atchFileId=42afe00583eb4b0983dba37a04a41222&thumb=Y',
+        'https://culture.seoul.go.kr/cmmn/file/getImage.do?atchFileId=42afe00583eb4b0983dba37a04a41222&thumb=Y',
     },
     {
       id: 11,
@@ -93,7 +93,7 @@ const eventsByDate: Record<string, Event[]> = {
       place: '서울시립미술관',
       isFree: false,
       mainImage: '/placeholder.svg?height=80&width=120',
-    }
+    },
   ],
   '2025-04-04': [
     {
@@ -189,13 +189,13 @@ const districts = [
 // TODO: 캘린더 호버 및 각종 이벤트시 이상함.
 export default function CalendarPage() {
   const [date, setDate] = useState<Date | undefined>(new Date('2023-03-31'));
-  // const [category, setCategory] = useState('전체');
   const [categoriesSelected, setCategoriesSelected] = useState<string[]>(['전체']);
 
   const [feeOption, setFeeOption] = useState('전체');
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
   const formattedDate = date ? format(date, 'yyyy-MM-dd') : '';
   const [selectedDistricts, setSelectedDistricts] = useState<string[]>([]);
+  const [isFilterOpen, setFilterOpen] = useState(false);
 
   // 지역구 추가 함수
   const addDistrict = (district: string) => {
@@ -233,13 +233,8 @@ export default function CalendarPage() {
     // if (category !== '전체') {
     //   events = events.filter((event) => event.category === category);
     // }
-    if (
-        categoriesSelected.length > 0 &&
-        !categoriesSelected.includes('전체')
-    ) {
-      events = events.filter((event) =>
-          categoriesSelected.includes(event.category)
-      );
+    if (categoriesSelected.length > 0 && !categoriesSelected.includes('전체')) {
+      events = events.filter((event) => categoriesSelected.includes(event.category));
     }
 
     if (selectedDistricts.length > 0) {
@@ -269,7 +264,6 @@ export default function CalendarPage() {
     const formatted = format(day, 'yyyy-MM-dd');
     return eventsByDate[formatted]?.length || 0;
   };
-
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -303,7 +297,7 @@ export default function CalendarPage() {
       >
         <h1 className="text-3xl font-bold">행사 캘린더</h1>
 
-        <Popover>
+        <Popover open={isFilterOpen} onOpenChange={setFilterOpen}>
           <PopoverTrigger asChild>
             <Button variant="outline" className="flex items-center gap-2 rounded-xl">
               <Filter className="h-4 w-4" />
@@ -315,33 +309,20 @@ export default function CalendarPage() {
               <div>
                 <h3 className="mb-2 text-sm font-medium">카테고리</h3>
                 <div className="flex flex-wrap gap-2">
-                  {/*{categories.map((cat) => (*/}
-                  {/*  <Badge*/}
-                  {/*    key={cat}*/}
-                  {/*    className={`cursor-pointer px-2 py-1 text-xs transition-all duration-200 ${*/}
-                  {/*      category === cat*/}
-                  {/*        ? 'bg-primary text-primary-foreground hover:bg-primary/90'*/}
-                  {/*        : 'bg-secondary text-foreground hover:bg-secondary/80'*/}
-                  {/*    }`}*/}
-                  {/*    onClick={() => setCategory(cat)}*/}
-                  {/*  >*/}
-                  {/*    {cat}*/}
-                  {/*  </Badge>*/}
-                  {/*))}*/}
                   {categories.map((cat) => {
                     const isSelected = categoriesSelected.includes(cat);
                     return (
-                        <Badge
-                            key={cat}
-                            onClick={() => toggleCategory(cat)}
-                            className={`cursor-pointer px-3 py-1.5 text-sm rounded-full ${
-                                isSelected
-                                    ? 'bg-blue-500 text-white'
-                                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                            }`}
-                        >
-                          {cat}
-                        </Badge>
+                      <Badge
+                        key={cat}
+                        onClick={() => toggleCategory(cat)}
+                        className={`cursor-pointer rounded-full px-3 py-1.5 text-sm ${
+                          isSelected
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        {cat}
+                      </Badge>
                     );
                   })}
                 </div>
@@ -406,6 +387,7 @@ export default function CalendarPage() {
                 className="mt-2 w-full"
                 onClick={() => {
                   applyFilters();
+                  setFilterOpen(false);
                 }}
               >
                 필터 적용
@@ -432,59 +414,16 @@ export default function CalendarPage() {
               className="mx-auto rounded-xl"
               fixedWeeks={true}
               ISOWeek={false}
-              // modifiers={{
-              //   hasEvent: (date) => hasEventDate(date),
-              // }}
               modifiers={{
                 event1: (date) => getEventCountForDate(date) === 1,
                 event2: (date) => getEventCountForDate(date) === 2,
                 event3plus: (date) => getEventCountForDate(date) >= 3,
               }}
-              modifiersClassNames={{
-                event1: 'event-count-1',
-                event2: 'event-count-2',
-                event3plus: 'event-count-3plus',
-              }}
-
               modifiersStyles={{
-                hasEvent: {
-                  fontWeight: 'bold',
-                  backgroundColor: 'hsl(var(--primary) / 0.1)',
-                  color: 'hsl(var(--primary))',
-                },
-                today: {
-                  backgroundColor: 'transparent',
-                  // color: 'hsl(var(--primary))',
-                  color: 'red',
-                  fontWeight: 'bolder',
-                  border: '1px solid hsl(var(--primary))',
-                },
-                selected: {
-                  backgroundColor: 'hsl(var(--primary))',
-                  color: 'white',
-                  fontWeight: 'bold',
-                },
-                event1: { backgroundColor: '#dbeafe', color: '#1e40af' },       // light blue
-                event2: { backgroundColor: '#93c5fd', color: '#1e3a8a' },       // medium blue
-                event3plus: { backgroundColor: '#3b82f6', color: 'white' }
+                event1: { backgroundColor: 'rgba(196,20,255,0.2)', color: 'black' }, // light blue
+                event2: { backgroundColor: 'rgba(196,20,255,0.45)', color: 'black' }, // medium blue
+                event3plus: { backgroundColor: 'rgba(196,20,255,0.7)', color: 'black' },
               }}
-              styles={
-                {
-                  // day_selected: {
-                  //   backgroundColor: 'hsl(var(--primary))',
-                  //   color: 'white',
-                  //   fontWeight: 'bold',
-                  //   borderRadius: '9999px',
-                  // },
-                  // day_today: {
-                  //   backgroundColor: 'transparent',
-                  //   color: 'hsl(var(--primary))',
-                  //   fontWeight: 'bold',
-                  //   border: '1px solid hsl(var(--primary))',
-                  //   borderRadius: '9999px',
-                  // },
-                }
-              }
             />
           </div>
         </motion.div>
