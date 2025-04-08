@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import { useRef } from 'react';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 import { motion } from 'framer-motion';
 import { ArrowLeft, Info, MessageSquare, Search } from 'lucide-react';
@@ -169,15 +170,12 @@ const chatRoomsData = [
   },
 ];
 
-// TODO: 핸드폰일 때 채팅방 목록 및 채팅방 안에 스크롤 생김
-// TODO: 뒤로가기 작동 안함
 // TODO: 사람 프로필 눌렀을 떄 상세 페이지로 이동
 export default function ChatsPage() {
   const [activeChats] = useState(chatRoomsData);
   const [searchQuery, setSearchQuery] = useState('');
   const [message, setMessage] = useState('');
 
-  const router = useRouter();
   const [chatId, setChatId] = useQueryState('id', parseAsInteger);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -238,15 +236,15 @@ export default function ChatsPage() {
   };
 
   // 모바일 화면인지 확인
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const handleChatClick = (chatId: number) => {
     setChatId(chatId);
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 pt-4 sm:px-6 sm:pt-10 md:px-8">
-      <div className="grid h-[calc(100vh-12rem)] grid-cols-1 gap-6 md:grid-cols-3">
+    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-6 md:px-8 md:py-8">
+      <div className="grid h-[calc(100dvh-56px-32px)] grid-cols-1 gap-6 sm:h-[calc(100dvh-64px-48px)] md:h-[calc(100dvh-64px-64px)] md:grid-cols-3">
         {/* 채팅방 목록 (모바일에서는 선택된 채팅방이 없을 때만 표시) */}
         {(!isMobile || !chatId) && (
           <motion.div
@@ -328,7 +326,7 @@ export default function ChatsPage() {
                       variant="ghost"
                       size="icon"
                       className="mr-2"
-                      onClick={() => router.push('/chats')}
+                      onClick={() => setChatId(null)}
                     >
                       <ArrowLeft className="h-5 w-5" />
                     </Button>

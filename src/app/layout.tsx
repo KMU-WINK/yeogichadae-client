@@ -21,7 +21,7 @@ export default function RootLayout({ children }: LayoutProps) {
       <head>
         <title>Seoul IN Culture</title>
       </head>
-      <body className="bg-background min-h-screen">
+      <body className="bg-background min-h-[100dvh]">
         <Header />
         <SonnerProvider />
         <Suspense fallback={<div>Loading...</div>}>
