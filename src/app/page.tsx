@@ -31,7 +31,6 @@ const districts = Object.values(District);
 // 비용 필터 옵션
 const feeOptions = ['전체', '무료', '유료'];
 
-// TODO: 행사 위치 누르면 네이버지도로 이동
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [category, setCategory] = useState<string[]>([]);

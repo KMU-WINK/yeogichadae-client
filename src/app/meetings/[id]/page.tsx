@@ -169,9 +169,13 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
                   <MapPin className="text-primary mt-0.5 h-5 w-5 shrink-0" />
                   <div>
                     <p className="font-medium">장소</p>
-                    <p className="text-muted-foreground">
-                      {meetingData.event.district} {meetingData.event.location}
-                    </p>
+                    <Link
+                      href="https://map.naver.com/v5/search/37.5118239121138,127.059159043842"
+                      target="_blank"
+                      className="text-primary hover:underline"
+                    >
+                      {meetingData.event.location}
+                    </Link>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
