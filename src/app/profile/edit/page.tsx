@@ -3,8 +3,6 @@
 import type React from 'react';
 import { useState } from 'react';
 
-import Link from 'next/link';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,7 +17,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 
 import { motion } from 'framer-motion';
-import { ArrowLeft, Camera, Loader2 } from 'lucide-react';
+import { Camera } from 'lucide-react';
 
 // 사용자 프로필 데이터 (실제로는 API에서 가져올 것)
 const userData = {
@@ -64,7 +62,7 @@ const districts = [
 ];
 
 export default function ProfileEditPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     nickname: userData.nickname,
     district: userData.district,

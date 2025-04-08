@@ -6,14 +6,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 import KakaoLoginButton from '@/public/icon/kakao-login.png';
 
@@ -25,16 +18,6 @@ interface LoginModalProps {
 
 export function LoginModal({ children }: LoginModalProps) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleKakaoLogin = () => {
-    // 실제로는 카카오 로그인 API 호출
-    console.log('카카오 로그인 시도');
-    // 로그인 성공 후 모달 닫기
-    setTimeout(() => {
-      setIsOpen(false);
-    }, 500);
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>

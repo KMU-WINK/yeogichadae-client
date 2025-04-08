@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 
 import { motion } from 'framer-motion';
-import { ArrowLeft, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 // 받은 후기 데이터 (실제로는 API에서 가져올 것)
 const reviewsData = [

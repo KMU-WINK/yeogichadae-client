@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 import { motion } from 'framer-motion';
-import { ArrowLeft, MapPin, Star, User } from 'lucide-react';
+import { MapPin, Star, User } from 'lucide-react';
 
 interface UserDataType {
   id: number;

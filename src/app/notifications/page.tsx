@@ -10,19 +10,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 import { motion } from 'framer-motion';
-import {
-  ArrowLeft,
-  Bell,
-  Calendar,
-  MessageSquare,
-  Star,
-  User,
-  UserCog,
-  UserMinus,
-  UserPlus,
-  UserRoundPlus,
-  Users,
-} from 'lucide-react';
+import { Bell, Star, UserCog, UserMinus, UserPlus } from 'lucide-react';
 
 // 알림 데이터 (실제로는 API에서 가져올 것)
 const notificationsData = [

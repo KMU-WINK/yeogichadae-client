@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 
 import { currentUserId, meetingParticipants, meetings } from '@/__mock__';
 import { motion } from 'framer-motion';
-import { Calendar, Info, MapPin, MessageSquare, Share2, Star, Users } from 'lucide-react';
+import { Calendar, Info, MapPin, MessageSquare, Share2, Users } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function MeetingDetailPage(props: { params: Promise<{ id: string }> }) {
@@ -22,9 +22,6 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
   // 모임 참여자 찾기
   const participants = meetingParticipants.filter((mp) => mp.meeting.id === meetingData.id);
 
-  // 호스트 찾기
-  const host = participants.find((p) => p.host);
-
   // 현재 사용자가 참여 중인지 확인
   const isParticipating = participants.some((p) => p.user.id === currentUserId);
 
@@ -34,17 +31,6 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
 
   // 모임이 가득 찼는지 확인
   const isFull = participants.length >= meetingData.maxPeople;
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: {

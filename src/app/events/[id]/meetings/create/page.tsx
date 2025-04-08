@@ -1,9 +1,7 @@
 'use client';
 
 import type React from 'react';
-import { use, useState } from 'react';
-
-import Link from 'next/link';
+import { useState } from 'react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -11,7 +9,6 @@ import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import {
   Select,
   SelectContent,
@@ -27,7 +24,7 @@ import { cn } from '@/lib/utils';
 
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { ArrowLeft, CalendarIcon, Clock, Loader2 } from 'lucide-react';
+import { CalendarIcon } from 'lucide-react';
 
 const genderOptions = ['전체', '남성', '여성'];
 
@@ -41,14 +38,11 @@ const eventData = {
   place: '난지한강공원',
 };
 
-export default function CreateMeetingPage(props: { params: Promise<{ id: string }> }) {
-  const params = use(props.params);
+export default function CreateMeetingPage() {
   const [date, setDate] = useState<Date | undefined>(new Date(eventData.startDate));
-  const [time, setTime] = useState<string>('12:00');
   const [useAgeFilter, setUseAgeFilter] = useState(false);
   const [ageRange, setAgeRange] = useState([20, 40]);
   const [useGenderFilter, setUseGenderFilter] = useState(false);
-  const [gender, setGender] = useState<string | null>(null);
   const [genderFilter, setGenderFilter] = useState<string | null>('전체');
 
   const handleSubmit = (e: React.FormEvent) => {

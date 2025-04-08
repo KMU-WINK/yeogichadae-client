@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 
 import Header from '@/components/header';
 import SonnerProvider from '@/components/sonner-provider';
