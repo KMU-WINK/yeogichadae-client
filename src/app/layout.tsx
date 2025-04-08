@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 import Header from '@/components/header';
 import SonnerProvider from '@/components/sonner-provider';
@@ -24,9 +24,11 @@ export default function RootLayout({ children }: LayoutProps) {
       <body className="bg-background min-h-screen">
         <Header />
         <SonnerProvider />
-        <NuqsAdapter>
-          <main className="pt-14 sm:pt-16">{children}</main>
-        </NuqsAdapter>
+        <Suspense fallback={<div>Loading...</div>}>
+          <NuqsAdapter>
+            <main className="pt-14 sm:pt-16">{children}</main>
+          </NuqsAdapter>
+        </Suspense>
       </body>
     </html>
   );
