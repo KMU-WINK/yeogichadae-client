@@ -37,20 +37,68 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
     toast(isBookmarked ? '북마크가 해제되었습니다' : '북마크에 추가되었습니다');
   };
 
-  const handleShare = () => {
-    // 현재 URL을 클립보드에 복사
-    const url = window.location.href;
-    navigator.clipboard
-      .writeText(url)
-      .then(() => {
+  const fallbackCopyToClipboard = (text: string) => {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.top = '-9999px';
+    document.body.appendChild(textArea);
+
+    textArea.focus();
+    textArea.select();
+
+    try {
+      const successful = document.execCommand('copy');
+      if (successful) {
         toast('링크가 복사되었습니다', {
-          description: '친구들에게 공유해보세요!',
+          description: 'fallback 복사 테스트.!!!!!링크 공유됨',
         });
-      })
-      .catch((err) => {
-        console.error('클립보드 복사 실패:', err);
+      } else {
+        throw new Error('execCommand 실패');
+      }
+    } catch (err) {
+      console.error('Fallback 복사 실패:', err);
+      toast.error('복사 실패!!!!!!!', {
+        description: '브라우저 설정을 확인해주세요.',
       });
+    }
+    document.body.removeChild(textArea);
   };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+
+    if (!navigator.clipboard) {
+      fallbackCopyToClipboard(url);
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(url);
+      toast('링크가 복사되었습니다', {
+        description: '친구들에게 공유해보세요!',
+      });
+    } catch (err) {
+      console.error('복사 실패!!!!!!!!222Clipboard API 문제:', err);
+      fallbackCopyToClipboard(url);
+    }
+  };
+
+  // const handleShare = () => {
+  //   // 현재 URL을 클립보드에 복사
+  //   const url = window.location.href;
+  //   navigator.clipboard
+  //     .writeText(url)
+  //     .then(() => {
+  //       toast('링크가 복사되었습니다', {
+  //         description: '친구들에게 공유해보세요!',
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       console.error('클립보드 복사 실패:', err);
+  //     });
+  // };
+
 
   // 날짜 포맷팅 함수
   const formatDate = (dateString: string) => {
