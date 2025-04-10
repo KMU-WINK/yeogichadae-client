@@ -172,18 +172,16 @@ export default function MeetingsPage(props: { params: Promise<{ id: string }> })
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
       <motion.div
-        className="mb-8 flex flex-col items-start justify-between gap-4 md:flex-row"
+        className="mb-4 flex flex-col items-start justify-between gap-4 md:flex-row"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <div>
           <h1 className="text-3xl font-bold">모임 목록</h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            {eventData.title} 행사의 모임 목록입니다
-          </p>
+          <p className="text-muted-foreground mt-1 text-sm">{eventData.title}</p>
         </div>
         <div className="hidden gap-2 sm:flex">
           <Link href={`/events/${params.id}/meetings/create`}>
@@ -206,7 +204,7 @@ export default function MeetingsPage(props: { params: Promise<{ id: string }> })
       </motion.div>
 
       <motion.div
-        className="mb-6 flex gap-3"
+        className="mb-4 flex gap-3"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -293,11 +291,11 @@ export default function MeetingsPage(props: { params: Promise<{ id: string }> })
             <motion.div key={meeting.id} variants={itemVariants}>
               <Link href={`/meetings/${meeting.id}`}>
                 <Card className="sinc-card rounded-2xl">
-                  <CardContent className="p-6">
+                  <CardContent className="p-6 py-5">
                     <div className="flex flex-col gap-4 md:flex-row">
                       <div className="flex-1">
                         <div className="flex flex-col-reverse gap-1 sm:flex-row sm:gap-4">
-                          <h3 className="text-lg font-medium">{meeting.title}</h3>
+                          <h3 className="mt-1 text-lg font-medium sm:mt-0">{meeting.title}</h3>
                           <div className="flex flex-wrap items-center gap-2">
                             <Badge
                               className={`sinc-badge text-xs ${
@@ -332,7 +330,7 @@ export default function MeetingsPage(props: { params: Promise<{ id: string }> })
                             )}
                           </div>
                         </div>
-                        <p className="text-muted-foreground mb-4 line-clamp-2 text-sm">
+                        <p className="text-muted-foreground mt-1 mb-4 line-clamp-2 text-sm">
                           {meeting.content}
                         </p>
                         <div className="grid grid-cols-2 gap-2 text-sm md:grid-cols-3">

@@ -17,7 +17,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 
 import { motion } from 'framer-motion';
-import { Camera } from 'lucide-react';
+import { Camera, Edit } from 'lucide-react';
 
 // 사용자 프로필 데이터 (실제로는 API에서 가져올 것)
 const userData = {
@@ -89,15 +89,19 @@ export default function ProfileEditPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
-      <motion.h1
-        className="mb-8 text-3xl font-bold"
+    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
+      <motion.div
+        className="mb-4 flex items-center justify-between"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        프로필 수정
-      </motion.h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">프로필 수정</h1>
+        <Button className="flex items-center gap-2 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg sm:hidden">
+          <Edit className="h-4 w-4" />
+          <span>저장하기</span>
+        </Button>
+      </motion.div>
 
       <div className="mx-auto max-w-2xl">
         <motion.div
@@ -129,9 +133,7 @@ export default function ProfileEditPage() {
 
               <div className="space-y-6">
                 <div className="flex flex-col gap-1">
-                  <Label htmlFor="nickname" className="text-base">
-                    닉네임
-                  </Label>
+                  <Label htmlFor="nickname">닉네임</Label>
                   <Input
                     id="nickname"
                     value={formData.nickname}
@@ -142,9 +144,7 @@ export default function ProfileEditPage() {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <Label htmlFor="email" className="text-base">
-                    이메일
-                  </Label>
+                  <Label htmlFor="email">이메일</Label>
                   <Input
                     id="email"
                     value={userData.email}
@@ -154,9 +154,7 @@ export default function ProfileEditPage() {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <Label htmlFor="district" className="text-base">
-                    지역구
-                  </Label>
+                  <Label htmlFor="district">지역구</Label>
                   <Select
                     value={formData.district}
                     onValueChange={(value) => handleChange('district', value)}
@@ -175,7 +173,7 @@ export default function ProfileEditPage() {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <Label className="text-base">성별</Label>
+                  <Label>성별</Label>
                   <Input
                     value={userData.gender === 'male' ? '남성' : '여성'}
                     className="bg-muted rounded-xl"
@@ -184,7 +182,7 @@ export default function ProfileEditPage() {
                 </div>
 
                 <div className="flex flex-col gap-1">
-                  <Label className="text-base">나이</Label>
+                  <Label>나이</Label>
                   <Input value={`${userData.age}세`} className="bg-muted rounded-xl" disabled />
                 </div>
 
@@ -198,11 +196,17 @@ export default function ProfileEditPage() {
                   />
                 </div>
               </div>
-
-              <div className="flex justify-end">
-                <Button>저장하기</Button>
-              </div>
             </form>
+          </div>
+
+          <div className="hidden justify-self-end px-6 py-4 sm:block">
+            <Button
+              className="flex items-center gap-2 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg"
+              onClick={handleSubmit}
+            >
+              <Edit className="h-4 w-4" />
+              <span>저장하기</span>
+            </Button>
           </div>
         </motion.div>
       </div>

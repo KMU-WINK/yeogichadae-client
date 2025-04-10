@@ -349,28 +349,6 @@ export default function ChatsPage() {
 
                 <div className="bg-secondary/10 flex-1 space-y-4 overflow-y-auto p-4">
                   {/* 메시지 예시 */}
-                  <div className="flex justify-start">
-                    <div className="flex max-w-[80%]">
-                      <Link href="/profile/2">
-                        <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                          <AvatarImage src="/placeholder.svg?height=40&width=40" alt="재즈매니아" />
-                          <AvatarFallback className="bg-primary/10 text-primary">
-                            재즈
-                          </AvatarFallback>
-                        </Avatar>
-                      </Link>
-                      <div className="space-y-1">
-                        <Link href="/profile/2">
-                          <p className="text-xs">재즈매니아</p>
-                        </Link>
-                        <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
-                          <p className="text-sm">안녕하세요! 모임에 참여해주셔서 감사합니다.</p>
-                        </div>
-                        <p className="text-muted-foreground text-xs">10:15</p>
-                      </div>
-                    </div>
-                  </div>
-
                   <div className="flex justify-end">
                     <div className="flex max-w-[80%] flex-row-reverse">
                       <div className="mr-2 space-y-1">
@@ -388,6 +366,33 @@ export default function ChatsPage() {
                       </div>
                     </div>
                   </div>
+
+                  {Array.from({ length: 50 }).map((_, index) => (
+                    <div key={index} className="flex justify-start">
+                      <div className="flex max-w-[80%]">
+                        <Link href="/profile/2">
+                          <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
+                            <AvatarImage
+                              src="/placeholder.svg?height=40&width=40"
+                              alt="재즈매니아"
+                            />
+                            <AvatarFallback className="bg-primary/10 text-primary">
+                              재즈
+                            </AvatarFallback>
+                          </Avatar>
+                        </Link>
+                        <div className="space-y-1">
+                          <Link href="/profile/2">
+                            <p className="text-xs">재즈매니아</p>
+                          </Link>
+                          <div className="bg-secondary mt-1 rounded-2xl rounded-tl-none px-4 py-2">
+                            <p className="text-sm">안녕하세요! 모임에 참여해주셔서 감사합니다.</p>
+                          </div>
+                          <p className="text-muted-foreground text-xs">10:15</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
 
                   <div ref={bottomRef} />
                 </div>

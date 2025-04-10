@@ -156,12 +156,12 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
   return (
     <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
       <motion.div
-        className="mb-8 flex items-center justify-between"
+        className="mb-4 flex items-center justify-between"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-3xl font-bold">{userData.nickname}님의 프로필</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">{userData.nickname}님의 프로필</h1>
       </motion.div>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
@@ -181,7 +181,7 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
               </Avatar>
             </div>
             <h2 className="mb-1 text-2xl font-bold">{userData.nickname}</h2>
-            <p className="text-muted-foreground mb-4">가입일: {userData.createdAt}</p>
+            <p className="text-muted-foreground mb-4 text-sm">가입일: {userData.createdAt}</p>
 
             <div className="mb-6 flex justify-center">
               <div className="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-3 py-1.5">
@@ -272,6 +272,42 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
           <motion.div variants={itemVariants}>
             <div className="sinc-card p-6">
               <h2 className="mb-4 text-xl font-medium">주최한 모임</h2>
+              {userData.hostedMeetings > 0 ? (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <Link
+                    href="/meetings/1"
+                    className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
+                  >
+                    <div className="relative aspect-video">
+                      <Image
+                        src="/placeholder.svg?height=120&width=240"
+                        alt="서울 재즈 페스티벌"
+                        fill
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      <Badge className="sinc-badge absolute top-2 right-2 bg-emerald-100 text-emerald-700">
+                        모집중
+                      </Badge>
+                    </div>
+                    <div className="p-3">
+                      <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
+                        재즈 페스티벌 같이 즐겨요
+                      </h3>
+                      <p className="text-muted-foreground mt-1 text-xs">2023-05-27 14:00</p>
+                    </div>
+                  </Link>
+                </div>
+              ) : (
+                <div className="text-muted-foreground py-8 text-center">
+                  <p>아직 주최한 모임이 없습니다</p>
+                </div>
+              )}
+            </div>
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <div className="sinc-card p-6">
+              <h2 className="mb-4 text-xl font-medium">참여중인 모임</h2>
               {userData.hostedMeetings > 0 ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <Link

@@ -75,9 +75,9 @@ export default function ReviewsPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
       <motion.h1
-        className="mb-4 flex text-3xl font-bold"
+        className="mb-4 flex text-2xl font-bold sm:text-3xl"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -135,7 +135,7 @@ export default function ReviewsPage() {
                   </div>
                 </div>
 
-                <p className="mb-4">{review.content}</p>
+                <p className="mb-4 text-sm sm:text-base">{review.content}</p>
 
                 <div className="border-t pt-4">
                   <Link

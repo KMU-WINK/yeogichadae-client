@@ -87,15 +87,15 @@ export default function NotificationsPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
       <div className="mx-auto max-w-2xl">
         <motion.div
-          className="mb-8 flex items-center justify-between"
+          className="mb-4 flex items-center justify-between"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h1 className="text-3xl font-bold">알림</h1>
+          <h1 className="text-2xl font-bold sm:text-3xl">알림</h1>
           {notificationsData.length > 0 && (
             <Button variant="outline" onClick={markAllAsRead}>
               모두 읽음 표시

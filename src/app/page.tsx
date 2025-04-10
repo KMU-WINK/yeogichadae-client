@@ -162,7 +162,7 @@ export default function Home() {
               <Link href="/calendar">
                 <Button
                   size="lg"
-                  className="flex h-12 items-center gap-2 rounded-xl text-base shadow-lg transition-all duration-300 hover:shadow-xl"
+                  className="flex h-12 items-center justify-center gap-2 rounded-xl text-base text-[15px] shadow-lg transition-all duration-300 hover:shadow-xl sm:text-base"
                 >
                   <Calendar className="h-5 w-5" />
                   <span>달력으로 보기</span>
@@ -172,7 +172,7 @@ export default function Home() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="flex h-12 items-center gap-2 rounded-xl text-base shadow-xs transition-all duration-300 hover:shadow-md"
+                  className="flex h-12 items-center justify-center gap-2 rounded-xl text-base text-[15px] shadow-xs transition-all duration-300 hover:shadow-md sm:text-base"
                 >
                   <Users className="h-5 w-5" />
                   <span>내 모임 관리</span>
@@ -187,7 +187,7 @@ export default function Home() {
       <section className="py-12 md:py-16">
         <div className="container mx-auto max-w-screen-xl px-4 sm:px-6 md:px-8">
           <motion.div
-            className="mb-4 flex items-center justify-between"
+            className="mb-2 flex items-center justify-between sm:mb-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
@@ -233,9 +233,6 @@ export default function Home() {
                       <h3 className="group-hover:text-primary mb-2 line-clamp-1 text-lg font-medium transition-colors">
                         {event.title}
                       </h3>
-                      <p className="text-muted-foreground mb-3 line-clamp-2 text-sm">
-                        {event.host}
-                      </p>
                       <div className="mt-auto flex flex-col gap-1.5">
                         <div className="text-muted-foreground flex items-center text-sm">
                           <MapPin className="mr-1.5 h-4 w-4 shrink-0" />
@@ -412,7 +409,7 @@ export default function Home() {
               <motion.div key={event.id} variants={itemVariants}>
                 <Link href={`/events/${event.id}`} className="group">
                   <div className="sinc-card flex h-full flex-col overflow-hidden transition-all duration-300 hover:shadow-lg">
-                    <div className="relative h-40 w-full overflow-hidden">
+                    <div className="relative h-48 w-full overflow-hidden">
                       <Image
                         src={event.image || '/placeholder.svg'}
                         alt={event.title}
@@ -430,29 +427,28 @@ export default function Home() {
                         {event.category}
                       </Badge>
                     </div>
-                    <div className="flex-1 p-4">
-                      <h3 className="group-hover:text-primary mb-1 line-clamp-1 text-base font-medium transition-colors">
+                    <div className="flex-1 p-5">
+                      <h3 className="group-hover:text-primary mb-2 line-clamp-1 text-lg font-medium transition-colors">
                         {event.title}
                       </h3>
-                      <p className="text-muted-foreground mb-2 line-clamp-2 text-xs">
-                        {event.host}
-                      </p>
-                      <div className="mt-auto flex flex-col gap-1">
-                        <div className="text-muted-foreground flex items-center text-xs">
-                          <MapPin className="mr-1 h-3.5 w-3.5 shrink-0" />
-                          <span>{event.district}</span>
+                      <div className="mt-auto flex flex-col gap-1.5">
+                        <div className="text-muted-foreground flex items-center text-sm">
+                          <MapPin className="mr-1.5 h-4 w-4 shrink-0" />
+                          <span>
+                            {event.district} {event.location}
+                          </span>
                         </div>
-                        <div className="text-muted-foreground flex items-center text-xs">
-                          <Calendar className="mr-1 h-3.5 w-3.5 shrink-0" />
+                        <div className="text-muted-foreground flex items-center text-sm">
+                          <Calendar className="mr-1.5 h-4 w-4 shrink-0" />
                           <span>
                             {formatDate(event.startDate)} ~ {formatDate(event.endDate)}
                           </span>
                         </div>
                       </div>
                     </div>
-                    <div className="bg-secondary/30 flex items-center justify-between border-t px-4 py-2">
-                      <div className="text-xs">
-                        <span className="text-primary font-medium">12개</span>의 모임
+                    <div className="bg-secondary/30 flex items-center justify-between border-t px-5 py-3">
+                      <div className="text-sm">
+                        <span className="text-primary font-medium">12개</span>의 모임 진행중
                       </div>
                       <Link
                         href={`/events/${event.id}/meetings`}

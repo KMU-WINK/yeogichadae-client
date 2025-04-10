@@ -53,14 +53,14 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
       <motion.div
-        className="mb-8 flex items-center justify-between"
+        className="mb-4 flex items-center justify-between"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-3xl font-bold">마이페이지</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">프로필</h1>
         <Link href="/profile/edit">
           <Button className="flex items-center gap-2 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg">
             <Edit className="h-4 w-4" />
@@ -86,10 +86,12 @@ export default function ProfilePage() {
               </Avatar>
             </div>
             <h2 className="mb-3 text-2xl font-bold">{userData.nickname}</h2>
-            <p className="text-muted-foreground text-sm">가입일: {userData.createdAt}</p>
-            <p className="text-muted-foreground mb-4">{userData.email}</p>
+            <p className="text-sm text-neutral-500 sm:text-base">{userData.email}</p>
+            <p className="mb-4 text-sm text-neutral-400 sm:text-base">
+              가입일: {userData.createdAt}
+            </p>
 
-            <div className="mb-2 flex justify-center">
+            <div className="mb-4 flex justify-center">
               <div className="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-3 py-1.5">
                 <Star className="fill-primary h-4 w-4" />
                 <span className="font-medium">{userData.mannerScore}</span>
@@ -170,7 +172,7 @@ export default function ProfilePage() {
                         <AvatarFallback className="bg-primary/10 text-primary">JM</AvatarFallback>
                       </Avatar>
                       <div>
-                        <div className="line-clamp-1 font-medium">
+                        <div className="line-clamp-1 pr-6 font-medium">
                           재즈매니아재즈매니아재즈매니아재즈매니아
                         </div>
                         <div className="text-muted-foreground text-xs">2023-05-30</div>

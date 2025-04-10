@@ -62,7 +62,7 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
       <motion.div
         className="mb-6 flex flex-col items-start justify-between gap-4 md:flex-row"
         initial={{ opacity: 0, y: -20 }}
@@ -126,7 +126,7 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <div className="sinc-card p-6">
-            <h2 className="mb-4 text-xl font-medium">행사 정보</h2>
+            <h2 className="mb-1 text-xl font-medium">행사 정보</h2>
             <p className="mb-6 text-base leading-relaxed">{eventData.host}</p>
 
             <div className="mb-8 grid grid-cols-1 gap-5 text-sm sm:grid-cols-2">
@@ -189,7 +189,7 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
               </div>
             </div>
 
-            <div className="bg-secondary/50 rounded-xl p-4">
+            <div className="bg-secondary rounded-xl p-4">
               <h3 className="mb-2 font-medium">추가 정보</h3>
               <dl className="grid grid-cols-1 gap-x-4 gap-y-2 text-sm sm:grid-cols-2">
                 <div className="grid grid-cols-2">
@@ -213,7 +213,7 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
         >
           <div className="sinc-card p-6">
             <h2 className="mb-4 text-xl font-medium">모임</h2>
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-3">
               <Link href={`/events/${eventData.id}/meetings/create`}>
                 <Button className="bg-primary hover:bg-primary/90 flex w-full items-center justify-center gap-2 rounded-xl text-white shadow-xs transition-all duration-200 hover:shadow-sm">
                   <Plus className="h-4 w-4" />

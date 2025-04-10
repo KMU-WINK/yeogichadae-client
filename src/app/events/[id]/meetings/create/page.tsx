@@ -52,19 +52,17 @@ export default function CreateMeetingPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
       <div className="mx-auto max-w-2xl">
-        <h1 className="mb-2 text-3xl font-bold">모임 만들기</h1>
-        <p className="text-muted-foreground mb-6">{eventData.title}</p>
+        <h1 className="text-2xl font-bold sm:text-3xl">모임 만들기</h1>
+        <p className="text-muted-foreground mb-4 text-sm sm:text-base">{eventData.title}</p>
 
         <div className="sinc-card">
           <div className="p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-5">
                 <div className="space-y-2.5">
-                  <Label htmlFor="title" className="text-base">
-                    모임 제목
-                  </Label>
+                  <Label htmlFor="title">모임 제목</Label>
                   <Input
                     id="title"
                     placeholder="모임 제목을 입력하세요"
@@ -74,9 +72,7 @@ export default function CreateMeetingPage() {
                 </div>
 
                 <div className="space-y-2.5">
-                  <Label htmlFor="content" className="text-base">
-                    모임 설명
-                  </Label>
+                  <Label htmlFor="content">모임 설명</Label>
                   <Textarea
                     id="content"
                     placeholder="모임에 대한 설명을 입력하세요"
@@ -87,7 +83,7 @@ export default function CreateMeetingPage() {
 
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                   <div className="space-y-2.5">
-                    <Label className="text-base">모임 날짜</Label>
+                    <Label>모임 날짜</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -114,7 +110,7 @@ export default function CreateMeetingPage() {
                   </div>
 
                   <div className="space-y-2.5">
-                    <Label className="text-base">모임 시간</Label>
+                    <Label>모임 시간</Label>
                     <div className="mt-1 flex items-center gap-2">
                       <Input type="number" value={9} />
                       <p>:</p>
@@ -124,9 +120,7 @@ export default function CreateMeetingPage() {
                 </div>
 
                 <div className="space-y-2.5">
-                  <Label htmlFor="maxPeople" className="text-base">
-                    최대 인원
-                  </Label>
+                  <Label htmlFor="maxPeople">최대 인원</Label>
                   <Select defaultValue="4">
                     <SelectTrigger className="mt-1 rounded-xl">
                       <SelectValue placeholder="인원 선택" />

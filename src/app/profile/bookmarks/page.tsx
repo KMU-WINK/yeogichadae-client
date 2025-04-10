@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,7 +9,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 import { motion } from 'framer-motion';
-import { Calendar, MapPin } from 'lucide-react';
 
 // 찜한 행사 데이터 (실제로는 API에서 가져올 것)
 const bookmarkedEvents = [
@@ -65,6 +64,110 @@ const bookmarkedEvents = [
     mainImage: '/placeholder.svg?height=200&width=400',
     meetingsCount: 20,
   },
+  {
+    id: 5,
+    title: '서울 재즈 페스티벌 2023',
+    description: '국내외 유명 재즈 아티스트들의 공연',
+    category: '음악',
+    district: '마포구',
+    place: '난지한강공원',
+    startDate: '2023-05-27',
+    endDate: '2023-05-29',
+    isFree: false,
+    mainImage: '/placeholder.svg?height=200&width=400',
+    meetingsCount: 12,
+  },
+  {
+    id: 6,
+    title: '서울 국제 도서전',
+    description: '다양한 출판사와 작가들이 참여하는 도서 전시회',
+    category: '전시',
+    district: '강남구',
+    place: '코엑스',
+    startDate: '2023-06-14',
+    endDate: '2023-06-18',
+    isFree: true,
+    mainImage: '/placeholder.svg?height=200&width=400',
+    meetingsCount: 8,
+  },
+  {
+    id: 7,
+    title: '서울 국제 영화제',
+    description: '국내외 다양한 영화 상영 및 감독과의 대화',
+    category: '영화',
+    district: '종로구',
+    place: '메가박스 동대문',
+    startDate: '2023-07-05',
+    endDate: '2023-07-14',
+    isFree: false,
+    mainImage: '/placeholder.svg?height=200&width=400',
+    meetingsCount: 15,
+  },
+  {
+    id: 8,
+    title: '서울 빛초롱 축제',
+    description: '한국의 전통과 현대를 아우르는 빛 축제',
+    category: '축제',
+    district: '중구',
+    place: '청계천',
+    startDate: '2023-11-03',
+    endDate: '2023-11-19',
+    isFree: true,
+    mainImage: '/placeholder.svg?height=200&width=400',
+    meetingsCount: 20,
+  },
+  {
+    id: 9,
+    title: '서울 재즈 페스티벌 2023',
+    description: '국내외 유명 재즈 아티스트들의 공연',
+    category: '음악',
+    district: '마포구',
+    place: '난지한강공원',
+    startDate: '2023-05-27',
+    endDate: '2023-05-29',
+    isFree: false,
+    mainImage: '/placeholder.svg?height=200&width=400',
+    meetingsCount: 12,
+  },
+  {
+    id: 10,
+    title: '서울 국제 도서전',
+    description: '다양한 출판사와 작가들이 참여하는 도서 전시회',
+    category: '전시',
+    district: '강남구',
+    place: '코엑스',
+    startDate: '2023-06-14',
+    endDate: '2023-06-18',
+    isFree: true,
+    mainImage: '/placeholder.svg?height=200&width=400',
+    meetingsCount: 8,
+  },
+  {
+    id: 11,
+    title: '서울 국제 영화제',
+    description: '국내외 다양한 영화 상영 및 감독과의 대화',
+    category: '영화',
+    district: '종로구',
+    place: '메가박스 동대문',
+    startDate: '2023-07-05',
+    endDate: '2023-07-14',
+    isFree: false,
+    mainImage: '/placeholder.svg?height=200&width=400',
+    meetingsCount: 15,
+  },
+  {
+    id: 12,
+    title: '서울 빛초롱 축제',
+    description: '한국의 전통과 현대를 아우르는 빛 축제',
+    category: '축제',
+    district: '중구',
+    place: '청계천',
+    startDate: '2023-11-03',
+    endDate: '2023-11-19',
+    isFree: true,
+    mainImage: '/placeholder.svg?height=200&width=400',
+    meetingsCount: 20,
+  },
 ];
 
 export default function BookmarksPage() {
@@ -93,19 +196,19 @@ export default function BookmarksPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
-      <motion.h1
-        className="mb-8 text-3xl font-bold"
+    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
+      <motion.div
+        className="mb-4 flex items-center justify-between"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        찜한 행사 목록
-      </motion.h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">찜한 행사 목록</h1>
+      </motion.div>
 
       {events.length > 0 ? (
         <motion.div
-          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-5"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -119,7 +222,7 @@ export default function BookmarksPage() {
                       src={event.mainImage || '/placeholder.svg'}
                       alt={event.title}
                       fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="h-[300px] w-[200px] object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute top-3 right-3 flex gap-2">
                       <Badge
@@ -132,39 +235,14 @@ export default function BookmarksPage() {
                       {event.category}
                     </Badge>
                   </div>
-                  <div className="flex-1 p-5">
-                    <h3 className="group-hover:text-primary mb-2 line-clamp-1 text-lg font-medium transition-colors">
-                      {event.title}
+                  <div className="p-3">
+                    <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
+                      서울 국제 영화제
                     </h3>
-                    <p className="text-muted-foreground mb-3 line-clamp-2 text-sm">
-                      {event.description}
-                    </p>
-                    <div className="mt-auto flex flex-col gap-1.5">
-                      <div className="text-muted-foreground flex items-center text-sm">
-                        <MapPin className="mr-1.5 h-4 w-4 shrink-0" />
-                        <span>
-                          {event.district} {event.place}
-                        </span>
-                      </div>
-                      <div className="text-muted-foreground flex items-center text-sm">
-                        <Calendar className="mr-1.5 h-4 w-4 shrink-0" />
-                        <span>
-                          {event.startDate} ~ {event.endDate}
-                        </span>
-                      </div>
+                    <div className="flex flex-col">
+                      <p className="text-muted-foreground text-xs">2023년 07월 05일 (목)</p>
+                      <p className="text-muted-foreground text-xs">~ 2023년 07월 05일 (목)</p>
                     </div>
-                  </div>
-                  <div className="bg-secondary/30 flex items-center justify-between border-t px-5 py-3">
-                    <div className="text-sm">
-                      <span className="text-primary font-medium">{event.meetingsCount}개</span>의
-                      모임 진행중
-                    </div>
-                    <Link
-                      href={`/events/${event.id}/meetings`}
-                      className="text-primary hover:text-primary/80 h-auto rounded-md p-0 text-sm font-medium hover:bg-transparent"
-                    >
-                      자세히 보기
-                    </Link>
                   </div>
                 </div>
               </Link>

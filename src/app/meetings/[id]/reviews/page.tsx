@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 
 import { cn } from '@/lib/utils';
@@ -90,12 +90,8 @@ export default function ReviewsPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>참여자 평가</CardTitle>
-          <CardDescription>함께 모임에 참여한 멤버들에 대한 후기를 작성해주세요</CardDescription>
-        </CardHeader>
         <CardContent>
-          <div className="space-y-6">
+          <div className="space-y-6 pt-6">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {meetingData.members.map((member) => (
                 <Card
@@ -225,7 +221,7 @@ export default function ReviewsPage() {
                       />
                     ))}
                   </div>
-                  <div className="text-center text-sm">{selectedReview.date}</div>
+                  <div className="text-center text-sm text-neutral-500">{selectedReview.date}</div>
                 </div>
 
                 <div className="bg-secondary/30 rounded-xl p-4">

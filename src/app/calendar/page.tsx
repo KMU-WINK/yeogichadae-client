@@ -21,6 +21,7 @@ import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { motion } from 'framer-motion';
 import { CalendarIcon, Filter, MapPin } from 'lucide-react';
+import colors from 'tailwindcss/colors';
 
 interface Event {
   id: number;
@@ -285,14 +286,14 @@ export default function CalendarPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
       <motion.div
-        className="mb-8 flex items-center justify-between"
+        className="mb-4 flex items-center justify-between"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className="text-3xl font-bold">행사 캘린더</h1>
+        <h1 className="text-2xl font-bold sm:text-3xl">행사 캘린더</h1>
 
         <Popover open={isFilterOpen} onOpenChange={setFilterOpen}>
           <PopoverTrigger asChild>
@@ -417,9 +418,9 @@ export default function CalendarPage() {
                 event3plus: (date) => getEventCountForDate(date) >= 3,
               }}
               modifiersStyles={{
-                event1: { backgroundColor: 'rgba(196,20,255,0.2)', color: 'black' }, // light blue
-                event2: { backgroundColor: 'rgba(196,20,255,0.45)', color: 'black' }, // medium blue
-                event3plus: { backgroundColor: 'rgba(196,20,255,0.7)', color: 'black' },
+                event1: { backgroundColor: colors.rose['50'], color: 'black' }, // light blue
+                event2: { backgroundColor: colors.rose['100'], color: 'black' }, // medium blue
+                event3plus: { backgroundColor: colors.rose['200'], color: 'black' },
               }}
             />
           </div>
@@ -432,9 +433,9 @@ export default function CalendarPage() {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <div className="sinc-card p-6">
-            <div className="mb-6 flex items-center">
+            <div className="flex items-center">
               <CalendarIcon className="text-primary mr-2 h-5 w-5" />
-              <h2 className="text-xl font-medium">
+              <h2 className="text-lg font-medium sm:text-xl">
                 {date ? format(date, 'yyyy년 M월 d일', { locale: ko }) : '날짜를 선택하세요'}
               </h2>
             </div>
@@ -464,16 +465,16 @@ export default function CalendarPage() {
                       </div>
                       <div className="flex-1">
                         <div className="mb-1.5 flex items-center gap-2">
-                          <Badge className="sinc-badge text-foreground border bg-white outline outline-neutral-200">
+                          <Badge className="sinc-badge text-foreground border bg-white text-xs outline outline-neutral-200">
                             {event.category}
                           </Badge>
                           <Badge
-                            className={`sinc-badge ${event.isFree ? 'bg-emerald-100 text-emerald-700' : 'bg-primary/10 text-primary'}`}
+                            className={`sinc-badge text-xs ${event.isFree ? 'bg-emerald-100 text-emerald-700' : 'bg-primary/10 text-primary'}`}
                           >
                             {event.isFree ? '무료' : '유료'}
                           </Badge>
                         </div>
-                        <h3 className="mb-1 line-clamp-1 text-lg font-medium">{event.title}</h3>
+                        <h3 className="mb-1 line-clamp-1 font-medium sm:text-lg">{event.title}</h3>
                         <div className="text-muted-foreground flex items-center text-sm">
                           <MapPin className="mr-1 h-4 w-4" />
                           <span className="line-clamp-1">{event.place}</span>

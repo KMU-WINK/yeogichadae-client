@@ -115,9 +115,9 @@ export default function MyMeetingsPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-10 sm:px-6 md:px-8">
+    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
       <motion.h1
-        className="mb-8 text-3xl font-bold"
+        className="mb-4 text-2xl font-bold sm:text-3xl"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -252,9 +252,9 @@ export default function MyMeetingsPage() {
                     className="sinc-card cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-md"
                     onClick={() => router.push(`/meetings/${meeting.id}`)}
                   >
-                    <div className="p-6">
-                      <div className="flex flex-col gap-6 md:flex-row">
-                        <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-xl md:h-auto md:w-48">
+                    <div className="p-6 pb-3">
+                      <div className="flex flex-row gap-6">
+                        <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl sm:h-auto sm:w-48">
                           <Image
                             src={meeting.eventImage || '/placeholder.svg'}
                             alt={meeting.eventTitle}
@@ -263,44 +263,34 @@ export default function MyMeetingsPage() {
                           />
                         </div>
                         <div className="flex-1">
-                          <div className="mb-2 flex flex-wrap items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-2">
                             {meeting.isHost && (
                               <Badge className="sinc-badge bg-primary/10 text-primary">
                                 주최자
                               </Badge>
                             )}
-                            <h3 className="text-xl font-medium">{meeting.title}</h3>
+                            <h3 className="font-medium sm:text-xl">{meeting.title}</h3>
                           </div>
-                          <p className="text-muted-foreground mb-4">{meeting.eventTitle}</p>
+                          <p className="text-muted-foreground mb-2 text-sm sm:text-base">
+                            {meeting.eventTitle}
+                          </p>
                           <div className="mb-5 grid grid-cols-1 gap-3 text-sm md:grid-cols-2">
                             <div className="flex items-center gap-2">
                               <Calendar className="text-primary h-4 w-4" />
-                              <span>{meeting.meetingTime}</span>
+                              <span className="text-xs">{meeting.meetingTime}</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                              <MapPin className="text-primary h-4 w-4" />
-                              <span>
-                                {meeting.district} {meeting.place}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <Users className="text-primary h-4 w-4" />
-                              <span>
-                                {meeting.participants}/{meeting.maxPeople} 명 참여
-                              </span>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-3">
-                            <Button
-                              variant="outline"
-                              className="flex w-full items-center gap-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 sm:w-fit"
-                              onClick={(e) => handleReviewClick(e, meeting.id)}
-                            >
-                              <Calendar className="h-4 w-4" />
-                              <span>후기 작성</span>
-                            </Button>
                           </div>
                         </div>
+                      </div>
+                      <div className="flex flex-wrap gap-3">
+                        <Button
+                          variant="outline"
+                          className="flex w-full items-center gap-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 sm:w-fit"
+                          onClick={(e) => handleReviewClick(e, meeting.id)}
+                        >
+                          <Calendar className="h-2 w-2" />
+                          <span className="text-xs">후기 작성</span>
+                        </Button>
                       </div>
                     </div>
                   </div>

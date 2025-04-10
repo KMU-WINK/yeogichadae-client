@@ -191,7 +191,7 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
 
               <div className="mb-6 border-t pt-6">
                 <h3 className="mb-3 font-medium">모임 소개</h3>
-                <p className="text-base leading-relaxed">{meetingData.description}</p>
+                <p className="text-sm leading-relaxed sm:text-base">{meetingData.description}</p>
               </div>
 
               {(meetingData.minAge || meetingData.maxAge || meetingData.gender) && (
@@ -305,8 +305,8 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
                     주최자 위임하기
                   </Button>
                   <Button
-                    variant="destructive"
-                    className="w-full rounded-xl"
+                    variant="outline"
+                    className="w-full rounded-xl text-red-400"
                     onClick={handleDeleteGroup}
                   >
                     모임 삭제하기
