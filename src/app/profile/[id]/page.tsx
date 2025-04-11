@@ -10,8 +10,31 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 import { motion } from 'framer-motion';
-import { MapPin, Star, User } from 'lucide-react';
+import {ArrowRight, MapPin, Star, User} from 'lucide-react';
 
+// interface UserDataType {
+//   id: number;
+//   nickname: string;
+//   avatar: string;
+//   district: string;
+//   gender: string;
+//   age: number;
+//   mannerScore: number;
+//   createdAt: string;
+//   bookmarkedEvents: number;
+//   participatedMeetings: number;
+//   hostedMeetings: number;
+//   reviews: {
+//     id: number;
+//     reviewerName: string;
+//     reviewerAvatar: string;
+//     rating: number;
+//     content: string;
+//     date: string;
+//   }[];
+// }
+
+// 모임 정보 포함한 데이터 테스트용
 interface UserDataType {
   id: number;
   nickname: string;
@@ -22,8 +45,12 @@ interface UserDataType {
   mannerScore: number;
   createdAt: string;
   bookmarkedEvents: number;
-  participatedMeetings: number;
-  hostedMeetings: number;
+
+  meetings: {
+    hosted: { id: number; title: string; date: string; image: string; status: string }[];
+    participated: { id: number; title: string; date: string; image: string; status: string }[];
+  };
+
   reviews: {
     id: number;
     reviewerName: string;
@@ -35,63 +62,258 @@ interface UserDataType {
 }
 
 // 사용자 프로필 데이터 (실제로는 API에서 가져올 것)
+// const usersData = {
+//   '2': {
+//     id: 2,
+//     nickname: '재즈매니아',
+//     avatar: '/placeholder.svg?height=128&width=128',
+//     district: '서초구',
+//     gender: 'male',
+//     age: 32,
+//     mannerScore: 4.8,
+//     createdAt: '2022-03-10',
+//     bookmarkedEvents: 8,
+//     participatedMeetings: 15,
+//     hostedMeetings: 2,
+//     reviews: [
+//       {
+//         id: 1,
+//         reviewerName: '음악사랑',
+//         reviewerAvatar: '/placeholder.svg?height=40&width=40',
+//         rating: 5,
+//         content:
+//           '모임을 재미있게 이끌어주시고 정보도 많이 공유해주셔서 즐거웠습니다. 다음에도 같이 모임하고 싶어요!',
+//         date: '2023-05-30',
+//       },
+//       {
+//         id: 2,
+//         reviewerName: '한강러버',
+//         reviewerAvatar: '/placeholder.svg?height=40&width=40',
+//         rating: 4,
+//         content: '친절하고 매너가 좋았습니다. 재즈에 대한 지식이 풍부해서 많이 배웠어요.',
+//         date: '2023-04-20',
+//       },
+//     ],
+//   },
+//   '3': {
+//     id: 3,
+//     nickname: '음악사랑',
+//     avatar: '/placeholder.svg?height=128&width=128',
+//     district: '마포구',
+//     gender: 'female',
+//     age: 27,
+//     mannerScore: 4.5,
+//     createdAt: '2022-06-20',
+//     bookmarkedEvents: 5,
+//     participatedMeetings: 10,
+//     hostedMeetings: 3,
+//     reviews: [
+//       {
+//         id: 1,
+//         reviewerName: '재즈매니아',
+//         reviewerAvatar: '/placeholder.svg?height=40&width=40',
+//         rating: 5,
+//         content: '시간 약속을 잘 지키고 모임 분위기를 즐겁게 만들어주셨어요.',
+//         date: '2023-05-15',
+//       },
+//     ],
+//   },
+// };
+
+//테스트용 사용자 프로필 데이터
 const usersData = {
-  '2': {
-    id: 2,
-    nickname: '재즈매니아',
+  '4': { //주최 모임, 참가 모임 다 2 초과
+    id: 4,
+    nickname: '예술애호가',
     avatar: '/placeholder.svg?height=128&width=128',
-    district: '서초구',
-    gender: 'male',
-    age: 32,
-    mannerScore: 4.8,
-    createdAt: '2022-03-10',
-    bookmarkedEvents: 8,
-    participatedMeetings: 15,
-    hostedMeetings: 7,
+    district: '성동구',
+    gender: 'female',
+    age: 29,
+    mannerScore: 4.9,
+    createdAt: '2023-01-15',
+    bookmarkedEvents: 6,
+    meetings: {
+      hosted: [
+        {
+          id: 101,
+          title: '한강에서 그림 그리기 모임',
+          date: '2024-09-15 10:00',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집중',
+        },
+        {
+          id: 102,
+          title: '성수동 갤러리 투어',
+          date: '2024-10-02 14:30',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집완료',
+        },
+        {
+          id: 103,
+          title: '가을 감성 사진 산책',
+          date: '2024-10-20 16:00',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집중',
+        },
+      ],
+      participated: [
+        {
+          id: 201,
+          title: '플리마켓 체험 모임',
+          date: '2024-08-30 13:00',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집완료',
+        },
+        {
+          id: 202,
+          title: '전시회 후기 공유 세션',
+          date: '2024-09-10 19:00',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집중',
+        },
+        {
+          id: 203,
+          title: '뮤지컬 함께 보기',
+          date: '2024-09-25 18:00',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집중',
+        },
+        {
+          id: 204,
+          title: '낙서 드로잉 클래스',
+          date: '2024-10-05 11:00',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집완료',
+        },
+      ],
+    },
     reviews: [
       {
         id: 1,
-        reviewerName: '음악사랑',
+        reviewerName: '문화러버',
         reviewerAvatar: '/placeholder.svg?height=40&width=40',
         rating: 5,
-        content:
-          '모임을 재미있게 이끌어주시고 정보도 많이 공유해주셔서 즐거웠습니다. 다음에도 같이 모임하고 싶어요!',
-        date: '2023-05-30',
+        content: '모임을 너무 따뜻하게 잘 이끌어주셔서 힐링되는 시간이었어요.',
+        date: '2024-09-16',
       },
       {
         id: 2,
-        reviewerName: '한강러버',
+        reviewerName: '도시여행자',
         reviewerAvatar: '/placeholder.svg?height=40&width=40',
         rating: 4,
-        content: '친절하고 매너가 좋았습니다. 재즈에 대한 지식이 풍부해서 많이 배웠어요.',
-        date: '2023-04-20',
+        content: '전시회 설명도 잘해주시고 질문에 성실히 답해주셔서 좋았어요!',
+        date: '2024-10-03',
       },
     ],
   },
-  '3': {
-    id: 3,
-    nickname: '음악사랑',
+
+  '5': {  // 2개 2개 씩
+    id: 5,
+    nickname: '역사연구자',
     avatar: '/placeholder.svg?height=128&width=128',
-    district: '마포구',
-    gender: 'female',
-    age: 27,
-    mannerScore: 4.5,
-    createdAt: '2022-06-20',
-    bookmarkedEvents: 5,
-    participatedMeetings: 10,
-    hostedMeetings: 3,
+    district: '종로구',
+    gender: 'male',
+    age: 41,
+    mannerScore: 4.2,
+    createdAt: '2022-11-05',
+    bookmarkedEvents: 2,
+    meetings: {
+      hosted: [
+        {
+          id: 401,
+          title: '한양도성 걷기 모임',
+          date: '2024-07-10 09:00',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집완료',
+        },
+        {
+          id: 402,
+          title: '고지도 해설 세미나',
+          date: '2024-09-03 13:00',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집중',
+        },
+      ],
+      participated: [
+        {
+          id: 403,
+          title: '독립운동 유적지 투어',
+          date: '2024-08-15 14:00',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집완료',
+        },
+        {
+          id: 404,
+          title: '역사토론 모임',
+          date: '2024-08-25 19:30',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집중',
+        },
+      ],
+    },
     reviews: [
       {
         id: 1,
-        reviewerName: '재즈매니아',
+        reviewerName: '문화해설가',
         reviewerAvatar: '/placeholder.svg?height=40&width=40',
         rating: 5,
-        content: '시간 약속을 잘 지키고 모임 분위기를 즐겁게 만들어주셨어요.',
-        date: '2023-05-15',
+        content: '모임이 알차고 유익했습니다. 감사합니다!',
+        date: '2024-07-12',
       },
     ],
   },
+  '6': { //모두 0개
+    id: 6,
+    nickname: '신입회원',
+    avatar: '/placeholder.svg?height=128&width=128',
+    district: '강남구',
+    gender: 'female',
+    age: 23,
+    mannerScore: 5.0,
+    createdAt: '2024-03-01',
+    bookmarkedEvents: 0,
+    meetings: {
+      hosted: [],
+      participated: [],
+    },
+    reviews: [],
+  },
+  '7': {
+    id: 7, // 1개 0개 사실 말은 안됨
+    nickname: '공간기획자',
+    avatar: '/placeholder.svg?height=128&width=128',
+    district: '송파구',
+    gender: 'female',
+    age: 30,
+    mannerScore: 4.7,
+    createdAt: '2023-06-30',
+    bookmarkedEvents: 4,
+    meetings: {
+      hosted: [
+        {
+          id: 501,
+          title: '소셜살롱 공간 소개 모임',
+          date: '2024-09-12 15:00',
+          image: '/placeholder.svg?height=120&width=240',
+          status: '모집중',
+        },
+      ],
+      participated: [],
+    },
+    reviews: [
+      {
+        id: 1,
+        reviewerName: '살롱참여자',
+        reviewerAvatar: '/placeholder.svg?height=40&width=40',
+        rating: 5,
+        content: '편안한 분위기 속에서 유익한 시간을 보낼 수 있었어요!',
+        date: '2024-09-13',
+      },
+    ],
+  },
+
 };
+
 
 export default function UserProfilePage(props: { params: Promise<{ id: string }> }) {
   const params = use(props.params);
@@ -210,12 +432,12 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
               </div>
               <div className="hover:bg-secondary/50 rounded-xl p-3 text-center transition-colors">
                 <div className="text-primary text-2xl font-bold">
-                  {userData.participatedMeetings}
+                  {userData.meetings.participated.length}
                 </div>
                 <div className="text-muted-foreground text-xs">참여 모임</div>
               </div>
               <div className="hover:bg-secondary/50 rounded-xl p-3 text-center transition-colors">
-                <div className="text-primary text-2xl font-bold">{userData.hostedMeetings}</div>
+                <div className="text-primary text-2xl font-bold">{userData.meetings.hosted.length}</div>
                 <div className="text-muted-foreground text-xs">주최 모임</div>
               </div>
             </div>
@@ -223,10 +445,10 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
         </motion.div>
 
         <motion.div
-          className="space-y-6 md:col-span-2"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+            className="space-y-6 md:col-span-2"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
         >
           <motion.div variants={itemVariants}>
             <div className="sinc-card p-6">
@@ -272,71 +494,107 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
           <motion.div variants={itemVariants}>
             <div className="sinc-card p-6">
               <h2 className="mb-4 text-xl font-medium">주최한 모임</h2>
-              {userData.hostedMeetings > 0 ? (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <Link
-                    href="/meetings/1"
-                    className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
-                  >
-                    <div className="relative aspect-video">
-                      <Image
-                        src="/placeholder.svg?height=120&width=240"
-                        alt="서울 재즈 페스티벌"
-                        fill
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      <Badge className="sinc-badge absolute top-2 right-2 bg-emerald-100 text-emerald-700">
-                        모집중
-                      </Badge>
-                    </div>
-                    <div className="p-3">
-                      <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
-                        재즈 페스티벌 같이 즐겨요
-                      </h3>
-                      <p className="text-muted-foreground mt-1 text-xs">2023-05-27 14:00</p>
-                    </div>
-                  </Link>
-                </div>
+              {userData.meetings.hosted.length > 0 ? (
+
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {userData.meetings.hosted.slice(0, 2).map((meeting) => (
+                        <Link
+                            key={meeting.id}
+                            href={`/meetings/${meeting.id}`}
+                            className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
+                        >
+                          <div className="relative aspect-video">
+                            <Image
+                                src={meeting.image}
+                                alt={meeting.title}
+                                fill
+                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                            <Badge className="sinc-badge absolute top-2 right-2 bg-emerald-100 text-emerald-700">
+                              {meeting.status}
+                            </Badge>
+                          </div>
+                          <div className="p-3">
+                            <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
+                              {meeting.title}
+                            </h3>
+                            <p className="text-muted-foreground mt-1 text-xs">{meeting.date}</p>
+                          </div>
+                        </Link>
+                    ))}
+
+                    {/*2개 이상인 경우부터 더보기 버튼 생성*/}
+                    {userData.meetings.hosted.length > 2 && (
+                        <Link href={`/profile/${userData.id}/meetings/hosted`} className="col-span-2">
+                          <Button
+                              variant="outline"
+                              className="flex w-full items-center justify-center rounded-xl"
+                          >
+                            <span>주최한 모임 더보기</span>
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                    )}
+                  </div>
+
               ) : (
-                <div className="text-muted-foreground py-8 text-center">
-                  <p>아직 주최한 모임이 없습니다</p>
-                </div>
+                  <div className="text-muted-foreground py-8 text-center">
+                    <p>아직 주최한 모임이 없습니다</p>
+                  </div>
               )}
             </div>
           </motion.div>
 
           <motion.div variants={itemVariants}>
             <div className="sinc-card p-6">
-              <h2 className="mb-4 text-xl font-medium">참여중인 모임</h2>
-              {userData.hostedMeetings > 0 ? (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <Link
-                    href="/meetings/1"
-                    className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
-                  >
-                    <div className="relative aspect-video">
-                      <Image
-                        src="/placeholder.svg?height=120&width=240"
-                        alt="서울 재즈 페스티벌"
-                        fill
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                      <Badge className="sinc-badge absolute top-2 right-2 bg-emerald-100 text-emerald-700">
-                        모집중
-                      </Badge>
-                    </div>
-                    <div className="p-3">
-                      <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
-                        재즈 페스티벌 같이 즐겨요
-                      </h3>
-                      <p className="text-muted-foreground mt-1 text-xs">2023-05-27 14:00</p>
-                    </div>
-                  </Link>
-                </div>
+              <h2 className="mb-4 text-xl font-medium">참여 중인 모임</h2>
+              {userData.meetings.participated.length > 0 ? (
+
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {userData.meetings.participated.slice(0, 2).map((meeting) => (
+                        <Link
+                            key={meeting.id}
+                            href={`/meetings/${meeting.id}`}
+                            className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
+                        >
+                          <div className="relative aspect-video">
+                            <Image
+                                src={meeting.image}
+                                alt={meeting.title}
+                                fill
+                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            />
+                            <Badge className="sinc-badge absolute top-2 right-2 bg-emerald-100 text-emerald-700">
+                              {meeting.status}
+                            </Badge>
+                          </div>
+                          <div className="p-3">
+                            <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
+                              {meeting.title}
+                            </h3>
+                            <p className="text-muted-foreground mt-1 text-xs">{meeting.date}</p>
+                          </div>
+                        </Link>
+                    ))}
+
+                    {/*2개 이상인 경우부터 더보기 버튼 생성*/}
+                    {userData.meetings.participated.length > 2 && (
+                        <Link href={`/profile/${userData.id}/meetings/participated`} className="col-span-2">
+                          <Button
+                              variant="outline"
+                              className="flex w-full items-center justify-center rounded-xl col-span-2"
+                          >
+                            <span>참여 중인 모임 더보기</span>
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                    )}
+
+                  </div>
               ) : (
-                <div className="text-muted-foreground py-8 text-center">
-                  <p>아직 주최한 모임이 없습니다</p>
-                </div>
+                  <div className="text-muted-foreground py-8 text-center">
+                    <p>아직 주최한 모임이 없습니다</p>
+                  </div>
               )}
             </div>
           </motion.div>
