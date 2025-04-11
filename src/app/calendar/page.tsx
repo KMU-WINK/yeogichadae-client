@@ -403,13 +403,14 @@ export default function CalendarPage() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <div className="sinc-card flex flex-col items-center p-6">
-            <h2 className="mb-4 self-start text-xl font-medium">날짜 선택</h2>
+            <h2 className="mb-4 self-start text-xl font-medium ">날짜 선택</h2>
             <Calendar
               mode="single"
               selected={date}
               onSelect={setDate}
               locale={ko}
               className="mx-auto rounded-xl"
+              
               fixedWeeks={true}
               ISOWeek={false}
               modifiers={{
@@ -417,10 +418,10 @@ export default function CalendarPage() {
                 event2: (date) => getEventCountForDate(date) === 2,
                 event3plus: (date) => getEventCountForDate(date) >= 3,
               }}
-              modifiersStyles={{
-                event1: { backgroundColor: colors.rose['50'], color: 'black' }, // light blue
-                event2: { backgroundColor: colors.rose['100'], color: 'black' }, // medium blue
-                event3plus: { backgroundColor: colors.rose['200'], color: 'black' },
+              modifiersClassNames={{
+                event1: "bg-rose-50 text-black day:hover:bg-rose-50",
+                event2: "bg-rose-100 text-black day:hover:bg-rose-100",
+                event3plus: "bg-rose-200 text-black day:hover:bg-rose-200",
               }}
             />
           </div>
