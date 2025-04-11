@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRef } from 'react';
 
 import Link from 'next/link';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -14,7 +15,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 import { motion } from 'framer-motion';
 import { ArrowLeft, Info, MessageSquare, Search } from 'lucide-react';
-import { parseAsInteger, useQueryState } from 'nuqs';
+// import { parseAsInteger, useQueryState } from 'nuqs';
 import { isSameMinute as isSameMinuteFn, format } from 'date-fns';
 
 // 채팅방 데이터 (실제로는 API에서 가져올 것)
@@ -176,8 +177,11 @@ export default function ChatsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [message, setMessage] = useState('');
 
-  const [chatId, setChatId] = useQueryState('id', parseAsInteger);
+  // const [chatId, setChatId] = useQueryState('id', parseAsInteger);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const searchParams = useSearchParams();
+  const chatId = parseInt(searchParams.get('id') || '', 10);
+  const router = useRouter();
 
   /* 시간에 따른 채팅 표시 관련 함수들*/
 // 같은 시간(분)인지 확인
@@ -217,15 +221,6 @@ export default function ChatsPage() {
       chat.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       chat.eventTitle.toLowerCase().includes(searchQuery.toLowerCase()),
   );
-
-  useEffect(() => {
-    if (chatId) {
-      const chat = filteredChats.find((c) => c.id === chatId);
-      if (chat) {
-        setChatId(chat.id);
-      }
-    }
-  }, [chatId, filteredChats]);
 
   // 선택된 채팅방 정보
   const selectedChatData = activeChats.find((chat) => chat.id === chatId);
@@ -434,7 +429,8 @@ export default function ChatsPage() {
   const isMobile = useMediaQuery('(max-width: 768px)');
 
   const handleChatClick = (chatId: number) => {
-    setChatId(chatId);
+    // setChatId(chatId);
+    router.push(`?id=${chatId}`);
   };
 
   return (
@@ -521,7 +517,9 @@ export default function ChatsPage() {
                       variant="ghost"
                       size="icon"
                       className="mr-2"
-                      onClick={() => setChatId(null)}
+                      // onClick={() => setChatId(null)}
+                      onClick={() => router.back()}
+
                     >
                       <ArrowLeft className="h-5 w-5" />
                     </Button>
