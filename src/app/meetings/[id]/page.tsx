@@ -2,12 +2,22 @@
 
 import { use } from 'react';
 
+
+
 import Image from 'next/image';
 import Link from 'next/link';
+
+
+
+import { handleShare } from '@/app/utils/clipboard';
+
+
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+
+
 
 import { currentUserId, meetingParticipants, meetings } from '@/__mock__';
 import { motion } from 'framer-motion';
@@ -41,21 +51,6 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
         stiffness: 100,
       },
     },
-  };
-
-  const handleShare = () => {
-    // 현재 URL을 클립보드에 복사
-    const url = window.location.href;
-    navigator.clipboard
-      .writeText(url)
-      .then(() => {
-        toast('링크가 복사되었습니다', {
-          description: '친구들에게 공유해보세요!',
-        });
-      })
-      .catch((err) => {
-        console.error('클립보드 복사 실패:', err);
-      });
   };
 
   const handleLeaveGroup = () => {
