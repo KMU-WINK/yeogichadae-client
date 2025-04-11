@@ -187,7 +187,7 @@ const chatRoomsData = [
 export default function ChatsPage() {
   const [activeChats] = useState(chatRoomsData);
   const [searchQuery, setSearchQuery] = useState('');
-  const [message, setMessage] = useState('');
+  const messageInputRef = useRef<HTMLInputElement>(null);
 
   // const [chatId, setChatId] = useQueryState('id', parseAsInteger);
   const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -339,11 +339,13 @@ export default function ChatsPage() {
 
   // 메시지 전송 핸들러
   const handleSendMessage = () => {
-    if (!message.trim() || !chatId) return;
+    if (!messageInputRef.current || !messageInputRef.current.value.trim() || !chatId) return;
 
     // 실제로는 API 호출하여 메시지 전송
-    console.log(`메시지 전송: ${message}`);
-    setMessage('');
+    console.log(`메시지 전송: ${messageInputRef.current.value}`);
+
+    // 입력값 초기화
+    messageInputRef.current.value = '';
   };
 
   const containerVariants = {
@@ -605,11 +607,10 @@ export default function ChatsPage() {
                       <div className="border-t p-3">
                         <div className="flex gap-2">
                           <Input
-                              value={message}
-                              onChange={(e) => setMessage(e.target.value)}
+                              ref={messageInputRef}                      
                               placeholder="메시지를 입력하세요..."
                               className="rounded-xl"
-                              onKeyDown={(e) => {
+                              onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                                 if (e.key === 'Enter' && !e.shiftKey) {
                                   e.preventDefault();
                                   handleSendMessage();
@@ -618,7 +619,6 @@ export default function ChatsPage() {
                           />
                           <Button
                               onClick={handleSendMessage}
-                              disabled={!message.trim()}
                               className="rounded-xl"
                           >
                             <MessageSquare className="mr-1 h-4 w-4"/>
