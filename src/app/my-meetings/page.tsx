@@ -1,7 +1,7 @@
 'use client';
 
 import type React from 'react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 
 
@@ -14,13 +14,10 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { handleShare } from '../utils/clipboard';
+import { pastMeetings } from '../utils/dummyData';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll } from 'framer-motion';
 import { Calendar, MapPin, MessageSquare, Share2, Users } from 'lucide-react';
-
-
-
-
 
 // 내 모임 데이터 (실제로는 API에서 가져올 것)
 const activeMeetings = [
@@ -52,25 +49,15 @@ const activeMeetings = [
   },
 ];
 
-const pastMeetings = [
-  {
-    id: 3,
-    title: '마라톤 완주 도전',
-    eventId: 6,
-    eventTitle: '서울 마라톤',
-    eventImage: '/placeholder.svg?height=80&width=120',
-    meetingTime: '2023-04-16 08:00',
-    district: '중구',
-    place: '광화문광장',
-    participants: 5,
-    maxPeople: 5,
-    isHost: false,
-  },
-];
+const INITIAL_PAGE = 5;
+const INCREASE_PER_PAGE = 1;
 
 export default function MyMeetingsPage() {
-  const [, setActiveTab] = useState('active');
+  const [activeTab, setActiveTab] = useState('active');
   const router = useRouter();
+  const [visibleMeetings, setVisibleMeetings] = useState(pastMeetings.slice(0, INITIAL_PAGE));
+  const [page, setPage] = useState(INITIAL_PAGE);
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -104,6 +91,35 @@ export default function MyMeetingsPage() {
     router.push(`/meetings/${meetingId}/reviews`);
   };
 
+  const loadMore = () => {
+    const nextPage = page + 1;
+    const nextItems = pastMeetings.slice(0, nextPage * INCREASE_PER_PAGE);
+    setVisibleMeetings(nextItems);
+    setPage(nextPage);
+  };
+
+  useEffect(() => {
+    if (activeTab !== 'past') return; // 과거 모임 탭 아닐 경우 return
+    if (!observerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          loadMore();
+        }
+      },
+      {
+        rootMargin: '100px',
+        threshold: 1.0,
+      },
+    );
+
+    observer.observe(observerRef.current);
+
+    return () => {
+      if (observerRef.current) observer.unobserve(observerRef.current);
+    };
+  }, [activeTab, observerRef, page]);
 
   return (
     <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
@@ -164,15 +180,17 @@ export default function MyMeetingsPage() {
                         </div>
                         <div className="flex-1">
                           <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="font-medium text-xl">{meeting.title}</h3>
+                            <h3 className="text-xl font-medium">{meeting.title}</h3>
                             {meeting.isHost && (
                               <Badge className="sinc-badge bg-primary/10 text-primary ml-auto">
                                 주최자
                               </Badge>
                             )}
                           </div>
-                          <p className="text-muted-foreground mb-2 text-base font-medium">{meeting.eventTitle}</p>
-                          <div className="mb-3 grid gap-1.5 text-xs grid-cols-2">
+                          <p className="text-muted-foreground mb-2 text-base font-medium">
+                            {meeting.eventTitle}
+                          </p>
+                          <div className="mb-3 grid grid-cols-2 gap-1.5 text-xs">
                             <div className="flex items-center gap-2">
                               <Calendar className="text-primary h-4 w-4" />
                               <span>{meeting.meetingTime}</span>
@@ -230,21 +248,21 @@ export default function MyMeetingsPage() {
         </TabsContent>
 
         <TabsContent value="past">
-          {pastMeetings.length > 0 ? (
+          {visibleMeetings.length > 0 ? (
             <motion.div
               className="space-y-5"
               variants={containerVariants}
               initial="hidden"
               animate="visible"
             >
-              {pastMeetings.map((meeting) => (
+              {visibleMeetings.map((meeting) => (
                 <motion.div key={meeting.id} variants={itemVariants}>
                   <div
                     className="sinc-card cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-md"
                     onClick={() => router.push(`/meetings/${meeting.id}`)}
                   >
                     <div className="p-6 pb-6 md:space-y-3">
-                      <div className="flex flex-row gap-4 mb-0">
+                      <div className="mb-0 flex flex-row gap-4">
                         <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl sm:h-auto sm:w-48">
                           <Image
                             src={meeting.eventImage || '/placeholder.svg'}
@@ -260,7 +278,7 @@ export default function MyMeetingsPage() {
                                 주최자
                               </Badge>
                             )}
-                            <h3 className="font-medium text-base sm:text-xl">{meeting.title}</h3>
+                            <h3 className="text-base font-medium sm:text-xl">{meeting.title}</h3>
                           </div>
                           <p className="text-muted-foreground mb-2 text-sm sm:text-base">
                             {meeting.eventTitle}
@@ -271,7 +289,7 @@ export default function MyMeetingsPage() {
                               <span className="text-xs">{meeting.meetingTime}</span>
                             </div>
                           </div>
-                          <div className="hidden sm:flex flex-wrap gap-3 justify-end ">
+                          <div className="hidden flex-wrap justify-end gap-3 sm:flex">
                             <Button
                               variant="outline"
                               className="flex w-full items-center gap-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 sm:w-fit"
@@ -283,7 +301,7 @@ export default function MyMeetingsPage() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex flex-wrap gap-3 sm:hidden mt-2">
+                      <div className="mt-2 flex flex-wrap gap-3 sm:hidden">
                         <Button
                           variant="outline"
                           className="flex w-full items-center gap-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 sm:w-fit"
@@ -297,6 +315,8 @@ export default function MyMeetingsPage() {
                   </div>
                 </motion.div>
               ))}
+              {/* 관찰 대상 엘리먼트 */}
+              <div ref={observerRef} className="h-10" />
             </motion.div>
           ) : (
             <div className="sinc-card p-16 text-center">
