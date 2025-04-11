@@ -15,6 +15,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Info, MessageSquare, Search } from 'lucide-react';
 import { parseAsInteger, useQueryState } from 'nuqs';
+import { isSameMinute as isSameMinuteFn, format } from 'date-fns';
 
 // 채팅방 데이터 (실제로는 API에서 가져올 것)
 const chatRoomsData = [
@@ -178,6 +179,38 @@ export default function ChatsPage() {
   const [chatId, setChatId] = useQueryState('id', parseAsInteger);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
+  /* 시간에 따른 채팅 표시 관련 함수들*/
+// 같은 시간(분)인지 확인
+  const isSameMinute = (a: string, b?: string) => {
+    if (!b) return false;
+    return isSameMinuteFn(new Date(a), new Date(b));
+  };
+
+// 같은 사용자인지 확인
+  const isSameSender = (a: { senderId: number }, b?: { senderId: number }) => {
+    if (!b) return false;
+    return a.senderId === b.senderId;
+  };
+
+// 메시지 묶음 중 마지막인지 확인
+//   const isLastInGroup = (
+//       currentIndex: number,
+//       messages: { senderId: number; timestamp: string }[]
+//   ) => {
+//     const current = messages[currentIndex];
+//     const next = messages[currentIndex + 1];
+//     if (!next) return true; // 마지막 메시지면 무조건 true
+//
+//     return !(
+//         isSameSender(current, next) &&
+//         isSameMinute(current.timestamp, next.timestamp)
+//     );
+//   };
+// 시간 포맷팅
+  const formatTime = (timestamp: string) => format(new Date(timestamp), 'HH:mm');
+
+  /* */
+
   // 검색 필터링
   const filteredChats = activeChats.filter(
     (chat) =>
@@ -196,6 +229,169 @@ export default function ChatsPage() {
 
   // 선택된 채팅방 정보
   const selectedChatData = activeChats.find((chat) => chat.id === chatId);
+
+  // 메세지 예시2
+  const messages = [
+    {
+      id: 1,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '모임 당일에는 난지한강공원 정문에서 만나면 좋을 것 같아요. 어떻게 생각하시나요?',
+      timestamp: '2023-05-20T10:20:00',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },
+    {
+      id: 2,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '정문 근처에 벤치도 있어서 기다리기 좋아요!',
+      timestamp: '2023-05-20T10:20:25',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },
+    {
+      id: 3,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '10분 전쯤 도착해서 자리 맡아둘게요.',
+      timestamp: '2023-05-20T10:20:59',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },
+    {
+      id: 4,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '1분 초과함',
+      timestamp: '2023-05-20T10:21:09',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },
+    {
+      id: 5,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '1분 초과함 테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },
+    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },
+    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:21:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:22:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },    {
+      id: 6,
+      senderId: 2,
+      senderName: '재즈매니아',
+      content: '스크롤테스트',
+      timestamp: '2023-05-20T10:24:19',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },
+
+      //현재 senderId = 1이 내 메세지임
+    {
+      id: 100,
+      senderId: 1,
+      senderName: '나',
+      content: '좋은 아이디어네요!',
+      timestamp: '2023-05-20T10:25:00',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },
+    {
+      id: 101,
+      senderId: 1,
+      senderName: '나',
+      content: '정문 앞에서 기다릴게요.',
+      timestamp: '2023-05-20T10:25:30',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },
+    {
+      id: 102,
+      senderId: 1,
+      senderName: '나',
+      content: '방금 도착했어요!',
+      timestamp: '2023-05-20T10:26:05',
+      avatarUrl: '/placeholder.svg?height=40&width=40',
+    },
+  ];
 
   useEffect(() => {
     if (bottomRef.current) {
@@ -349,87 +545,155 @@ export default function ChatsPage() {
 
                 <div className="bg-secondary/10 flex-1 space-y-4 overflow-y-auto p-4">
                   {/* 메시지 예시 */}
-                  <div className="flex justify-end">
-                    <div className="flex max-w-[80%] flex-row-reverse">
-                      <div className="mr-2 space-y-1">
-                        <div className="bg-primary text-primary-foreground rounded-2xl rounded-tr-none px-4 py-2">
-                          <p className="text-sm">
-                            좋은 생각이에요! 정문에서 만나는 게 좋을 것 좋은 생각이에요! 정문에서
-                            만나는 게 좋을 것 같습니다.좋은 생각이에요! 정문에서 만나는 게 좋을 것
-                            같습니다.좋은 생각이에요! 정문에서 만나는 게 좋을 것 같습니다.좋은
-                            생각이에요! 정문에서 만나는 게 좋을 것 같습니다.좋은 생각이에요!
-                            정문에서 만나는 게 좋을 것 같습니다.좋은 생각이에요! 정문에서 만나는 게
-                            좋을 것 같습니다.좋은 생각이에요! 정문에서 만나는 게 좋을 것 같습니다.
-                          </p>
-                        </div>
-                        <p className="text-muted-foreground text-right text-xs">10:22</p>
-                      </div>
-                    </div>
-                  </div>
+                  {/*<div className="flex justify-end">*/}
+                  {/*  <div className="flex max-w-[80%] flex-row-reverse">*/}
+                  {/*    <div className="mr-2 space-y-1">*/}
+                  {/*      <div className="bg-primary text-primary-foreground rounded-2xl rounded-tr-none px-4 py-2">*/}
+                  {/*        <p className="text-sm">*/}
+                  {/*          좋은 생각이에요! 정문에서 만나는 게 좋을 것 좋은 생각이에요! 정문에서*/}
+                  {/*          만나는 게 좋을 것 같습니다.좋은 생각이에요! 정문에서 만나는 게 좋을 것*/}
+                  {/*          같습니다.좋은 생각이에요! 정문에서 만나는 게 좋을 것 같습니다.좋은*/}
+                  {/*          생각이에요! 정문에서 만나는 게 좋을 것 같습니다.좋은 생각이에요!*/}
+                  {/*          정문에서 만나는 게 좋을 것 같습니다.좋은 생각이에요! 정문에서 만나는 게*/}
+                  {/*          좋을 것 같습니다.좋은 생각이에요! 정문에서 만나는 게 좋을 것 같습니다.*/}
+                  {/*        </p>*/}
+                  {/*      </div>*/}
+                  {/*      <p className="text-muted-foreground text-right text-xs">10:22</p>*/}
+                  {/*    </div>*/}
+                  {/*  </div>*/}
+                  {/*</div>*/}
 
-                  {Array.from({ length: 50 }).map((_, index) => (
-                    <div key={index} className="flex justify-start">
-                      <div className="flex max-w-[80%]">
-                        <Link href="/profile/2">
-                          <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">
-                            <AvatarImage
-                              src="/placeholder.svg?height=40&width=40"
-                              alt="재즈매니아"
-                            />
-                            <AvatarFallback className="bg-primary/10 text-primary">
-                              재즈
-                            </AvatarFallback>
-                          </Avatar>
-                        </Link>
-                        <div className="space-y-1">
-                          <Link href="/profile/2">
-                            <p className="text-xs">재즈매니아</p>
-                          </Link>
-                          <div className="bg-secondary mt-1 rounded-2xl rounded-tl-none px-4 py-2">
-                            <p className="text-sm">안녕하세요! 모임에 참여해주셔서 감사합니다.</p>
+                  {/*{Array.from({ length: 50 }).map((_, index) => (*/}
+                  {/*  <div key={index} className="flex justify-start">*/}
+                  {/*    <div className="flex max-w-[80%]">*/}
+                  {/*      <Link href="/profile/2">*/}
+                  {/*        <Avatar className="border-primary/10 mr-2 h-8 w-8 border-2">*/}
+                  {/*          <AvatarImage*/}
+                  {/*            src="/placeholder.svg?height=40&width=40"*/}
+                  {/*            alt="재즈매니아"*/}
+                  {/*          />*/}
+                  {/*          <AvatarFallback className="bg-primary/10 text-primary">*/}
+                  {/*            재즈*/}
+                  {/*          </AvatarFallback>*/}
+                  {/*        </Avatar>*/}
+                  {/*      </Link>*/}
+                  {/*      <div className="space-y-1">*/}
+                  {/*        <Link href="/profile/2">*/}
+                  {/*          <p className="text-xs">재즈매니아</p>*/}
+                  {/*        </Link>*/}
+                  {/*        <div className="bg-secondary mt-1 rounded-2xl rounded-tl-none px-4 py-2">*/}
+                  {/*          <p className="text-sm">안녕하세요! 모임에 참여해주셔서 감사합니다.</p>*/}
+                  {/*        </div>*/}
+                  {/*        <p className="text-muted-foreground text-xs">10:15</p>*/}
+                  {/*      </div>*/}
+                  {/*    </div>*/}
+                  {/*  </div>*/}
+                  {/*))}*/}
+                  {messages.map((msg, index) => {
+                    const prev = messages[index - 1];
+                    const next = messages[index + 1];
+
+                    const showAvatarAndName =
+                        !isSameSender(msg, prev) || !isSameMinute(msg.timestamp, prev?.timestamp);
+                    const showTime =
+                        !isSameSender(msg, next) || !isSameMinute(msg.timestamp, next?.timestamp);
+
+                    const currentUserId = 1; // 나중에 실제 로그인 유저 아이디로 바꾸기
+                    const isMine = msg.senderId === currentUserId;
+
+                    return (
+                        <div key={msg.id} className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}>
+                          <div className={`flex max-w-[80%] ${isMine ? 'justify-end ml-auto' : ''}`}>
+                            {!isMine ? (
+                                <>
+                                  {/* 프로필 아바타 공간 고정 */}
+                                  <div className="w-9 mr-1.5 flex-shrink-0">
+                                    {showAvatarAndName ? (
+                                        <Link href={`/profile/${msg.senderId}`}>
+                                          <Avatar className="h-8 w-8 border-2 border-primary/10">
+                                            <AvatarImage src={msg.avatarUrl} />
+                                            <AvatarFallback>{msg.senderName?.charAt(0)}</AvatarFallback>
+                                          </Avatar>
+                                        </Link>
+                                    ) : (
+                                        <div className="h-8 w-8" />
+                                    )}
+                                  </div>
+
+                                  {/* 메시지 + 시간 */}
+                                  <div className="flex flex-col gap-1">
+                                    {showAvatarAndName && (
+                                        <Link href={`/profile/${msg.senderId}`}>
+                                          <p className="text-xs">{msg.senderName}</p>
+                                        </Link>
+                                    )}
+                                    <div className="flex items-end gap-1">
+                                      <div className="bg-secondary rounded-2xl rounded-tl-none px-4 py-2">
+                                        <p className="text-sm">{msg.content}</p>
+                                      </div>
+                                      {showTime && (
+                                          <span className="text-xs text-muted-foreground mb-0.5">
+                                            {formatTime(msg.timestamp)}
+                                          </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </>
+                            ) : (
+                                // 내 메시지
+                                <div className="flex items-end gap-1 text-right">
+                                  {showTime && (
+                                      <span className="text-xs text-muted-foreground mb-0.5">
+                                        {formatTime(msg.timestamp)}
+                                      </span>
+                                  )}
+                                  <div
+                                      className="bg-primary text-primary-foreground rounded-2xl rounded-tr-none px-4 py-2">
+                                      <p className="text-sm">{msg.content}</p>
+                                  </div>
+                                </div>
+                            )}
                           </div>
-                          <p className="text-muted-foreground text-xs">10:15</p>
                         </div>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
 
-                  <div ref={bottomRef} />
+
+                  <div ref={bottomRef}/>
                 </div>
-
                 <div className="border-t p-3">
                   <div className="flex gap-2">
                     <Input
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      placeholder="메시지를 입력하세요..."
-                      className="rounded-xl"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                          e.preventDefault();
-                          handleSendMessage();
-                        }
-                      }}
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder="메시지를 입력하세요..."
+                        className="rounded-xl"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            handleSendMessage();
+                          }
+                        }}
                     />
                     <Button
-                      onClick={handleSendMessage}
-                      disabled={!message.trim()}
-                      className="rounded-xl"
+                        onClick={handleSendMessage}
+                        disabled={!message.trim()}
+                        className="rounded-xl"
                     >
-                      <MessageSquare className="mr-1 h-4 w-4" />
+                      <MessageSquare className="mr-1 h-4 w-4"/>
                       전송
                     </Button>
                   </div>
                 </div>
               </>
             ) : (
-              <div className="flex h-full items-center justify-center p-6 text-center">
-                <div>
-                  <MessageSquare className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
-                  <h3 className="mb-2 text-xl font-medium">채팅방을 선택해주세요</h3>
-                  <p className="text-muted-foreground">
-                    왼쪽 목록에서 채팅방을 선택하면 대화 내용이 여기에 표시됩니다
-                  </p>
+                <div className="flex h-full items-center justify-center p-6 text-center">
+                  <div>
+                    <MessageSquare className="text-muted-foreground mx-auto mb-4 h-12 w-12"/>
+                    <h3 className="mb-2 text-xl font-medium">채팅방을 선택해주세요</h3>
+                    <p className="text-muted-foreground">
+                      왼쪽 목록에서 채팅방을 선택하면 대화 내용이 여기에 표시됩니다
+                    </p>
                 </div>
               </div>
             )}
