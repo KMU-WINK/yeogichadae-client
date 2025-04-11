@@ -202,7 +202,7 @@ export default function MyMeetingsPage() {
                             <Button
                               variant="outline"
                               className="flex items-center gap-2 rounded-xl"
-                              onClick={(e) => handleShare(e, meeting.id)}
+                              onClick={(e) => handleShare(e, 'meeting', meeting.id)}
                             >
                               <Share2 className="h-4 w-4" />
                               <span>공유하기</span>

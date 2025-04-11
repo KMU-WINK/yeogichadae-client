@@ -110,7 +110,7 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
           <Button
             variant="outline"
             className="flex items-center gap-2 rounded-xl"
-            onClick={handleShare}
+            onClick={( e) =>handleShare(e, 'meeting', meetingData.id)}
           >
             <Share2 className="h-4 w-4" />
             <span>공유하기</span>

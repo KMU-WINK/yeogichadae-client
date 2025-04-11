@@ -82,7 +82,7 @@ export default function EventDetailPage(props: { params: Promise<{ id: string }>
           <Button
             variant="ghost"
             size="icon"
-            onClick={handleShare}
+            onClick={(e) => handleShare(e, 'event', eventData.id)}
             className="hover:bg-primary/5 hover:text-primary h-10 w-10 rounded-full transition-all duration-200"
           >
             <Share2 className="h-5 w-5" />
