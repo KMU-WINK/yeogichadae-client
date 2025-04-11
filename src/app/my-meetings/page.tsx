@@ -3,6 +3,8 @@
 import type React from 'react';
 import { useState } from 'react';
 
+
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -11,9 +13,14 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+import { handleShare } from '../utils/clipboard';
+
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, MessageSquare, Share2, Users } from 'lucide-react';
-import { toast } from 'sonner';
+
+
+
+
 
 // 내 모임 데이터 (실제로는 API에서 가져올 것)
 const activeMeetings = [
@@ -97,22 +104,6 @@ export default function MyMeetingsPage() {
     router.push(`/meetings/${meetingId}/reviews`);
   };
 
-  // 공유 함수 추가
-  const handleShare = (e: React.MouseEvent, meetingId: number) => {
-    e.stopPropagation();
-    // 현재 URL을 클립보드에 복사
-    const url = `${window.location.origin}/meetings/${meetingId}`;
-    navigator.clipboard
-      .writeText(url)
-      .then(() => {
-        toast('링크가 복사되었습니다', {
-          description: '친구들에게 공유해보세요!',
-        });
-      })
-      .catch((err) => {
-        console.error('클립보드 복사 실패:', err);
-      });
-  };
 
   return (
     <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
@@ -162,7 +153,7 @@ export default function MyMeetingsPage() {
                     onClick={() => router.push(`/meetings/${meeting.id}`)}
                   >
                     <div className="p-6">
-                      <div className="flex flex-col gap-6 md:flex-row">
+                      <div className="flex flex-col gap-4 md:flex-row">
                         <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-xl md:h-auto md:w-48">
                           <Image
                             src={meeting.eventImage || '/placeholder.svg'}
@@ -172,16 +163,16 @@ export default function MyMeetingsPage() {
                           />
                         </div>
                         <div className="flex-1">
-                          <div className="mb-2 flex flex-wrap items-center gap-2">
-                            <h3 className="text-xl font-medium">{meeting.title}</h3>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="font-medium text-xl">{meeting.title}</h3>
                             {meeting.isHost && (
                               <Badge className="sinc-badge bg-primary/10 text-primary ml-auto">
                                 주최자
                               </Badge>
                             )}
                           </div>
-                          <p className="text-muted-foreground mb-4">{meeting.eventTitle}</p>
-                          <div className="mb-5 grid grid-cols-1 gap-3 text-sm md:grid-cols-2">
+                          <p className="text-muted-foreground mb-2 text-base font-medium">{meeting.eventTitle}</p>
+                          <div className="mb-3 grid gap-1.5 text-xs grid-cols-2">
                             <div className="flex items-center gap-2">
                               <Calendar className="text-primary h-4 w-4" />
                               <span>{meeting.meetingTime}</span>
@@ -252,8 +243,8 @@ export default function MyMeetingsPage() {
                     className="sinc-card cursor-pointer overflow-hidden transition-all duration-300 hover:shadow-md"
                     onClick={() => router.push(`/meetings/${meeting.id}`)}
                   >
-                    <div className="p-6 pb-3">
-                      <div className="flex flex-row gap-6">
+                    <div className="p-6 pb-6 md:space-y-3">
+                      <div className="flex flex-row gap-4 mb-0">
                         <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl sm:h-auto sm:w-48">
                           <Image
                             src={meeting.eventImage || '/placeholder.svg'}
@@ -263,13 +254,13 @@ export default function MyMeetingsPage() {
                           />
                         </div>
                         <div className="flex-1">
-                          <div className="flex flex-wrap items-center gap-2">
+                          <div className="flex flex-wrap items-center gap-4">
                             {meeting.isHost && (
                               <Badge className="sinc-badge bg-primary/10 text-primary">
                                 주최자
                               </Badge>
                             )}
-                            <h3 className="font-medium sm:text-xl">{meeting.title}</h3>
+                            <h3 className="font-medium text-base sm:text-xl">{meeting.title}</h3>
                           </div>
                           <p className="text-muted-foreground mb-2 text-sm sm:text-base">
                             {meeting.eventTitle}
@@ -280,9 +271,19 @@ export default function MyMeetingsPage() {
                               <span className="text-xs">{meeting.meetingTime}</span>
                             </div>
                           </div>
+                          <div className="hidden sm:flex flex-wrap gap-3 justify-end ">
+                            <Button
+                              variant="outline"
+                              className="flex w-full items-center gap-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 sm:w-fit"
+                              onClick={(e) => handleReviewClick(e, meeting.id)}
+                            >
+                              <Calendar className="h-2 w-2" />
+                              <span className="text-xs">후기 작성</span>
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex flex-wrap gap-3">
+                      <div className="flex flex-wrap gap-3 sm:hidden mt-2">
                         <Button
                           variant="outline"
                           className="flex w-full items-center gap-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 sm:w-fit"
