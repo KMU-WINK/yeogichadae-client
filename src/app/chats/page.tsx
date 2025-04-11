@@ -3,20 +3,32 @@
 import { useEffect, useState } from 'react';
 import { useRef } from 'react';
 
+
+
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
+
+
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 
+
+
+// import { parseAsInteger, useQueryState } from 'nuqs';
+import { format, isSameMinute as isSameMinuteFn } from 'date-fns';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Info, MessageSquare, Search } from 'lucide-react';
-// import { parseAsInteger, useQueryState } from 'nuqs';
-import { isSameMinute as isSameMinuteFn, format } from 'date-fns';
+
+
+
+
 
 // 채팅방 데이터 (실제로는 API에서 가져올 것)
 const chatRoomsData = [
@@ -276,88 +288,19 @@ export default function ChatsPage() {
       avatarUrl: '/placeholder.svg?height=40&width=40',
     },
     {
-      id: 6,
+      id: 7,
       senderId: 2,
       senderName: '재즈매니아',
       content: '스크롤테스트',
       timestamp: '2023-05-20T10:21:19',
       avatarUrl: '/placeholder.svg?height=40&width=40',
-    },    {
-      id: 6,
+    },
+    {
+      id: 8,
       senderId: 2,
       senderName: '재즈매니아',
       content: '스크롤테스트',
       timestamp: '2023-05-20T10:21:19',
-      avatarUrl: '/placeholder.svg?height=40&width=40',
-    },    {
-      id: 6,
-      senderId: 2,
-      senderName: '재즈매니아',
-      content: '스크롤테스트',
-      timestamp: '2023-05-20T10:21:19',
-      avatarUrl: '/placeholder.svg?height=40&width=40',
-    },    {
-      id: 6,
-      senderId: 2,
-      senderName: '재즈매니아',
-      content: '스크롤테스트',
-      timestamp: '2023-05-20T10:21:19',
-      avatarUrl: '/placeholder.svg?height=40&width=40',
-    },    {
-      id: 6,
-      senderId: 2,
-      senderName: '재즈매니아',
-      content: '스크롤테스트',
-      timestamp: '2023-05-20T10:21:19',
-      avatarUrl: '/placeholder.svg?height=40&width=40',
-    },    {
-      id: 6,
-      senderId: 2,
-      senderName: '재즈매니아',
-      content: '스크롤테스트',
-      timestamp: '2023-05-20T10:21:19',
-      avatarUrl: '/placeholder.svg?height=40&width=40',
-    },    {
-      id: 6,
-      senderId: 2,
-      senderName: '재즈매니아',
-      content: '스크롤테스트',
-      timestamp: '2023-05-20T10:21:19',
-      avatarUrl: '/placeholder.svg?height=40&width=40',
-    },    {
-      id: 6,
-      senderId: 2,
-      senderName: '재즈매니아',
-      content: '스크롤테스트',
-      timestamp: '2023-05-20T10:21:19',
-      avatarUrl: '/placeholder.svg?height=40&width=40',
-    },    {
-      id: 6,
-      senderId: 2,
-      senderName: '재즈매니아',
-      content: '스크롤테스트',
-      timestamp: '2023-05-20T10:21:19',
-      avatarUrl: '/placeholder.svg?height=40&width=40',
-    },    {
-      id: 6,
-      senderId: 2,
-      senderName: '재즈매니아',
-      content: '스크롤테스트',
-      timestamp: '2023-05-20T10:21:19',
-      avatarUrl: '/placeholder.svg?height=40&width=40',
-    },    {
-      id: 6,
-      senderId: 2,
-      senderName: '재즈매니아',
-      content: '스크롤테스트',
-      timestamp: '2023-05-20T10:22:19',
-      avatarUrl: '/placeholder.svg?height=40&width=40',
-    },    {
-      id: 6,
-      senderId: 2,
-      senderName: '재즈매니아',
-      content: '스크롤테스트',
-      timestamp: '2023-05-20T10:24:19',
       avatarUrl: '/placeholder.svg?height=40&width=40',
     },
 
