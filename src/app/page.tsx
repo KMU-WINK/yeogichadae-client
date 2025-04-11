@@ -2,8 +2,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -38,6 +40,8 @@ export default function Home() {
   const [category, setCategory] = useState<string[]>(['전체']);
   const [feeOption, setFeeOption] = useState('전체');
   const [filteredEvents, setFilteredEvents] = useState(events);
+  const router = useRouter();
+
 
   const allEventsRef = useRef<HTMLDivElement>(null);
 
@@ -209,8 +213,10 @@ export default function Home() {
           >
             {displayEvents.map((event) => (
               <motion.div key={event.id} variants={itemVariants}>
-                <Link href={`/events/${event.id}`} className="group">
-                  <div className="sinc-card flex h-full flex-col overflow-hidden transition-all duration-300 hover:shadow-lg">
+                {/*<Link href={`/events/${event.id}`} className="group">*/}
+                  <div className="sinc-card flex h-full flex-col overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer"
+                       onClick={() => router.push(`/events/${event.id}`)}
+                  >
                     <div className="relative h-48 w-full overflow-hidden">
                       <Image
                         src={event.image || '/placeholder.svg'}
@@ -260,7 +266,7 @@ export default function Home() {
                       </Link>
                     </div>
                   </div>
-                </Link>
+                {/*</Link>*/}
               </motion.div>
             ))}
           </motion.div>
@@ -407,8 +413,10 @@ export default function Home() {
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredEvents.map((event) => (
               <motion.div key={event.id} variants={itemVariants}>
-                <Link href={`/events/${event.id}`} className="group">
-                  <div className="sinc-card flex h-full flex-col overflow-hidden transition-all duration-300 hover:shadow-lg">
+                {/*<Link href={`/events/${event.id}`} className="group">*/}
+                  <div className="sinc-card flex h-full flex-col overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer"
+                       onClick={() => router.push(`/events/${event.id}`)}
+                  >
                     <div className="relative h-48 w-full overflow-hidden">
                       <Image
                         src={event.image || '/placeholder.svg'}
@@ -458,7 +466,7 @@ export default function Home() {
                       </Link>
                     </div>
                   </div>
-                </Link>
+                {/*</Link>*/}
               </motion.div>
             ))}
           </div>
