@@ -21,7 +21,6 @@ import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { motion } from 'framer-motion';
 import { CalendarIcon, Filter, MapPin } from 'lucide-react';
-import colors from 'tailwindcss/colors';
 
 interface Event {
   id: number;
@@ -403,14 +402,13 @@ export default function CalendarPage() {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <div className="sinc-card flex flex-col items-center p-6">
-            <h2 className="mb-4 self-start text-xl font-medium ">날짜 선택</h2>
+            <h2 className="mb-4 self-start text-xl font-medium">날짜 선택</h2>
             <Calendar
               mode="single"
               selected={date}
               onSelect={setDate}
               locale={ko}
               className="mx-auto rounded-xl"
-              
               fixedWeeks={true}
               ISOWeek={false}
               modifiers={{
@@ -419,9 +417,9 @@ export default function CalendarPage() {
                 event3plus: (date) => getEventCountForDate(date) >= 3,
               }}
               modifiersClassNames={{
-                event1: "bg-rose-50 text-black day:hover:bg-rose-50",
-                event2: "bg-rose-100 text-black day:hover:bg-rose-100",
-                event3plus: "bg-rose-200 text-black day:hover:bg-rose-200",
+                event1: 'bg-rose-50 text-black day:hover:bg-rose-50',
+                event2: 'bg-rose-100 text-black day:hover:bg-rose-100',
+                event3plus: 'bg-rose-200 text-black day:hover:bg-rose-200',
               }}
             />
           </div>
