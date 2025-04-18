@@ -6,29 +6,22 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { useMediaQuery } from '@/hooks/useMediaQuery';
-
-import { events } from '@/__mock__';
-import { District, EventCategory } from '@/__mock__/types';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Badge } from '@/component/ui/badge';
+import { Button } from '@/component/ui/button';
+import { Input } from '@/component/ui/input';
+import { Label } from '@/component/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/component/ui/select';
+
+import { useMediaQuery } from '@/hook/useMediaQuery';
+
 import { motion } from 'framer-motion';
 import { ArrowDown, Calendar, MapPin, Search, Users } from 'lucide-react';
-
-// 카테고리 목록
-const categories = Object.values(EventCategory);
-
-// 지역구 목록
-const districts = Object.values(District);
 
 // 비용 필터 옵션
 const feeOptions = ['전체', '무료', '유료'];

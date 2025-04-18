@@ -6,7 +6,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/component/ui/badge';
+
 import { motion } from 'framer-motion';
 
 const usersData = {

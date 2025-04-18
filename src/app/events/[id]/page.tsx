@@ -7,9 +7,9 @@ import Link from 'next/link';
 
 import { handleShare } from '@/app/utils/clipboard';
 
-import { events } from '@/__mock__';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Badge } from '@/component/ui/badge';
+import { Button } from '@/component/ui/button';
+
 import { motion } from 'framer-motion';
 import {
   ArrowRight,
@@ -24,6 +24,8 @@ import {
   Users,
 } from 'lucide-react';
 import { toast } from 'sonner';
+
+const events = [];
 
 export default function EventDetailPage(props: { params: Promise<{ id: string }> }) {
   const params = use(props.params);

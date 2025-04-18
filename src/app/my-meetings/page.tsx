@@ -7,12 +7,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { Badge } from '@/component/ui/badge';
+import { Button } from '@/component/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/component/ui/tabs';
+
 import { handleShare } from '../utils/clipboard';
 import { pastMeetings } from '../utils/dummyData';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, MessageSquare, Share2, Users } from 'lucide-react';
 

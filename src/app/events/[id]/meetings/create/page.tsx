@@ -3,24 +3,25 @@
 import type React from 'react';
 import { useState } from 'react';
 
-import { cn } from '@/lib/utils';
-
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Badge } from '@/component/ui/badge';
+import { Button } from '@/component/ui/button';
+import { Calendar } from '@/component/ui/calendar';
+import { Input } from '@/component/ui/input';
+import { Label } from '@/component/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/component/ui/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
+} from '@/component/ui/select';
+import { Slider } from '@/component/ui/slider';
+import { Switch } from '@/component/ui/switch';
+import { Textarea } from '@/component/ui/textarea';
+
+import { cn } from '@/lib/utils';
+
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { CalendarIcon } from 'lucide-react';

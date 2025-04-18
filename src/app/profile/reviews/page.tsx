@@ -4,8 +4,9 @@ import { useState } from 'react';
 
 import Link from 'next/link';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/component/ui/avatar';
+import { Button } from '@/component/ui/button';
+
 import { motion } from 'framer-motion';
 import { Star } from 'lucide-react';
 

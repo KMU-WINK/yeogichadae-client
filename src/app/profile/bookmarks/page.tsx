@@ -5,8 +5,9 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Badge } from '@/component/ui/badge';
+import { Button } from '@/component/ui/button';
+
 import { motion } from 'framer-motion';
 
 // 찜한 행사 데이터 (실제로는 API에서 가져올 것)

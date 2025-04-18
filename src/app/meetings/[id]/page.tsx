@@ -7,10 +7,10 @@ import Link from 'next/link';
 
 import { handleShare } from '@/app/utils/clipboard';
 
-import { currentUserId, meetingParticipants, meetings } from '@/__mock__';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/component/ui/avatar';
+import { Badge } from '@/component/ui/badge';
+import { Button } from '@/component/ui/button';
+
 import { motion } from 'framer-motion';
 import { Calendar, Info, MapPin, MessageSquare, Share2, Users } from 'lucide-react';
 import { toast } from 'sonner';

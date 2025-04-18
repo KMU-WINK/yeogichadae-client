@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 
+import { Avatar, AvatarFallback, AvatarImage } from '@/component/ui/avatar';
+import { Button } from '@/component/ui/button';
+import { Card, CardContent } from '@/component/ui/card';
+import { Textarea } from '@/component/ui/textarea';
+
 import { cn } from '@/lib/utils';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
 import { Star } from 'lucide-react';
 
 // 모임 데이터 (실제로는 API에서 가져올 것)

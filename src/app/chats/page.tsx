@@ -1,17 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { Avatar, AvatarFallback, AvatarImage } from '@/component/ui/avatar';
+import { Badge } from '@/component/ui/badge';
+import { Button } from '@/component/ui/button';
+import { Input } from '@/component/ui/input';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { useMediaQuery } from '@/hook/useMediaQuery';
+
 // import { parseAsInteger, useQueryState } from 'nuqs';
 import { format, isSameMinute as isSameMinuteFn } from 'date-fns';
 import { motion } from 'framer-motion';

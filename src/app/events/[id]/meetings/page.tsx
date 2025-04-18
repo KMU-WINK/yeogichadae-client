@@ -4,14 +4,15 @@ import { use, useEffect, useState } from 'react';
 
 import Link from 'next/link';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Slider } from '@/components/ui/slider';
+import { Avatar, AvatarFallback, AvatarImage } from '@/component/ui/avatar';
+import { Badge } from '@/component/ui/badge';
+import { Button } from '@/component/ui/button';
+import { Card, CardContent } from '@/component/ui/card';
+import { Checkbox } from '@/component/ui/checkbox';
+import { Label } from '@/component/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/component/ui/popover';
+import { Slider } from '@/component/ui/slider';
+
 import { motion } from 'framer-motion';
 import { Calendar, Filter, Plus, Users } from 'lucide-react';
 

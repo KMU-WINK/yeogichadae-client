@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/component/ui/button';
+
 import { Home, RefreshCcw, TriangleAlert } from 'lucide-react';
 
 interface ErrorProps {

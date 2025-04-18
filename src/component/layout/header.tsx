@@ -5,23 +5,22 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-import { useMediaQuery } from '@/hooks/useMediaQuery';
-
-import { cn } from '@/lib/utils';
-
-import { LoginModal } from './login-modal';
-
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/component/ui/avatar';
+import { Button } from '@/component/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+} from '@/component/ui/dropdown-menu';
+import { Popover, PopoverContent, PopoverTrigger } from '@/component/ui/popover';
+import { Sheet, SheetContent, SheetTrigger } from '@/component/ui/sheet';
+
+import { useMediaQuery } from '@/hook/useMediaQuery';
+
+import { cn } from '@/lib/utils';
+
 import { Bell, Calendar, LogIn, Menu, MessageSquare, User } from 'lucide-react';
 
 // 알림 데이터 (실제로는 API에서 가져올 것)
@@ -264,12 +263,10 @@ export default function Header() {
                 </DropdownMenu>
               </>
             ) : (
-              <LoginModal>
-                <Button className="hidden items-center gap-2 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg sm:flex">
-                  <LogIn className="h-4 w-4" />
-                  로그인
-                </Button>
-              </LoginModal>
+              <Button className="hidden items-center gap-2 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg sm:flex">
+                <LogIn className="h-4 w-4" />
+                로그인
+              </Button>
             )}
 
             {/* Mobile Navigation */}
@@ -299,15 +296,13 @@ export default function Header() {
                           </Link>
                         </>
                       ) : (
-                        <LoginModal>
-                          <Button
-                            className="flex w-full items-center justify-center gap-2 rounded-xl"
-                            onClick={() => setIsMobileOpen(false)}
-                          >
-                            <LogIn className="h-4 w-4" />
-                            로그인
-                          </Button>
-                        </LoginModal>
+                        <Button
+                          className="flex w-full items-center justify-center gap-2 rounded-xl"
+                          onClick={() => setIsMobileOpen(false)}
+                        >
+                          <LogIn className="h-4 w-4" />
+                          로그인
+                        </Button>
                       )}
                     </div>
                     <Link
