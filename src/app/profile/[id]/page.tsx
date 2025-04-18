@@ -8,9 +8,8 @@ import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
 import { motion } from 'framer-motion';
-import {ArrowRight, MapPin, Star, User} from 'lucide-react';
+import { ArrowRight, MapPin, Star, User } from 'lucide-react';
 
 // interface UserDataType {
 //   id: number;
@@ -122,7 +121,8 @@ interface UserDataType {
 
 //테스트용 사용자 프로필 데이터
 const usersData = {
-  '4': { //주최 모임, 참가 모임 다 2 초과
+  '4': {
+    //주최 모임, 참가 모임 다 2 초과
     id: 4,
     nickname: '예술애호가',
     avatar: '/placeholder.svg?height=128&width=128',
@@ -207,7 +207,8 @@ const usersData = {
     ],
   },
 
-  '5': {  // 2개 2개 씩
+  '5': {
+    // 2개 2개 씩
     id: 5,
     nickname: '역사연구자',
     avatar: '/placeholder.svg?height=128&width=128',
@@ -262,7 +263,8 @@ const usersData = {
       },
     ],
   },
-  '6': { //모두 0개
+  '6': {
+    //모두 0개
     id: 6,
     nickname: '신입회원',
     avatar: '/placeholder.svg?height=128&width=128',
@@ -311,9 +313,7 @@ const usersData = {
       },
     ],
   },
-
 };
-
 
 export default function UserProfilePage(props: { params: Promise<{ id: string }> }) {
   const params = use(props.params);
@@ -437,7 +437,9 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
                 <div className="text-muted-foreground text-xs">참여 모임</div>
               </div>
               <div className="hover:bg-secondary/50 rounded-xl p-3 text-center transition-colors">
-                <div className="text-primary text-2xl font-bold">{userData.meetings.hosted.length}</div>
+                <div className="text-primary text-2xl font-bold">
+                  {userData.meetings.hosted.length}
+                </div>
                 <div className="text-muted-foreground text-xs">주최 모임</div>
               </div>
             </div>
@@ -445,10 +447,10 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
         </motion.div>
 
         <motion.div
-            className="space-y-6 md:col-span-2"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
+          className="space-y-6 md:col-span-2"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
         >
           <motion.div variants={itemVariants}>
             <div className="sinc-card p-6">
@@ -495,52 +497,50 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
             <div className="sinc-card p-6">
               <h2 className="mb-4 text-xl font-medium">주최한 모임</h2>
               {userData.meetings.hosted.length > 0 ? (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {userData.meetings.hosted.slice(0, 2).map((meeting) => (
+                    <Link
+                      key={meeting.id}
+                      href={`/meetings/${meeting.id}`}
+                      className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
+                    >
+                      <div className="relative aspect-video">
+                        <Image
+                          src={meeting.image}
+                          alt={meeting.title}
+                          fill
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <Badge className="sinc-badge absolute top-2 right-2 bg-emerald-100 text-emerald-700">
+                          {meeting.status}
+                        </Badge>
+                      </div>
+                      <div className="p-3">
+                        <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
+                          {meeting.title}
+                        </h3>
+                        <p className="text-muted-foreground mt-1 text-xs">{meeting.date}</p>
+                      </div>
+                    </Link>
+                  ))}
 
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    {userData.meetings.hosted.slice(0, 2).map((meeting) => (
-                        <Link
-                            key={meeting.id}
-                            href={`/meetings/${meeting.id}`}
-                            className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
-                        >
-                          <div className="relative aspect-video">
-                            <Image
-                                src={meeting.image}
-                                alt={meeting.title}
-                                fill
-                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            />
-                            <Badge className="sinc-badge absolute top-2 right-2 bg-emerald-100 text-emerald-700">
-                              {meeting.status}
-                            </Badge>
-                          </div>
-                          <div className="p-3">
-                            <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
-                              {meeting.title}
-                            </h3>
-                            <p className="text-muted-foreground mt-1 text-xs">{meeting.date}</p>
-                          </div>
-                        </Link>
-                    ))}
-
-                    {/*2개 이상인 경우부터 더보기 버튼 생성*/}
-                    {userData.meetings.hosted.length > 2 && (
-                        <Link href={`/profile/${userData.id}/meetings/hosted`} className="col-span-2">
-                          <Button
-                              variant="outline"
-                              className="flex w-full items-center justify-center rounded-xl"
-                          >
-                            <span>주최한 모임 더보기</span>
-                            <ArrowRight className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                    )}
-                  </div>
-
+                  {/*2개 이상인 경우부터 더보기 버튼 생성*/}
+                  {userData.meetings.hosted.length > 2 && (
+                    <Link href={`/profile/${userData.id}/meetings/hosted`} className="col-span-2">
+                      <Button
+                        variant="outline"
+                        className="flex w-full items-center justify-center rounded-xl"
+                      >
+                        <span>주최한 모임 더보기</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                  )}
+                </div>
               ) : (
-                  <div className="text-muted-foreground py-8 text-center">
-                    <p>아직 주최한 모임이 없습니다</p>
-                  </div>
+                <div className="text-muted-foreground py-8 text-center">
+                  <p>아직 주최한 모임이 없습니다</p>
+                </div>
               )}
             </div>
           </motion.div>
@@ -549,52 +549,53 @@ export default function UserProfilePage(props: { params: Promise<{ id: string }>
             <div className="sinc-card p-6">
               <h2 className="mb-4 text-xl font-medium">참여 중인 모임</h2>
               {userData.meetings.participated.length > 0 ? (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {userData.meetings.participated.slice(0, 2).map((meeting) => (
+                    <Link
+                      key={meeting.id}
+                      href={`/meetings/${meeting.id}`}
+                      className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
+                    >
+                      <div className="relative aspect-video">
+                        <Image
+                          src={meeting.image}
+                          alt={meeting.title}
+                          fill
+                          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                        <Badge className="sinc-badge absolute top-2 right-2 bg-emerald-100 text-emerald-700">
+                          {meeting.status}
+                        </Badge>
+                      </div>
+                      <div className="p-3">
+                        <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
+                          {meeting.title}
+                        </h3>
+                        <p className="text-muted-foreground mt-1 text-xs">{meeting.date}</p>
+                      </div>
+                    </Link>
+                  ))}
 
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    {userData.meetings.participated.slice(0, 2).map((meeting) => (
-                        <Link
-                            key={meeting.id}
-                            href={`/meetings/${meeting.id}`}
-                            className="group overflow-hidden rounded-xl border transition-shadow hover:shadow-md"
-                        >
-                          <div className="relative aspect-video">
-                            <Image
-                                src={meeting.image}
-                                alt={meeting.title}
-                                fill
-                                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            />
-                            <Badge className="sinc-badge absolute top-2 right-2 bg-emerald-100 text-emerald-700">
-                              {meeting.status}
-                            </Badge>
-                          </div>
-                          <div className="p-3">
-                            <h3 className="group-hover:text-primary line-clamp-1 font-medium transition-colors">
-                              {meeting.title}
-                            </h3>
-                            <p className="text-muted-foreground mt-1 text-xs">{meeting.date}</p>
-                          </div>
-                        </Link>
-                    ))}
-
-                    {/*2개 이상인 경우부터 더보기 버튼 생성*/}
-                    {userData.meetings.participated.length > 2 && (
-                        <Link href={`/profile/${userData.id}/meetings/participated`} className="col-span-2">
-                          <Button
-                              variant="outline"
-                              className="flex w-full items-center justify-center rounded-xl col-span-2"
-                          >
-                            <span>참여 중인 모임 더보기</span>
-                            <ArrowRight className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                    )}
-
-                  </div>
+                  {/*2개 이상인 경우부터 더보기 버튼 생성*/}
+                  {userData.meetings.participated.length > 2 && (
+                    <Link
+                      href={`/profile/${userData.id}/meetings/participated`}
+                      className="col-span-2"
+                    >
+                      <Button
+                        variant="outline"
+                        className="col-span-2 flex w-full items-center justify-center rounded-xl"
+                      >
+                        <span>참여 중인 모임 더보기</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                  )}
+                </div>
               ) : (
-                  <div className="text-muted-foreground py-8 text-center">
-                    <p>아직 주최한 모임이 없습니다</p>
-                  </div>
+                <div className="text-muted-foreground py-8 text-center">
+                  <p>아직 주최한 모임이 없습니다</p>
+                </div>
               )}
             </div>
           </motion.div>

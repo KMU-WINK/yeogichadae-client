@@ -2,24 +2,15 @@
 
 import { use } from 'react';
 
-
-
 import Image from 'next/image';
 import Link from 'next/link';
 
-
-
 import { handleShare } from '@/app/utils/clipboard';
 
-
-
+import { currentUserId, meetingParticipants, meetings } from '@/__mock__';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
-
-
-import { currentUserId, meetingParticipants, meetings } from '@/__mock__';
 import { motion } from 'framer-motion';
 import { Calendar, Info, MapPin, MessageSquare, Share2, Users } from 'lucide-react';
 import { toast } from 'sonner';
@@ -110,7 +101,7 @@ export default function MeetingDetailPage(props: { params: Promise<{ id: string 
           <Button
             variant="outline"
             className="flex items-center gap-2 rounded-xl"
-            onClick={( e) =>handleShare(e, 'meeting', meetingData.id)}
+            onClick={(e) => handleShare(e, 'meeting', meetingData.id)}
           >
             <Share2 className="h-4 w-4" />
             <span>공유하기</span>

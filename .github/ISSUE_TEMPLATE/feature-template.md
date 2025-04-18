@@ -4,7 +4,6 @@ about: Suggest an idea for this project
 title: 'feat: '
 labels: '👏 enhancement'
 assignees: ''
-
 ---
 
 ## 어떤 기능인가요?

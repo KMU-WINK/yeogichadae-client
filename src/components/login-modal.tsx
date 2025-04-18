@@ -6,10 +6,9 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-
 import KakaoLoginButton from '@/public/icon/kakao-login.png';
 
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { motion } from 'framer-motion';
 
 interface LoginModalProps {

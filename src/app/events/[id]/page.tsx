@@ -7,10 +7,9 @@ import Link from 'next/link';
 
 import { handleShare } from '@/app/utils/clipboard';
 
+import { events } from '@/__mock__';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
-import { events } from '@/__mock__';
 import { motion } from 'framer-motion';
 import {
   ArrowRight,

@@ -2,11 +2,14 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+
+import { events } from '@/__mock__';
+import { District, EventCategory } from '@/__mock__/types';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,11 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-import { useMediaQuery } from '@/hooks/useMediaQuery';
-
-import { events } from '@/__mock__';
-import { District, EventCategory } from '@/__mock__/types';
 import { motion } from 'framer-motion';
 import { ArrowDown, Calendar, MapPin, Search, Users } from 'lucide-react';
 
@@ -41,7 +39,6 @@ export default function Home() {
   const [feeOption, setFeeOption] = useState('전체');
   const [filteredEvents, setFilteredEvents] = useState(events);
   const router = useRouter();
-
 
   const allEventsRef = useRef<HTMLDivElement>(null);
 
@@ -214,58 +211,59 @@ export default function Home() {
             {displayEvents.map((event) => (
               <motion.div key={event.id} variants={itemVariants}>
                 {/*<Link href={`/events/${event.id}`} className="group">*/}
-                  <div className="sinc-card flex h-full flex-col overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer"
-                       onClick={() => router.push(`/events/${event.id}`)}
-                  >
-                    <div className="relative h-48 w-full overflow-hidden">
-                      <Image
-                        src={event.image || '/placeholder.svg'}
-                        alt={event.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute top-3 right-3 flex gap-2">
-                        <Badge
-                          className={`sinc-badge ${event.free ? 'bg-emerald-100 text-emerald-700' : 'bg-primary/10 text-primary'}`}
-                        >
-                          {event.free ? '무료' : '유료'}
-                        </Badge>
-                      </div>
-                      <Badge className="sinc-badge text-foreground absolute top-3 left-3 bg-white/90">
-                        {event.category}
+                <div
+                  className="sinc-card flex h-full cursor-pointer flex-col overflow-hidden transition-all duration-300 hover:shadow-lg"
+                  onClick={() => router.push(`/events/${event.id}`)}
+                >
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <Image
+                      src={event.image || '/placeholder.svg'}
+                      alt={event.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute top-3 right-3 flex gap-2">
+                      <Badge
+                        className={`sinc-badge ${event.free ? 'bg-emerald-100 text-emerald-700' : 'bg-primary/10 text-primary'}`}
+                      >
+                        {event.free ? '무료' : '유료'}
                       </Badge>
                     </div>
-                    <div className="flex-1 p-5">
-                      <h3 className="group-hover:text-primary mb-2 line-clamp-1 text-lg font-medium transition-colors">
-                        {event.title}
-                      </h3>
-                      <div className="mt-auto flex flex-col gap-1.5">
-                        <div className="text-muted-foreground flex items-center text-sm">
-                          <MapPin className="mr-1.5 h-4 w-4 shrink-0" />
-                          <span>
-                            {event.district} {event.location}
-                          </span>
-                        </div>
-                        <div className="text-muted-foreground flex items-center text-sm">
-                          <Calendar className="mr-1.5 h-4 w-4 shrink-0" />
-                          <span>
-                            {formatDate(event.startDate)} ~ {formatDate(event.endDate)}
-                          </span>
-                        </div>
+                    <Badge className="sinc-badge text-foreground absolute top-3 left-3 bg-white/90">
+                      {event.category}
+                    </Badge>
+                  </div>
+                  <div className="flex-1 p-5">
+                    <h3 className="group-hover:text-primary mb-2 line-clamp-1 text-lg font-medium transition-colors">
+                      {event.title}
+                    </h3>
+                    <div className="mt-auto flex flex-col gap-1.5">
+                      <div className="text-muted-foreground flex items-center text-sm">
+                        <MapPin className="mr-1.5 h-4 w-4 shrink-0" />
+                        <span>
+                          {event.district} {event.location}
+                        </span>
                       </div>
-                    </div>
-                    <div className="bg-secondary/30 flex items-center justify-between border-t px-5 py-3">
-                      <div className="text-sm">
-                        <span className="text-primary font-medium">12개</span>의 모임 진행중
+                      <div className="text-muted-foreground flex items-center text-sm">
+                        <Calendar className="mr-1.5 h-4 w-4 shrink-0" />
+                        <span>
+                          {formatDate(event.startDate)} ~ {formatDate(event.endDate)}
+                        </span>
                       </div>
-                      <Link
-                        href={`/events/${event.id}/meetings`}
-                        className="text-primary hover:text-primary/80 h-auto rounded-md p-0 text-sm font-medium hover:bg-transparent"
-                      >
-                        자세히 보기
-                      </Link>
                     </div>
                   </div>
+                  <div className="bg-secondary/30 flex items-center justify-between border-t px-5 py-3">
+                    <div className="text-sm">
+                      <span className="text-primary font-medium">12개</span>의 모임 진행중
+                    </div>
+                    <Link
+                      href={`/events/${event.id}/meetings`}
+                      className="text-primary hover:text-primary/80 h-auto rounded-md p-0 text-sm font-medium hover:bg-transparent"
+                    >
+                      자세히 보기
+                    </Link>
+                  </div>
+                </div>
                 {/*</Link>*/}
               </motion.div>
             ))}
@@ -414,58 +412,59 @@ export default function Home() {
             {filteredEvents.map((event) => (
               <motion.div key={event.id} variants={itemVariants}>
                 {/*<Link href={`/events/${event.id}`} className="group">*/}
-                  <div className="sinc-card flex h-full flex-col overflow-hidden transition-all duration-300 hover:shadow-lg cursor-pointer"
-                       onClick={() => router.push(`/events/${event.id}`)}
-                  >
-                    <div className="relative h-48 w-full overflow-hidden">
-                      <Image
-                        src={event.image || '/placeholder.svg'}
-                        alt={event.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute top-3 right-3 flex gap-2">
-                        <Badge
-                          className={`sinc-badge ${event.free ? 'bg-emerald-100 text-emerald-700' : 'bg-primary/10 text-primary'}`}
-                        >
-                          {event.free ? '무료' : '유료'}
-                        </Badge>
-                      </div>
-                      <Badge className="sinc-badge text-foreground absolute top-3 left-3 bg-white/90">
-                        {event.category}
+                <div
+                  className="sinc-card flex h-full cursor-pointer flex-col overflow-hidden transition-all duration-300 hover:shadow-lg"
+                  onClick={() => router.push(`/events/${event.id}`)}
+                >
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <Image
+                      src={event.image || '/placeholder.svg'}
+                      alt={event.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute top-3 right-3 flex gap-2">
+                      <Badge
+                        className={`sinc-badge ${event.free ? 'bg-emerald-100 text-emerald-700' : 'bg-primary/10 text-primary'}`}
+                      >
+                        {event.free ? '무료' : '유료'}
                       </Badge>
                     </div>
-                    <div className="flex-1 p-5">
-                      <h3 className="group-hover:text-primary mb-2 line-clamp-1 text-lg font-medium transition-colors">
-                        {event.title}
-                      </h3>
-                      <div className="mt-auto flex flex-col gap-1.5">
-                        <div className="text-muted-foreground flex items-center text-sm">
-                          <MapPin className="mr-1.5 h-4 w-4 shrink-0" />
-                          <span>
-                            {event.district} {event.location}
-                          </span>
-                        </div>
-                        <div className="text-muted-foreground flex items-center text-sm">
-                          <Calendar className="mr-1.5 h-4 w-4 shrink-0" />
-                          <span>
-                            {formatDate(event.startDate)} ~ {formatDate(event.endDate)}
-                          </span>
-                        </div>
+                    <Badge className="sinc-badge text-foreground absolute top-3 left-3 bg-white/90">
+                      {event.category}
+                    </Badge>
+                  </div>
+                  <div className="flex-1 p-5">
+                    <h3 className="group-hover:text-primary mb-2 line-clamp-1 text-lg font-medium transition-colors">
+                      {event.title}
+                    </h3>
+                    <div className="mt-auto flex flex-col gap-1.5">
+                      <div className="text-muted-foreground flex items-center text-sm">
+                        <MapPin className="mr-1.5 h-4 w-4 shrink-0" />
+                        <span>
+                          {event.district} {event.location}
+                        </span>
                       </div>
-                    </div>
-                    <div className="bg-secondary/30 flex items-center justify-between border-t px-5 py-3">
-                      <div className="text-sm">
-                        <span className="text-primary font-medium">12개</span>의 모임 진행중
+                      <div className="text-muted-foreground flex items-center text-sm">
+                        <Calendar className="mr-1.5 h-4 w-4 shrink-0" />
+                        <span>
+                          {formatDate(event.startDate)} ~ {formatDate(event.endDate)}
+                        </span>
                       </div>
-                      <Link
-                        href={`/events/${event.id}/meetings`}
-                        className="text-primary hover:text-primary/80 h-auto rounded-md p-0 text-sm font-medium hover:bg-transparent"
-                      >
-                        자세히 보기
-                      </Link>
                     </div>
                   </div>
+                  <div className="bg-secondary/30 flex items-center justify-between border-t px-5 py-3">
+                    <div className="text-sm">
+                      <span className="text-primary font-medium">12개</span>의 모임 진행중
+                    </div>
+                    <Link
+                      href={`/events/${event.id}/meetings`}
+                      className="text-primary hover:text-primary/80 h-auto rounded-md p-0 text-sm font-medium hover:bg-transparent"
+                    >
+                      자세히 보기
+                    </Link>
+                  </div>
+                </div>
                 {/*</Link>*/}
               </motion.div>
             ))}

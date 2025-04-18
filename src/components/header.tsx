@@ -5,6 +5,12 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+
+import { cn } from '@/lib/utils';
+
+import { LoginModal } from './login-modal';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,13 +22,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-
-import { useMediaQuery } from '@/hooks/useMediaQuery';
-
-import { cn } from '@/lib/utils';
-
-import { LoginModal } from './login-modal';
-
 import { Bell, Calendar, LogIn, Menu, MessageSquare, User } from 'lucide-react';
 
 // 알림 데이터 (실제로는 API에서 가져올 것)

@@ -15,7 +15,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-
 import { motion } from 'framer-motion';
 import { Camera, Edit } from 'lucide-react';
 

@@ -4,7 +4,6 @@ about: Create a report to help us improve
 title: 'bug: '
 labels: '🐛 bug'
 assignees: ''
-
 ---
 
 ## 어떤 버그인가요?

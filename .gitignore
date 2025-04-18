@@ -13,17 +13,12 @@
 # testing
 /coverage
 
-# jetbrains
-.idea
-*.iml
-
 # next.js
 /.next/
 /out/
 
 # production
 /build
-/public
 
 # misc
 .DS_Store
@@ -44,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# jetbrains ide
+.idea
+*.iml

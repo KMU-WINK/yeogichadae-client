@@ -3,27 +3,18 @@
 import type React from 'react';
 import { useEffect, useRef, useState } from 'react';
 
-
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-
+import { handleShare } from '../utils/clipboard';
+import { pastMeetings } from '../utils/dummyData';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-import { handleShare } from '../utils/clipboard';
-import { pastMeetings } from '../utils/dummyData';
-
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, MessageSquare, Share2, Users } from 'lucide-react';
-
-
-
-
 
 // 내 모임 데이터 (실제로는 API에서 가져올 것)
 const activeMeetings = [

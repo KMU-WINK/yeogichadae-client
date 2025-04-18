@@ -2,13 +2,12 @@
 
 import { ReactNode, Suspense } from 'react';
 
-import Header from '@/components/header';
-import SonnerProvider from '@/components/sonner-provider';
-
 import '@/lib/register-service-worker';
 
 import '@/style/global.css';
 
+import Header from '@/components/header';
+import SonnerProvider from '@/components/sonner-provider';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 interface LayoutProps {

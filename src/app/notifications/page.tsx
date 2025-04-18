@@ -4,11 +4,10 @@ import { useState } from 'react';
 
 import Link from 'next/link';
 
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-
 import { cn } from '@/lib/utils';
 
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { Bell, Star, UserCog, UserMinus, UserPlus } from 'lucide-react';
 

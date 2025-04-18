@@ -9,9 +9,13 @@ const withPWA = NextPWA({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  // TODO: placeholder.svg 삭제 후, 삭제해야 할 옵션
-  images: {
-    unoptimized: true,
+  rewrites: async () => {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
+      },
+    ];
   },
 };
 
