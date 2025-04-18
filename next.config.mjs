@@ -9,6 +9,15 @@ const withPWA = NextPWA({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'culture.seoul.go.kr',
+        pathname: '/cmmn/file/getImage.do',
+      },
+    ],
+  },
   rewrites: async () => {
     return [
       {

@@ -18,7 +18,6 @@ export const requestNotificationPermission = async () => {
   if (!('Notification' in window) || !messaging) return;
 
   const permission = await Notification.requestPermission();
-  alert(permission);
   if (permission !== 'granted') return;
 
   const token = await getToken(messaging, {

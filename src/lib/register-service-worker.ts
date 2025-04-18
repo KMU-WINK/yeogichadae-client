@@ -3,7 +3,8 @@
 
   if (!('serviceWorker' in navigator)) return;
 
-  if (await navigator.serviceWorker.getRegistration('/firebase-messaging-sw.js')) return;
+  if (await navigator.serviceWorker.getRegistration('/service-worker/firebase-messaging.js'))
+    return;
 
-  await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+  await navigator.serviceWorker.register('/service-worker/firebase-messaging.js');
 })();
