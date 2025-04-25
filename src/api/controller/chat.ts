@@ -29,7 +29,7 @@ export default class Chat {
     return this.request.post(`/chat/${chattingId}/read`);
   }
 
-  public openSseTunnel(meetingId: string): EventSource {
-    return this.request.sse(`/chat/${meetingId}/sse`);
+  public openSseTunnel(): EventSource {
+    return this.request.sse(`/chat/sse`);
   }
 }
