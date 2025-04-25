@@ -34,20 +34,20 @@ export default class Meeting {
     return this.request.post(`/meeting/${eventId}/create`, body);
   }
 
-  public async joinMeeting(meetingId: string): Promise<void> {
+  public async joinMeeting(meetingId: string): Promise<GetMeetingResponse> {
     return this.request.post(`/meeting/${meetingId}/join`);
   }
 
-  public async leaveMeeting(meetingId: string): Promise<void> {
+  public async leaveMeeting(meetingId: string): Promise<GetMeetingResponse> {
     return this.request.post(`/meeting/${meetingId}/leave`);
   }
 
   public async finishMeeting(meetingId: string): Promise<GetMeetingResponse> {
-    return this.request.post(`/meeting/${meetingId}/finish`);
+    return this.request.patch(`/meeting/${meetingId}/finish`);
   }
 
   public async delegateHost(meetingId: string, targetId: string): Promise<GetMeetingResponse> {
-    return this.request.post(`/meeting/${meetingId}/delegate/${targetId}`);
+    return this.request.patch(`/meeting/${meetingId}/delegate/${targetId}`);
   }
 
   public async deleteMeeting(meetingId: string): Promise<void> {

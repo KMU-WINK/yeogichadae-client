@@ -1,4 +1,4 @@
-import { EventsResponse } from '@/api/dto/event';
+import { EventResponse, EventsResponse } from '@/api/dto/event';
 import ApiRequest from '@/api/request';
 import { Category } from '@/api/schema/event';
 import { District } from '@/api/schema/user';
@@ -13,11 +13,15 @@ export default class Event {
     isFree?: boolean,
   ): Promise<EventsResponse> {
     const params = new URLSearchParams();
-    if (date) params.append('date', date);
-    if (categories) params.append('categories', categories.join(','));
-    if (districts) params.append('districts', districts.join(','));
-    if (isFree) params.append('isFree', isFree.toString());
+    if (date !== undefined) params.append('date', date);
+    if (categories !== undefined) params.append('categories', categories.join(','));
+    if (districts !== undefined) params.append('districts', districts.join(','));
+    if (isFree !== undefined) params.append('isFree', isFree.toString());
 
     return this.request.get(`/event?${params}`);
+  }
+
+  public async getEvent(eventId: string): Promise<EventResponse> {
+    return this.request.get(`/event/${eventId}`);
   }
 }

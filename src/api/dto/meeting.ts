@@ -8,7 +8,7 @@ import { z } from 'zod';
 export const CreateMeetingRequestSchema = z.object({
   title: z.string().min(1, '이름을 입력해주세요.'),
   description: z.string().min(1, '설명을 입력해주세요.'),
-  datetime: z.string().regex(LocalDateTimePattern, '날짜 형식이 올바르지 않습니다.'),
+  date: z.string().regex(LocalDateTimePattern, '날짜 형식이 올바르지 않습니다.'),
   maxPeople: z
     .number()
     .int('인원 수는 정수여야 합니다.')

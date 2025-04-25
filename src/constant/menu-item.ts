@@ -1,6 +1,7 @@
 interface MenuItem {
   name: string;
   link: string;
+  onlyUser?: boolean;
 }
 
 export const menuItems: MenuItem[] = [
@@ -9,11 +10,12 @@ export const menuItems: MenuItem[] = [
     link: '/',
   },
   {
-    name: '행사캘린더',
-    link: '/calendar',
+    name: '행사 캘린더',
+    link: '/event/calendar',
   },
   {
     name: '내 모임',
-    link: '/my-meetings',
+    link: '/profile/meeting',
+    onlyUser: true,
   },
 ];

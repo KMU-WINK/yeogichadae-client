@@ -1,12 +1,23 @@
 'use client';
 
-import type React from 'react';
-import { useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+
+import { redirect } from 'next/navigation';
+
+import TitleLayout from '@/component/layout/title';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/component/ui/avatar';
 import { Button } from '@/component/ui/button';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/component/ui/form';
 import { Input } from '@/component/ui/input';
-import { Label } from '@/component/ui/label';
 import {
   Select,
   SelectContent,
@@ -14,202 +25,203 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/component/ui/select';
-import { Switch } from '@/component/ui/switch';
 
-import { motion } from 'framer-motion';
+import Api from '@/api';
+import { UserEditRequest, UserEditRequestSchema } from '@/api/dto/user';
+import { District, Gender } from '@/api/schema/user';
+
+import { useUserStore } from '@/store/user.store';
+
+import { useApiWithToast } from '@/hook/use-api';
+
+import UserGuard from '@/lib/guard/user.guard';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Camera, Edit } from 'lucide-react';
+import { useForm } from 'react-hook-form';
 
-// 사용자 프로필 데이터 (실제로는 API에서 가져올 것)
-const userData = {
-  id: 1,
-  nickname: '문화매니아',
-  avatar: '/placeholder.svg?height=128&width=128',
-  district: '마포구',
-  gender: 'male',
-  age: 28,
-  mannerScore: 4.7,
-  email: 'culture@example.com',
-  showParticipatingMeetings: true,
-};
+export default function Page() {
+  const [isApiProcessing, startApi] = useApiWithToast();
+  const avatarRef = useRef<HTMLInputElement>(null);
 
-// 서울시 자치구 목록
-const districts = [
-  '강남구',
-  '강동구',
-  '강북구',
-  '강서구',
-  '관악구',
-  '광진구',
-  '구로구',
-  '금천구',
-  '노원구',
-  '도봉구',
-  '동대문구',
-  '동작구',
-  '마포구',
-  '서대문구',
-  '서초구',
-  '성동구',
-  '성북구',
-  '송파구',
-  '양천구',
-  '영등포구',
-  '용산구',
-  '은평구',
-  '종로구',
-  '중구',
-  '중랑구',
-];
+  const { user, setUser } = useUserStore();
 
-export default function ProfileEditPage() {
-  const [, setIsLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    nickname: userData.nickname,
-    district: userData.district,
-    showParticipatingMeetings: userData.showParticipatingMeetings,
+  const [avatar, setAvatar] = useState<File>();
+  const [avatarPreview, setAvatarPreview] = useState<string | undefined>(user?.avatar);
+
+  const form = useForm<UserEditRequest>({
+    resolver: zodResolver(UserEditRequestSchema),
+    mode: 'onChange',
+    defaultValues: {
+      nickname: user?.nickname,
+      district: user?.district || undefined,
+      gender: user?.gender || undefined,
+      age: user?.age || ('' as unknown as undefined),
+    },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const permitModifyGender = useMemo(() => !user?.gender, [user]);
+  const permitModifyAge = useMemo(() => !user?.age, [user]);
 
-    // 실제로는 API 호출하여 프로필 업데이트
-    setTimeout(() => {
-      setIsLoading(false);
-      // 성공 후 프로필 페이지로 리다이렉트
-      window.location.href = '/profile';
-    }, 1500);
-  };
-
-  const handleChange = (field: string, value: string | boolean) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  const onSubmit = useCallback((values: UserEditRequest, avatar?: File) => {
+    startApi(
+      async () => {
+        const { user } = await Api.Domain.User.updateMyInfo(values, avatar);
+        setUser(user);
+        setTimeout(() => redirect('/profile'));
+      },
+      {
+        loading: '프로필을 수정하고 있습니다.',
+        success: '프로필을 수정했습니다.',
+      },
+    );
+  }, []);
 
   return (
-    <div className="container mx-auto max-w-screen-xl px-4 py-4 sm:px-6 sm:py-10 md:px-8">
-      <motion.div
-        className="mb-4 flex items-center justify-between"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <h1 className="text-2xl font-bold sm:text-3xl">프로필 수정</h1>
-        <Button className="flex items-center gap-2 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg sm:hidden">
-          <Edit className="h-4 w-4" />
-          <span>저장하기</span>
-        </Button>
-      </motion.div>
-
-      <div className="mx-auto max-w-2xl">
-        <motion.div
-          className="sinc-card"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="p-6">
-            <form onSubmit={handleSubmit} className="space-y-8">
-              <div className="mb-8 flex flex-col items-center space-y-4">
-                <div className="relative">
-                  <Avatar className="border-primary/10 h-32 w-32 border-4">
-                    <AvatarImage src={userData.avatar} alt={userData.nickname} />
-                    <AvatarFallback className="bg-primary/10 text-primary text-3xl">
-                      {userData.nickname.slice(0, 2)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <Button
-                    type="button"
-                    size="icon"
-                    className="bg-primary hover:bg-primary/90 absolute right-0 bottom-0 h-10 w-10 rounded-full text-white shadow-md"
-                  >
-                    <Camera className="h-5 w-5" />
-                    <span className="sr-only">프로필 사진 변경</span>
-                  </Button>
-                </div>
+    <UserGuard>
+      <TitleLayout title="프로필 수정" className="max-w-2xl">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit((values) => onSubmit(values, avatar))}
+            className="flex flex-col gap-6 rounded-2xl border bg-white p-6 shadow"
+          >
+            <div className="flex flex-col items-center">
+              <div className="relative">
+                <Avatar className="size-28">
+                  <AvatarImage src={avatarPreview} />
+                  <AvatarFallback className="text-2xl">{user!.nickname.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <input
+                  type="file"
+                  ref={avatarRef}
+                  className="hidden"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    setAvatar(file);
+                    setAvatarPreview(URL.createObjectURL(file));
+                  }}
+                />
+                <Button
+                  size="icon"
+                  className="absolute right-0 bottom-0 rounded-full"
+                  type="button"
+                  onClick={() => avatarRef.current?.click()}
+                >
+                  <Camera />
+                </Button>
               </div>
+            </div>
 
-              <div className="space-y-6">
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="nickname">닉네임</Label>
-                  <Input
-                    id="nickname"
-                    value={formData.nickname}
-                    onChange={(e) => handleChange('nickname', e.target.value)}
-                    className="rounded-xl"
-                    required
-                  />
-                </div>
+            <FormField
+              control={form.control}
+              name="nickname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>닉네임</FormLabel>
+                  <FormControl>
+                    <Input placeholder="닉네임을 입력해주세요" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="email">이메일</Label>
-                  <Input
-                    id="email"
-                    value={userData.email}
-                    className="bg-muted rounded-xl"
-                    disabled
-                  />
-                </div>
+            <FormItem>
+              <FormLabel>이메일</FormLabel>
+              <FormControl>
+                <Input value={user!.email} disabled />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
 
-                <div className="flex flex-col gap-1">
-                  <Label htmlFor="district">지역구</Label>
-                  <Select
-                    value={formData.district}
-                    onValueChange={(value) => handleChange('district', value)}
-                  >
-                    <SelectTrigger className="rounded-xl">
-                      <SelectValue placeholder="지역구 선택" />
-                    </SelectTrigger>
+            <FormField
+              control={form.control}
+              name="district"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>지역</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="지역을 선택해주세요" />
+                      </SelectTrigger>
+                    </FormControl>
                     <SelectContent>
-                      {districts.map((district) => (
-                        <SelectItem key={district} value={district}>
-                          {district}
-                        </SelectItem>
-                      ))}
+                      {Object.keys(District)
+                        .map((district) => district as District)
+                        .map((district) => (
+                          <SelectItem value={district} key={district}>
+                            {district}
+                          </SelectItem>
+                        ))}
                     </SelectContent>
                   </Select>
-                </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                <div className="flex flex-col gap-1">
-                  <Label>성별</Label>
-                  <Input
-                    value={userData.gender === 'male' ? '남성' : '여성'}
-                    className="bg-muted rounded-xl"
-                    disabled
-                  />
-                </div>
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>성별</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={!permitModifyGender}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="성별을 선택해주세요" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={Gender.MALE}>남자</SelectItem>
+                      <SelectItem value={Gender.FEMALE}>여자</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {permitModifyGender && (
+                    <FormDescription>이후에 성별은 변경할 수 없습니다.</FormDescription>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                <div className="flex flex-col gap-1">
-                  <Label>나이</Label>
-                  <Input value={`${userData.age}세`} className="bg-muted rounded-xl" disabled />
-                </div>
+            <FormField
+              control={form.control}
+              name="age"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>나이</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="나이를 입력해주세요"
+                      disabled={!permitModifyAge}
+                      {...field}
+                      onChange={(event) => field.onChange(+event.target.value)}
+                    />
+                  </FormControl>
+                  {permitModifyAge && (
+                    <FormDescription>이후에 나이는 변경할 수 없습니다.</FormDescription>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                <div className="flex items-center justify-between space-x-2">
-                  <div className="space-y-0.5">
-                    <Label className="text-base">참여 중인 모임 공개</Label>
-                  </div>
-                  <Switch
-                    checked={formData.showParticipatingMeetings}
-                    onCheckedChange={(value) => handleChange('showParticipatingMeetings', value)}
-                  />
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <div className="hidden justify-self-end px-6 py-4 sm:block">
-            <Button
-              className="flex items-center gap-2 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg"
-              onClick={handleSubmit}
-            >
-              <Edit className="h-4 w-4" />
-              <span>저장하기</span>
+            <Button disabled={isApiProcessing} className="sm:w-fit sm:self-end">
+              <Edit />
+              수정하기
             </Button>
-          </div>
-        </motion.div>
-      </div>
-    </div>
+          </form>
+        </Form>
+      </TitleLayout>
+    </UserGuard>
   );
 }

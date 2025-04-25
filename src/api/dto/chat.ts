@@ -1,13 +1,13 @@
 import { Chat } from '@/api/schema/chat';
 import { Meeting } from '@/api/schema/meeting';
-import { User } from '@/api/schema/user';
 
 import { z } from 'zod';
 
 // ======================================== Internal ========================================
 export interface Room {
   meeting: Meeting;
-  last: Chat;
+  last: Chat | null;
+  unread: number;
 }
 // ======================================== Internal ========================================
 
@@ -21,8 +21,7 @@ export type SendChatRequest = z.infer<typeof SendChatRequestSchema>;
 
 // ======================================== Response ========================================
 export interface ChatInfoResponse {
-  participants: User[];
-  messages: Chat[];
+  chats: Chat[];
 }
 
 export interface RoomListResponse {

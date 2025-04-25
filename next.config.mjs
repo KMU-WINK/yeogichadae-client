@@ -8,7 +8,9 @@ const withPWA = NextPWA({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   output: 'standalone',
+  compress: false,
   images: {
     remotePatterns: [
       {

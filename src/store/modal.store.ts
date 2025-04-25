@@ -1,24 +1,22 @@
+import { ReactNode } from 'react';
+
 import { create } from 'zustand';
 
-type Modal = '';
-
-interface Type<T = unknown> {
-  modal: Modal | null;
-  props?: T;
+interface Type {
+  modal?: ReactNode;
 }
 
 interface Action {
-  open: <T>(modal: Modal, props?: T) => void;
-  close: () => void;
+  openModal: (modal: ReactNode) => void;
+  closeModal: () => void;
 }
 
 const initialState: Type = {
-  modal: null,
-  props: undefined,
+  modal: undefined,
 };
 
 export const useModalStore = create<Type & Action>((set) => ({
   ...initialState,
-  open: (modal, props) => set({ modal, props }),
-  close: () => set({ modal: null }),
+  openModal: (modal) => set({ modal }),
+  closeModal: () => set({ modal: undefined }),
 }));

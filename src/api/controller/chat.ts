@@ -6,8 +6,6 @@ import {
 } from '@/api/dto/chat';
 import ApiRequest from '@/api/request';
 
-import { EventSourcePolyfill } from 'event-source-polyfill';
-
 export default class Chat {
   constructor(private readonly request: ApiRequest) {}
 
@@ -31,7 +29,7 @@ export default class Chat {
     return this.request.post(`/chat/${chattingId}/read`);
   }
 
-  public openSseTunnel(meetingId: string): EventSourcePolyfill {
+  public openSseTunnel(meetingId: string): EventSource {
     return this.request.sse(`/chat/${meetingId}/sse`);
   }
 }

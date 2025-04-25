@@ -94,7 +94,7 @@ export default class ApiRequest {
     const response: ApiResponse<T> = await (await fetch(this.baseUrl + url, options)).json();
 
     if (!response.success) {
-      throw new Error(response.message!);
+      throw new Error(response.errorMessage!);
     }
 
     return response.content!;

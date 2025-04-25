@@ -1,10 +1,10 @@
-import { UserDto } from '@/api/dto/auth';
+import { User } from '@/api/schema/user';
 
 import { create } from 'zustand';
 
 interface UserStore {
-  user?: UserDto;
-  setUser: (user?: UserDto) => void;
+  user?: User;
+  setUser: (user?: User) => void;
 }
 
 export const useUserStore = create<UserStore>((set) => ({

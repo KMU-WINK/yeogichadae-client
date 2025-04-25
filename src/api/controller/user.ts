@@ -17,7 +17,11 @@ export default class User {
     return this.request.get(`/user/${userId}`);
   }
 
-  public async updateMyInfo(body: UserEditRequest): Promise<UpdateMyInfoResponse> {
-    return this.request.put('/user', body);
+  public async updateMyInfo(body: UserEditRequest, avatar?: File): Promise<UpdateMyInfoResponse> {
+    const formData = new FormData();
+    if (avatar) formData.append('avatar', avatar);
+    formData.append('request', new Blob([JSON.stringify(body)], { type: 'application/json' }));
+
+    return this.request.put('/user', formData);
   }
 }
