@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { generateNMapUrl } from '@/app/event/[id]/_component/event-info-card';
+
 import { Badge } from '@/component/ui/badge';
 
 import { Meeting } from '@/api/schema/meeting';
@@ -50,7 +52,7 @@ export default function MeetingInfoCard({ meeting }: MeetingInfoCardProps) {
           <div>
             <p className="font-medium">장소</p>
             <Link
-              href={`https://map.naver.com/v5/search/${meeting.event.latitude},${meeting.event.longitude}`}
+              href={generateNMapUrl(meeting.event)}
               target="_blank"
               className="text-primary hover:underline"
             >

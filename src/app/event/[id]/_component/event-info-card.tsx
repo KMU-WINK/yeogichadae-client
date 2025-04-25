@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { userAgentFromString } from 'next/server';
 
 import { Event } from '@/api/schema/event';
 
@@ -70,7 +71,7 @@ export default function EventInfoCard({ event }: EventInfoCardProps) {
           <div>
             <p className="font-medium">장소</p>
             <Link
-              href={`https://map.naver.com/v5/search/${event.latitude},${event.longitude}`}
+              href={generateNMapUrl(event)}
               target="_blank"
               className="text-primary hover:underline"
             >
@@ -123,4 +124,11 @@ export default function EventInfoCard({ event }: EventInfoCardProps) {
       )}
     </div>
   );
+}
+
+export function generateNMapUrl(event: Event) {
+  return typeof window !== 'undefined' &&
+    userAgentFromString(window.navigator.userAgent).device.type === 'mobile'
+    ? `nmap://place?lat=${event.latitude}&lng=${event.longitude}&name=${encodeURIComponent(event.location)}&appname=seoul-in-culture`
+    : `https://map.naver.com/?lat=${event.latitude}&lng=${event.longitude}&title=${encodeURIComponent(event.location)}`;
 }
