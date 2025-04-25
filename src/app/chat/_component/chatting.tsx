@@ -39,9 +39,8 @@ export default function Chatting({ room, chats, setChats }: ChattingProps) {
     if (!inputRef.current?.value) return;
 
     startApi(async () => {
-      const content = inputRef.current!.value.trim();
+      await Api.Domain.Chat.sendChat(room.meeting.id, { content: inputRef.current!.value.trim() });
       inputRef.current!.value = '';
-      await Api.Domain.Chat.sendChat(room.meeting.id, { content });
     });
   }, [room.meeting, inputRef]);
 
