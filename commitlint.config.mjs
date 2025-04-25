@@ -1,4 +1,4 @@
-const type = ['feat', 'fix', 'hotfix',' docs',' refactor', 'test', 'chore', 'revert'];
+const type = ['feat', 'fix', 'hotfix', ' docs', 'refactor', 'test', 'chore', 'revert'];
 
 export default {
   rules: {

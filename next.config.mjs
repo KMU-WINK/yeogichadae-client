@@ -8,10 +8,25 @@ const withPWA = NextPWA({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  reactStrictMode: false,
   output: 'standalone',
-  // TODO: placeholder.svg 삭제 후, 삭제해야 할 옵션
+  compress: false,
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'culture.seoul.go.kr',
+        pathname: '/cmmn/file/getImage.do',
+      },
+    ],
+  },
+  rewrites: async () => {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*`,
+      },
+    ];
   },
 };
 

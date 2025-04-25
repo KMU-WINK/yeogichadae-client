@@ -1,5 +1,7 @@
+import Api from '@/api';
+
 import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, isSupported } from 'firebase/messaging';
+import { getMessaging as _getMessaging, getToken, isSupported } from 'firebase/messaging';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -9,22 +11,25 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-export const messaging =
-  typeof window !== 'undefined' && (await isSupported())
-    ? getMessaging(initializeApp(firebaseConfig))
-    : null;
+export const getMessaging = async () => {
+  if (typeof window === 'undefined' || !(await isSupported())) return;
+  return _getMessaging(initializeApp(firebaseConfig));
+};
 
 export const requestNotificationPermission = async () => {
+  const messaging = await getMessaging();
+
   if (!('Notification' in window) || !messaging) return;
 
   const permission = await Notification.requestPermission();
-  alert(permission);
   if (permission !== 'granted') return;
 
   const token = await getToken(messaging, {
     vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
   });
 
-  // TODO: 서버에 토큰 등록
-  alert(token);
+  if (sessionStorage.getItem('fcmToken') === token) return;
+
+  await Api.Domain.Notification.subscribe({ token });
+  sessionStorage.setItem('fcmToken', token);
 };

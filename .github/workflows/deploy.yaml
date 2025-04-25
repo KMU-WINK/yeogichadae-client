@@ -15,6 +15,10 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Write environment file
+        run: |
+          echo "${{ secrets.ENVIRONMENT }}" > .env
+
       - name: Insecure Docker Repository
         run: |
           echo "{\"insecure-registries\": [\"${{ secrets.DOCKER_REGISTRY }}\"]}" | sudo tee /etc/docker/daemon.json > /dev/null

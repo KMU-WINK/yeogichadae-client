@@ -37,6 +37,4 @@ self.addEventListener('notificationclick', (event) => {
       }
     }),
   );
-
-  // TODO: 서버로 알림 읽음 처리 요청
 });
