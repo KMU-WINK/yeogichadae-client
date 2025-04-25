@@ -1,7 +1,15 @@
+import { redirect } from 'next/navigation';
+
 import Api from '@/api';
 
 import { initializeApp } from 'firebase/app';
-import { getMessaging as _getMessaging, getToken, isSupported } from 'firebase/messaging';
+import {
+  getMessaging as _getMessaging,
+  getToken,
+  isSupported,
+  onMessage,
+} from 'firebase/messaging';
+import { toast } from 'sonner';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -31,5 +39,25 @@ export const requestNotificationPermission = async () => {
   if (sessionStorage.getItem('fcmToken') === token) return;
 
   await Api.Domain.Notification.subscribe({ token });
+  await registerForeground();
   sessionStorage.setItem('fcmToken', token);
 };
+
+let unsubscribe: () => void | undefined;
+async function registerForeground() {
+  const message = await getMessaging();
+  if (!message) return;
+
+  if (unsubscribe) unsubscribe();
+  unsubscribe = onMessage(message, ({ data }) => {
+    if (!data) return;
+
+    toast(data.title!, {
+      description: data.body!,
+      action: {
+        label: '이동',
+        onClick: () => redirect(data.url!),
+      },
+    });
+  });
+}
