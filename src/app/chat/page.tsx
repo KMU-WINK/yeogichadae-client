@@ -18,13 +18,12 @@ import useMobile from '@/hook/use-mobile';
 import { MessageSquare } from 'lucide-react';
 
 export default function Page() {
-  const chatId = useSearchParams().get('id');
+  const meetingId = useSearchParams().get('id');
 
   const isMobile = useMobile();
 
   const [isApiProcessing, startApi] = useApi();
   const [rooms, setRooms] = useState<Room[]>();
-  const [selectedRoom, setSelectedRoom] = useState<Room>();
 
   const [isApiProcessing2, startApi2] = useApi();
   const [chats, setChats] = useState<Chat[]>();
@@ -32,57 +31,107 @@ export default function Page() {
   useEffect(() => {
     startApi(async () => {
       const { rooms } = await Api.Domain.Chat.getRoomList();
-      setRooms(rooms);
+      setRooms(
+        rooms.sort((a, b) => {
+          if (a.last && b.last)
+            return new Date(b.last.createdAt).getTime() - new Date(a.last.createdAt).getTime();
+          if (a.last) return -1;
+          if (b.last) return 1;
+
+          return 0;
+        }),
+      );
     });
   }, []);
 
   useEffect(() => {
-    if (!rooms) return;
-    const room = rooms.find((room) => room.meeting.id === chatId);
-    setSelectedRoom(room);
-  }, [chatId, rooms]);
+    const sse = Api.Domain.Chat.openSseTunnel();
+
+    sse.addEventListener('send_chat', (e) => {
+      const chat = JSON.parse(e.data) as Chat;
+
+      if (chat.meeting.id === meetingId) {
+        setChats((prev) => [...(prev || []), chat]);
+      }
+
+      setRooms((prev) =>
+        prev
+          ? prev
+              .map((room) =>
+                room.meeting.id === chat.meeting.id
+                  ? {
+                      ...room,
+                      last: chat,
+                      unread: room.meeting.id === meetingId ? room.unread : room.unread + 1,
+                    }
+                  : room,
+              )
+              .sort((a, b) => {
+                if (a.last && b.last)
+                  return (
+                    new Date(b.last.createdAt).getTime() - new Date(a.last.createdAt).getTime()
+                  );
+                if (a.last) return -1;
+                if (b.last) return 1;
+
+                return 0;
+              })
+          : undefined,
+      );
+    });
+
+    return () => sse.close();
+  }, [meetingId]);
 
   useEffect(() => {
-    if (!selectedRoom) return;
+    if (!meetingId) return;
+
     startApi2(async () => {
-      const { chats } = await Api.Domain.Chat.getChatInfo(selectedRoom.meeting.id);
+      const { chats } = await Api.Domain.Chat.getChatInfo(meetingId);
       setChats(chats);
+
+      await Api.Domain.Chat.readAllChat(meetingId);
+      setRooms((prev) =>
+        prev
+          ? prev.map((r) => (r.meeting.id === chats[0]?.meeting.id ? { ...r, unread: 0 } : r))
+          : undefined,
+      );
     });
-  }, [selectedRoom?.meeting.id]);
+  }, [meetingId]);
 
   useEffect(() => {
     if (!chats || chats.length === 0) return;
+
     (async () => {
-      await Api.Domain.Chat.readAllChat(chats[0].meeting.id);
-      setSelectedRoom((prev) => prev && { ...prev, unread: 0 });
+      await Api.Domain.Chat.readChat(chats.at(-1)!.id);
       setRooms((prev) =>
         prev
-          ? prev.map((r) => (r.meeting.id === chats[0].meeting.id ? { ...r, unread: 0 } : r))
+          ? prev.map((r) => (r.meeting.id === meetingId ? { ...r, unread: r.unread - 1 } : r))
           : undefined,
       );
     })();
-  }, [chats]);
+  }, [meetingId, chats]);
 
   if (isApiProcessing || !rooms) return <Loading />;
 
   return (
     <div className="container mx-auto grid h-[calc(100dvh-56px-16px)] max-w-screen-xl grid-cols-1 gap-4 sm:h-[calc(100dvh-64px-32px)] sm:grid-cols-3">
-      {(!isMobile || !chatId) && (
+      {(!isMobile || !meetingId) && (
         <div className="flex flex-col overflow-clip rounded-2xl border sm:col-span-1">
           {rooms.map((room) => (
-            <RoomCard key={room.meeting.id} room={room} selectedRoom={selectedRoom} />
+            <RoomCard key={room.meeting.id} room={room} meetingId={meetingId} />
           ))}
         </div>
       )}
 
-      {(!isMobile || chatId) && (
+      {(!isMobile || meetingId) && (
         <div className="flex flex-col overflow-hidden rounded-xl border sm:col-span-2">
           {isApiProcessing2 ? (
             <div className="flex h-full items-center justify-center">
               <Spinner />
             </div>
-          ) : selectedRoom && chats ? (
-            <Chatting room={selectedRoom} chats={chats} setChats={setChats} />
+          ) : meetingId && chats ? (
+            <Chatting room={rooms.find((room) => room.meeting.id === meetingId)!} chats={chats} />
           ) : (
             <div className="flex h-full flex-col items-center justify-center gap-4">
               <MessageSquare className="size-10" />

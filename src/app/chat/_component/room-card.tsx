@@ -11,15 +11,15 @@ import { ko } from 'date-fns/locale';
 
 interface RoomCardProps {
   room: Room;
-  selectedRoom?: Room;
+  meetingId: string | null;
 }
 
-export default function RoomCard({ room, selectedRoom }: RoomCardProps) {
+export default function RoomCard({ room, meetingId }: RoomCardProps) {
   return (
     <div
       className={cn(
         'hover:bg-secondary/50 flex min-h-[88px] cursor-pointer flex-col justify-center border-b px-6 py-3 last:border-b-0',
-        selectedRoom?.meeting.id === room.meeting.id && 'bg-secondary',
+        meetingId === room.meeting.id && 'bg-secondary',
       )}
       onClick={() => redirect(`/chat?id=${room.meeting.id}`)}
     >

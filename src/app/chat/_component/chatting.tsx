@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -24,10 +24,9 @@ import { ArrowLeft, Info, MessageSquare } from 'lucide-react';
 interface ChattingProps {
   room: Room;
   chats: Chat[];
-  setChats: Dispatch<SetStateAction<Chat[] | undefined>>;
 }
 
-export default function Chatting({ room, chats, setChats }: ChattingProps) {
+export default function Chatting({ room, chats }: ChattingProps) {
   const isMobile = useMobile();
   const [isApiProcessing, startApi] = useApi();
 
@@ -42,18 +41,7 @@ export default function Chatting({ room, chats, setChats }: ChattingProps) {
       await Api.Domain.Chat.sendChat(room.meeting.id, { content: inputRef.current!.value.trim() });
       inputRef.current!.value = '';
     });
-  }, [room.meeting, inputRef]);
-
-  useEffect(() => {
-    const sse = Api.Domain.Chat.openSseTunnel(room.meeting.id);
-
-    sse.addEventListener('send_chat', (e) => {
-      const chat = JSON.parse(e.data) as Chat;
-      setChats((prev) => [...(prev || []), chat]);
-    });
-
-    return () => sse.close();
-  }, [room.meeting]);
+  }, [room.meeting.id, inputRef]);
 
   return (
     <>
