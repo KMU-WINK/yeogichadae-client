@@ -52,7 +52,7 @@ export default function MobileMenu() {
             </div>
 
             {menuItems
-              .filter((menuItem) => (menuItem.onlyUser === false ? true : user))
+              .filter((menuItem) => (menuItem.onlyUser !== true ? true : user))
               .map((menuItem) => (
                 <Link
                   key={menuItem.link}
