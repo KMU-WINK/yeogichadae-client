@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { Dispatch, SetStateAction, useCallback, useRef } from 'react';
 
 import Link from 'next/link';
 import { RedirectType, redirect } from 'next/navigation';
@@ -24,9 +24,10 @@ import { ArrowLeft, Info, MessageSquare } from 'lucide-react';
 interface ChattingProps {
   room: Room;
   chats: Chat[];
+  setChats: Dispatch<SetStateAction<Chat[]>>;
 }
 
-export default function Chatting({ room, chats }: ChattingProps) {
+export default function Chatting({ room, chats, setChats }: ChattingProps) {
   const isMobile = useMobile();
   const [isApiProcessing, startApi] = useApi();
 
@@ -38,7 +39,10 @@ export default function Chatting({ room, chats }: ChattingProps) {
     if (!inputRef.current?.value) return;
 
     startApi(async () => {
-      await Api.Domain.Chat.sendChat(room.meeting.id, { content: inputRef.current!.value.trim() });
+      const { message } = await Api.Domain.Chat.sendChat(room.meeting.id, {
+        content: inputRef.current!.value.trim(),
+      });
+      setChats((prev) => [...prev, message]);
       inputRef.current!.value = '';
     });
   }, [room.meeting.id, inputRef]);

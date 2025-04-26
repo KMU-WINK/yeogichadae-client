@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-
 import Link from 'next/link';
 
 import {
@@ -15,7 +13,8 @@ import TitleLayout from '@/component/layout/title';
 import { Button } from '@/component/ui/button';
 
 import Api from '@/api';
-import { Notification, Type } from '@/api/schema/notification';
+
+import { useNotificationStore } from '@/store/notification.store';
 
 import { useApi } from '@/hook/use-api';
 
@@ -26,37 +25,24 @@ import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
 export default function Page() {
-  const [isApiProcessing, startApi] = useApi();
-  const [, startApi2] = useApi();
+  const [, startApi] = useApi();
 
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-
-  useEffect(() => {
-    startApi(async () => {
-      const { notifications } = await Api.Domain.Notification.getNotifications();
-      setNotifications(
-        notifications.filter((notification) => notification.type !== Type.CHAT_MESSAGE),
-      );
-    });
-  }, []);
+  const { notifications, read, readAll } = useNotificationStore();
 
   return (
     <UserGuard>
       <TitleLayout
         title="알림"
-        loading={isApiProcessing}
+        loading={false}
         className="max-w-xl"
         button={
           <Button
             variant="outline"
             className="rounded-xl text-xs"
             onClick={() => {
-              startApi2(async () => {
+              startApi(async () => {
                 await Api.Domain.Notification.readAllNotification();
-
-                setNotifications((prev) =>
-                  prev.map((notification) => ({ ...notification, unread: false })),
-                );
+                readAll();
               });
             }}
           >
@@ -70,12 +56,9 @@ export default function Page() {
               key={notification.id}
               href={notification.url}
               onClick={() => {
-                startApi2(async () => {
+                startApi(async () => {
                   await Api.Domain.Notification.readNotification(notification.id);
-
-                  setNotifications((prev) =>
-                    prev.map((n) => (n.id === notification.id ? { ...n, unread: false } : n)),
-                  );
+                  read(notification.id);
                 });
               }}
             >

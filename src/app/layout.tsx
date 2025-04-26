@@ -7,7 +7,9 @@ import ModalContainer from '@/component/layout/modal-container';
 
 import Api from '@/api';
 
+import { initRoomStore } from '@/store/chat.store';
 import { useInitStore } from '@/store/init.store';
+import { initNotificationStore } from '@/store/notification.store';
 
 import '@/lib/register-service-worker';
 
@@ -31,6 +33,8 @@ export default function RootLayout({ children }: LayoutProps) {
 
       if (token) {
         await Api.Request.setToken(token);
+        initRoomStore().then();
+        initNotificationStore().then();
       }
 
       setInit(true);

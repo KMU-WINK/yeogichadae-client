@@ -13,9 +13,8 @@ import { Button } from '@/component/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/component/ui/popover';
 
 import Api from '@/api';
-import { Notification, Type } from '@/api/schema/notification';
 
-import { useUserStore } from '@/store/user.store';
+import { useNotificationStore } from '@/store/notification.store';
 
 import { useApi } from '@/hook/use-api';
 import useMobile from '@/hook/use-mobile';
@@ -29,22 +28,10 @@ export default function NotificationIcon() {
   const isMobile = useMobile();
   const [, startApi] = useApi();
 
-  const { user } = useUserStore();
+  const { notifications, read, readAll } = useNotificationStore();
 
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [isNewNotification, setIsNewNotification] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-
-  useEffect(() => {
-    if (!user) return;
-
-    startApi(async () => {
-      const { notifications } = await Api.Domain.Notification.getNotifications();
-      setNotifications(
-        notifications.filter((notification) => notification.type !== Type.CHAT_MESSAGE).slice(0, 5),
-      );
-    });
-  }, [user]);
 
   useEffect(() => {
     setIsNewNotification(notifications.some((notification) => notification.unread));
@@ -81,10 +68,7 @@ export default function NotificationIcon() {
                 onClick={() => {
                   startApi(async () => {
                     await Api.Domain.Notification.readAllNotification();
-
-                    setNotifications((prev) =>
-                      prev.map((notification) => ({ ...notification, unread: false })),
-                    );
+                    readAll();
                   });
 
                   setIsNotificationOpen(false);
@@ -97,17 +81,14 @@ export default function NotificationIcon() {
         </div>
         <div className="max-h-[300px] overflow-y-auto">
           {notifications.length > 0 ? (
-            notifications.map((notification) => (
+            notifications.slice(0, 5).map((notification) => (
               <Link
                 key={notification.id}
                 href={notification.url}
                 onClick={() => {
                   startApi(async () => {
                     await Api.Domain.Notification.readNotification(notification.id);
-
-                    setNotifications((prev) =>
-                      prev.map((n) => (n.id === notification.id ? { ...n, unread: false } : n)),
-                    );
+                    read(notification.id);
                   });
                   setIsNotificationOpen(false);
                 }}
