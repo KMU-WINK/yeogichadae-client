@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import Api from '@/api';
 
@@ -56,7 +56,7 @@ async function registerForeground() {
       description: data.body!,
       action: {
         label: '이동',
-        onClick: () => redirect(data.url!),
+        onClick: () => redirect(data.url!, RedirectType.push),
       },
     });
   });

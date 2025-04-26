@@ -2,7 +2,7 @@
 
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import TitleLayout from '@/component/layout/title';
 
@@ -68,7 +68,7 @@ export default function Page() {
       async () => {
         const { user } = await Api.Domain.User.updateMyInfo(values, avatar);
         setUser(user);
-        setTimeout(() => redirect('/profile'));
+        setTimeout(() => redirect('/profile', RedirectType.push));
       },
       {
         loading: '프로필을 수정하고 있습니다.',
@@ -79,7 +79,7 @@ export default function Page() {
 
   return (
     <UserGuard>
-      <TitleLayout title="프로필 수정" className="max-w-2xl">
+      <TitleLayout title="프로필 수정" loading={false} className="max-w-2xl">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((values) => onSubmit(values, avatar))}
@@ -89,7 +89,7 @@ export default function Page() {
               <div className="relative">
                 <Avatar className="size-28">
                   <AvatarImage src={avatarPreview} />
-                  <AvatarFallback className="text-2xl">{user!.nickname.charAt(0)}</AvatarFallback>
+                  <AvatarFallback className="text-2xl">{user?.nickname.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <input
                   type="file"
@@ -131,7 +131,7 @@ export default function Page() {
             <FormItem>
               <FormLabel>이메일</FormLabel>
               <FormControl>
-                <Input value={user!.email} disabled />
+                <Input value={user?.email} disabled />
               </FormControl>
               <FormMessage />
             </FormItem>

@@ -2,7 +2,7 @@
 
 import React, { use, useCallback, useEffect, useState } from 'react';
 
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import AgeRangeField from '@/app/event/[id]/meeting/create/_component/age-range-field';
 import DateField from '@/app/event/[id]/meeting/create/_component/date-field';
@@ -10,7 +10,6 @@ import DescriptionField from '@/app/event/[id]/meeting/create/_component/descrip
 import GenderField from '@/app/event/[id]/meeting/create/_component/gender-field';
 import MaxPeopleField from '@/app/event/[id]/meeting/create/_component/max-people-field';
 import TitleField from '@/app/event/[id]/meeting/create/_component/title-field';
-import Loading from '@/app/loading';
 
 import TitleLayout from '@/component/layout/title';
 
@@ -60,7 +59,7 @@ export default function Page(props: Props) {
       startApi2(
         async () => {
           const { meeting } = await Api.Domain.Meeting.createMeeting(event.id, values);
-          setTimeout(() => redirect(`/meeting/${meeting.id}`));
+          setTimeout(() => redirect(`/meeting/${meeting.id}`, RedirectType.push));
         },
         {
           loading: '모임을 생성하고 있습니다.',
@@ -84,28 +83,24 @@ export default function Page(props: Props) {
   }, [event]);
 
   return (
-    <TitleLayout title="모임 만들기" className="max-w-xl">
-      {isApiProcessing || !event ? (
-        <Loading />
-      ) : (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col gap-4 rounded-2xl border p-6"
-          >
-            <TitleField form={form} />
-            <DescriptionField form={form} />
-            <DateField form={form} />
-            <MaxPeopleField form={form} />
-            <AgeRangeField form={form} />
-            <GenderField form={form} />
+    <TitleLayout title="모임 만들기" loading={isApiProcessing || !event} className="max-w-xl">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-4 rounded-2xl border p-6"
+        >
+          <TitleField form={form} />
+          <DescriptionField form={form} />
+          <DateField form={form} />
+          <MaxPeopleField form={form} />
+          <AgeRangeField form={form} />
+          <GenderField form={form} />
 
-            <Button type="submit" disabled={isApiProcessing2} className="self-end">
-              모임 만들기
-            </Button>
-          </form>
-        </Form>
-      )}
+          <Button type="submit" disabled={isApiProcessing2} className="self-end">
+            모임 만들기
+          </Button>
+        </form>
+      </Form>
     </TitleLayout>
   );
 }

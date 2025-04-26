@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useMemo } from 'react';
 
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import DelegateHostModal from '@/app/meeting/[id]/_modal/delegate-host.modal';
 import DeleteMeetingModal from '@/app/meeting/[id]/_modal/delete-meeting.modal';
@@ -76,7 +76,7 @@ export default function MeetingOperationCard({
                   openModal(
                     <DeleteMeetingModal
                       meeting={meeting}
-                      callback={() => redirect('/event/' + meeting.event.id)}
+                      callback={() => redirect('/event/' + meeting.event.id, RedirectType.push)}
                     />,
                   )
                 }

@@ -2,7 +2,6 @@
 
 import { use, useEffect, useState } from 'react';
 
-import Loading from '@/app/loading';
 import HostedMeetingCard from '@/app/profile/_component/hosted-meeting-card';
 import ProfileCard from '@/app/profile/_component/profile-card';
 import ReviewCard from '@/app/profile/_component/review-card';
@@ -46,28 +45,24 @@ export default function Page({ params }: Props) {
   }, [userId]);
 
   return (
-    <TitleLayout title="프로필">
-      {isApiProcessing || !user ? (
-        <Loading />
-      ) : (
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
-          <div className="lg:col-span-1">
-            <ProfileCard
-              user={user}
-              score={score}
-              bookmarks={bookmarks}
-              joinedMeetings={joinedMeetings}
-              hostedMeetings={hostedMeetings}
-              isMyAccount={false}
-            />
-          </div>
-
-          <div className="flex flex-col gap-4 lg:col-span-2 lg:gap-6">
-            <ReviewCard reviews={reviews} isMyAccount={false} />
-            <HostedMeetingCard meetings={hostedMeetings} />
-          </div>
+    <TitleLayout title="프로필" loading={isApiProcessing || !user}>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
+        <div className="lg:col-span-1">
+          <ProfileCard
+            user={user!}
+            score={score}
+            bookmarks={bookmarks}
+            joinedMeetings={joinedMeetings}
+            hostedMeetings={hostedMeetings}
+            isMyAccount={false}
+          />
         </div>
-      )}
+
+        <div className="flex flex-col gap-4 lg:col-span-2 lg:gap-6">
+          <ReviewCard reviews={reviews} isMyAccount={false} />
+          <HostedMeetingCard meetings={hostedMeetings} />
+        </div>
+      </div>
     </TitleLayout>
   );
 }

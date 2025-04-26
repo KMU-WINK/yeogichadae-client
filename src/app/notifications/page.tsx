@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
 
-import Loading from '@/app/loading';
 import {
   NotificationIcon as _NotificationIcon,
   generateBody,
@@ -45,6 +44,7 @@ export default function Page() {
     <UserGuard>
       <TitleLayout
         title="알림"
+        loading={isApiProcessing}
         className="max-w-xl"
         button={
           <Button
@@ -64,54 +64,50 @@ export default function Page() {
           </Button>
         }
       >
-        {isApiProcessing ? (
-          <Loading />
-        ) : (
-          <div className="flex flex-col gap-3">
-            {notifications.map((notification) => (
-              <Link
-                key={notification.id}
-                href={notification.url}
-                onClick={() => {
-                  startApi2(async () => {
-                    await Api.Domain.Notification.readNotification(notification.id);
+        <div className="flex flex-col gap-3">
+          {notifications.map((notification) => (
+            <Link
+              key={notification.id}
+              href={notification.url}
+              onClick={() => {
+                startApi2(async () => {
+                  await Api.Domain.Notification.readNotification(notification.id);
 
-                    setNotifications((prev) =>
-                      prev.map((n) => (n.id === notification.id ? { ...n, unread: false } : n)),
-                    );
-                  });
-                }}
+                  setNotifications((prev) =>
+                    prev.map((n) => (n.id === notification.id ? { ...n, unread: false } : n)),
+                  );
+                });
+              }}
+            >
+              <div
+                className={cn(
+                  'hover:bg-secondary/50 rounded-2xl border p-4',
+                  notification.unread && 'bg-primary/5 hover:bg-primary/10 border-primary/50',
+                )}
               >
-                <div
-                  className={cn(
-                    'hover:bg-secondary/50 rounded-2xl border p-4',
-                    notification.unread && 'bg-primary/5 hover:bg-primary/10 border-primary/50',
-                  )}
-                >
-                  <div className="flex items-center gap-3">
-                    <_NotificationIcon notification={notification} />
-                    <div className="flex flex-1 flex-col">
-                      <div className="flex items-center justify-between">
-                        <p className="line-clamp-1 text-sm font-medium">
-                          {generateTitle(notification)}
-                        </p>
-                        <p className="text-xs text-neutral-500">
-                          {formatDistanceToNow(notification.createdAt, {
-                            locale: ko,
-                            addSuffix: true,
-                          })}
-                        </p>
-                      </div>
-                      <p className="line-clamp-1 text-xs text-neutral-500">
-                        {generateBody(notification)}
+                <div className="flex items-center gap-3">
+                  <_NotificationIcon notification={notification} />
+                  <div className="flex flex-1 flex-col">
+                    <div className="flex items-center justify-between">
+                      <p className="line-clamp-1 text-sm font-medium">
+                        {generateTitle(notification)}
+                      </p>
+                      <p className="text-xs text-neutral-500">
+                        {formatDistanceToNow(notification.createdAt, {
+                          locale: ko,
+                          addSuffix: true,
+                        })}
                       </p>
                     </div>
+                    <p className="line-clamp-1 text-xs text-neutral-500">
+                      {generateBody(notification)}
+                    </p>
                   </div>
                 </div>
-              </Link>
-            ))}
-          </div>
-        )}
+              </div>
+            </Link>
+          ))}
+        </div>
       </TitleLayout>
     </UserGuard>
   );

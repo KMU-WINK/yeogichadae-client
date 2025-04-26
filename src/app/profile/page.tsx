@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
 
-import Loading from '@/app/loading';
 import BookmarkCard from '@/app/profile/_component/bookmark-card';
 import HostedMeetingCard from '@/app/profile/_component/hosted-meeting-card';
 import ProfileCard from '@/app/profile/_component/profile-card';
@@ -55,6 +54,7 @@ export default function Page() {
     <UserGuard>
       <TitleLayout
         title="프로필"
+        loading={isApiProcessing}
         button={
           <Link href="/profile/edit">
             <Button>
@@ -64,28 +64,24 @@ export default function Page() {
           </Link>
         }
       >
-        {isApiProcessing ? (
-          <Loading />
-        ) : (
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
-            <div className="lg:col-span-1">
-              <ProfileCard
-                user={user!}
-                score={score}
-                bookmarks={bookmarks}
-                joinedMeetings={joinedMeetings}
-                hostedMeetings={hostedMeetings}
-                isMyAccount={true}
-              />
-            </div>
-
-            <div className="flex flex-col gap-4 lg:col-span-2 lg:gap-6">
-              <ReviewCard reviews={reviews} isMyAccount={true} />
-              <HostedMeetingCard meetings={hostedMeetings} />
-              <BookmarkCard bookmarks={bookmarks} />
-            </div>
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
+          <div className="lg:col-span-1">
+            <ProfileCard
+              user={user!}
+              score={score}
+              bookmarks={bookmarks}
+              joinedMeetings={joinedMeetings}
+              hostedMeetings={hostedMeetings}
+              isMyAccount={true}
+            />
           </div>
-        )}
+
+          <div className="flex flex-col gap-4 lg:col-span-2 lg:gap-6">
+            <ReviewCard reviews={reviews} isMyAccount={true} />
+            <HostedMeetingCard meetings={hostedMeetings} />
+            <BookmarkCard bookmarks={bookmarks} />
+          </div>
+        </div>
       </TitleLayout>
     </UserGuard>
   );

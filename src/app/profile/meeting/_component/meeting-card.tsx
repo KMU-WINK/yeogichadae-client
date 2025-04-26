@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import { Badge } from '@/component/ui/badge';
 import { Button } from '@/component/ui/button';
@@ -23,7 +23,7 @@ export default function MeetingCard({ meeting }: MeetingCardProps) {
   return (
     <div
       className="group cursor-pointer overflow-hidden rounded-2xl border bg-white shadow transition-all hover:shadow-md"
-      onClick={() => redirect(`/meeting/${meeting.id}`)}
+      onClick={() => redirect(`/meeting/${meeting.id}`, RedirectType.push)}
     >
       <div className="flex flex-col sm:flex-row">
         <Image
@@ -71,7 +71,7 @@ export default function MeetingCard({ meeting }: MeetingCardProps) {
               className="w-fit"
               onClick={(e) => {
                 e.stopPropagation();
-                redirect(`/meeting/${meeting.id}/review`);
+                redirect(`/meeting/${meeting.id}/review`, RedirectType.push);
               }}
             >
               <Star className="size-4" />
@@ -82,7 +82,7 @@ export default function MeetingCard({ meeting }: MeetingCardProps) {
               className="w-fit"
               onClick={(e) => {
                 e.stopPropagation();
-                redirect(`/chat?id=${meeting.id}`);
+                redirect(`/chat?id=${meeting.id}`, RedirectType.push);
               }}
             >
               <MessageSquare className="size-4" />

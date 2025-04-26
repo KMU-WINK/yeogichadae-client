@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import { Meeting } from '@/api/schema/meeting';
 
@@ -13,7 +13,7 @@ export default function MeetingCard({ meeting }: MeetingCardProps) {
   return (
     <div
       className="group flex cursor-pointer flex-col overflow-clip rounded-2xl border bg-white shadow"
-      onClick={() => redirect(`/meeting/${meeting.id}`)}
+      onClick={() => redirect(`/meeting/${meeting.id}`, RedirectType.push)}
     >
       <Image
         src={meeting.event.image}

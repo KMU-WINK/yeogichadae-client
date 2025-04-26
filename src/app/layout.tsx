@@ -13,6 +13,7 @@ import '@/lib/register-service-worker';
 
 import '@/style/global.css';
 
+import { AnimatePresence } from 'framer-motion';
 import { Toaster } from 'sonner';
 
 interface LayoutProps {
@@ -45,7 +46,9 @@ export default function RootLayout({ children }: LayoutProps) {
         {isInit && (
           <>
             <Header />
-            <main className="h-full px-4 pt-14 pb-4 sm:px-8 sm:pt-16 sm:pb-8">{children}</main>
+            <main className="h-full px-4 pt-14 pb-4 sm:px-8 sm:pt-16 sm:pb-8">
+              <AnimatePresence>{children}</AnimatePresence>
+            </main>
           </>
         )}
 

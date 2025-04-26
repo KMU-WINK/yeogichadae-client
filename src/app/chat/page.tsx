@@ -15,6 +15,7 @@ import { Chat } from '@/api/schema/chat';
 import { useApi } from '@/hook/use-api';
 import useMobile from '@/hook/use-mobile';
 
+import { motion } from 'framer-motion';
 import { MessageSquare } from 'lucide-react';
 
 export default function Page() {
@@ -115,7 +116,11 @@ export default function Page() {
   if (isApiProcessing || !rooms) return <Loading />;
 
   return (
-    <div className="container mx-auto grid h-[calc(100dvh-56px-16px)] max-w-screen-xl grid-cols-1 gap-4 sm:h-[calc(100dvh-64px-32px)] sm:grid-cols-3">
+    <motion.div
+      className="container mx-auto grid h-[calc(100dvh-56px-16px)] max-w-screen-xl grid-cols-1 gap-4 sm:h-[calc(100dvh-64px-32px)] sm:grid-cols-3"
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+    >
       {(!isMobile || !meetingId) && (
         <div className="flex flex-col overflow-clip rounded-2xl border sm:col-span-1">
           {rooms.map((room) => (
@@ -143,6 +148,6 @@ export default function Page() {
           )}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

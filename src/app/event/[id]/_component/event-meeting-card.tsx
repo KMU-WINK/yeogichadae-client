@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import { Button } from '@/component/ui/button';
 
@@ -20,7 +20,7 @@ export default function EventMeetingCard({ event }: EventMeetingCardProps) {
         {user && (
           <Button
             className="w-full rounded-xl"
-            onClick={() => redirect(`/event/${event.id}/meeting/create`)}
+            onClick={() => redirect(`/event/${event.id}/meeting/create`, RedirectType.push)}
           >
             모임 만들기
           </Button>
@@ -29,7 +29,7 @@ export default function EventMeetingCard({ event }: EventMeetingCardProps) {
         <Button
           variant="outline"
           className="w-full rounded-xl"
-          onClick={() => redirect(`/event/${event.id}/meeting`)}
+          onClick={() => redirect(`/event/${event.id}/meeting`, RedirectType.push)}
         >
           모임 목록
         </Button>

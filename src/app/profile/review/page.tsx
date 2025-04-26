@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 
-import Loading from '@/app/loading';
 import ReviewItem from '@/app/profile/review/_component/review-item';
 
 import TitleLayout from '@/component/layout/title';
@@ -38,26 +37,20 @@ export default function Page() {
 
   return (
     <UserGuard>
-      <TitleLayout title="내 리뷰">
-        {isApiProcessing ? (
-          <Loading />
-        ) : (
-          <>
-            <div className="flex items-center gap-4">
-              <Badge className="bg-primary/10 text-primary gap-1">
-                <Star className="fill-primary size-3 sm:size-4" />
-                <span className="text-sm font-medium sm:text-base">{score.toFixed(1)}</span>
-              </Badge>
-              <div className="text-sm text-neutral-500">총 {reviews.length}개의 후기</div>
-            </div>
+      <TitleLayout title="내 리뷰" loading={isApiProcessing}>
+        <div className="flex items-center gap-4">
+          <Badge className="bg-primary/10 text-primary gap-1">
+            <Star className="fill-primary size-3 sm:size-4" />
+            <span className="text-sm font-medium sm:text-base">{score.toFixed(1)}</span>
+          </Badge>
+          <div className="text-sm text-neutral-500">총 {reviews.length}개의 후기</div>
+        </div>
 
-            <div className="flex flex-col gap-2">
-              {reviews.map((review) => (
-                <ReviewItem key={review.id} review={review} simple={false} />
-              ))}
-            </div>
-          </>
-        )}
+        <div className="flex flex-col gap-2">
+          {reviews.map((review) => (
+            <ReviewItem key={review.id} review={review} simple={false} />
+          ))}
+        </div>
       </TitleLayout>
     </UserGuard>
   );

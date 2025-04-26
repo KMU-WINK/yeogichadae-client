@@ -4,7 +4,6 @@ import { use, useEffect, useMemo, useState } from 'react';
 
 import Link from 'next/link';
 
-import Loading from '@/app/loading';
 import MeetingInfoCard from '@/app/meeting/[id]/_component/meeting-info-card';
 import MeetingOperationCard from '@/app/meeting/[id]/_component/meeting-operation-card';
 import MeetingParticipantCard from '@/app/meeting/[id]/_component/meeting-participant-card';
@@ -53,49 +52,43 @@ export default function Page(props: Props) {
   return (
     <TitleLayout
       title="모임 정보"
+      loading={isApiProcessing || !meeting}
       button={
-        !isApiProcessing &&
-        meeting && (
-          <>
-            <Link href={`/event/${meeting.event.id}`}>
-              <Button size={isMobile ? 'icon' : 'default'} variant="outline">
-                <Info />
-                <span className="hidden sm:block">행사 정보</span>
+        <>
+          <Link href={`/event/${meeting?.event.id}`}>
+            <Button size={isMobile ? 'icon' : 'default'} variant="outline">
+              <Info />
+              <span className="hidden sm:block">행사 정보</span>
+            </Button>
+          </Link>
+          {isParticipating && (
+            <Link href={`/chat?id=${meeting?.id}`}>
+              <Button size={isMobile ? 'icon' : 'default'} variant="default">
+                <MessageSquare />
+                <span className="hidden sm:block">채팅방</span>
               </Button>
             </Link>
-            {isParticipating && (
-              <Link href={`/chat?id=${meeting.id}`}>
-                <Button size={isMobile ? 'icon' : 'default'} variant="default">
-                  <MessageSquare />
-                  <span className="hidden sm:block">채팅방</span>
-                </Button>
-              </Link>
-            )}
-          </>
-        )
+          )}
+        </>
       }
     >
-      {isApiProcessing || !meeting ? (
-        <Loading />
-      ) : (
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
-          <div className="lg:col-span-2">
-            <MeetingInfoCard meeting={meeting} />
-          </div>
-
-          <div className="flex flex-col gap-4 lg:gap-6">
-            <MeetingParticipantCard meeting={meeting} />
-            {user && (
-              <MeetingOperationCard
-                meeting={meeting}
-                isHost={isHost}
-                isParticipating={isParticipating}
-                setMeeting={setMeeting}
-              />
-            )}
-          </div>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
+        <div className="lg:col-span-2">
+          <MeetingInfoCard meeting={meeting!} />
         </div>
-      )}
+
+        <div className="flex flex-col gap-4 lg:gap-6">
+          <MeetingParticipantCard meeting={meeting!} />
+          {user && (
+            <MeetingOperationCard
+              meeting={meeting!}
+              isHost={isHost}
+              isParticipating={isParticipating}
+              setMeeting={setMeeting}
+            />
+          )}
+        </div>
+      </div>
     </TitleLayout>
   );
 }

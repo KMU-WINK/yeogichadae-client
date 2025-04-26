@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import { Badge } from '@/component/ui/badge';
 
@@ -21,7 +21,7 @@ export default function RoomCard({ room, meetingId }: RoomCardProps) {
         'hover:bg-secondary/50 flex min-h-[88px] cursor-pointer flex-col justify-center border-b px-6 py-3 last:border-b-0',
         meetingId === room.meeting.id && 'bg-secondary',
       )}
-      onClick={() => redirect(`/chat?id=${room.meeting.id}`)}
+      onClick={() => redirect(`/chat?id=${room.meeting.id}`, RedirectType.push)}
     >
       <div className="flex items-center justify-between">
         <div className="line-clamp-1 font-medium">{room.meeting.title}</div>

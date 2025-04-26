@@ -2,7 +2,6 @@
 
 import { use, useEffect, useState } from 'react';
 
-import Loading from '@/app/loading';
 import ReviewForm from '@/app/meeting/[id]/review/_component/review-form';
 import ReviewUserCard from '@/app/meeting/[id]/review/_component/review-user-card';
 
@@ -46,39 +45,35 @@ export default function Page(props: Props) {
 
   return (
     <UserGuard>
-      <TitleLayout title="모임 후기" className="max-w-2xl">
-        {isApiProcessing || !meeting ? (
-          <Loading />
-        ) : (
-          <div className="flex flex-col items-center gap-4 rounded-2xl border p-6">
-            <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
-              {meeting.participants
-                .filter((participant) => participant.id !== user?.id)
-                .map((participant) => (
-                  <ReviewUserCard
-                    key={participant.id}
-                    meeting={meeting}
-                    reviews={reviews}
-                    user={participant}
-                    selectedUser={selectedUser}
-                    setSelectedUser={setSelectedUser}
-                  />
-                ))}
-            </div>
-
-            {selectedUser && (
-              <>
-                <hr className="w-2xl" />
-                <ReviewForm
-                  meeting={meeting}
+      <TitleLayout title="모임 후기" loading={isApiProcessing || !meeting} className="max-w-2xl">
+        <div className="flex flex-col items-center gap-4 rounded-2xl border p-6">
+          <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
+            {meeting?.participants
+              .filter((participant) => participant.id !== user?.id)
+              .map((participant) => (
+                <ReviewUserCard
+                  key={participant.id}
+                  meeting={meeting!}
                   reviews={reviews}
-                  setReviews={setReviews}
-                  user={selectedUser}
+                  user={participant}
+                  selectedUser={selectedUser}
+                  setSelectedUser={setSelectedUser}
                 />
-              </>
-            )}
+              ))}
           </div>
-        )}
+
+          {selectedUser && (
+            <>
+              <hr className="w-2xl" />
+              <ReviewForm
+                meeting={meeting!}
+                reviews={reviews}
+                setReviews={setReviews}
+                user={selectedUser}
+              />
+            </>
+          )}
+        </div>
       </TitleLayout>
     </UserGuard>
   );

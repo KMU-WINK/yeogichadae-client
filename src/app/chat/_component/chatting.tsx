@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/component/ui/avatar';
 import { Button } from '@/component/ui/button';
@@ -48,7 +48,11 @@ export default function Chatting({ room, chats }: ChattingProps) {
       <div className="flex items-center justify-between p-3 sm:pl-6">
         <div className="flex gap-2">
           {isMobile && (
-            <Button variant="ghost" size="icon" onClick={() => redirect('/chat')}>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => redirect('/chat', RedirectType.push)}
+            >
               <ArrowLeft className="size-4" />
             </Button>
           )}

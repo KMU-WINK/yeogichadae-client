@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 
-import Loading from '@/app/loading';
-
 import TitleLayout from '@/component/layout/title';
 
 import Api from '@/api';
@@ -35,16 +33,12 @@ export default function Page() {
 
   return (
     <UserGuard>
-      <TitleLayout title="찜한 행사">
-        {isApiProcessing ? (
-          <Loading />
-        ) : (
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {events.map((event) => (
-              <EventCard key={event.id} event={event} />
-            ))}
-          </div>
-        )}
+      <TitleLayout title="찜한 행사" loading={isApiProcessing}>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
+          {events.map((event) => (
+            <EventCard key={event.id} event={event} />
+          ))}
+        </div>
       </TitleLayout>
     </UserGuard>
   );

@@ -4,7 +4,6 @@ import { use, useCallback, useEffect, useState } from 'react';
 
 import EventInfoCard from '@/app/event/[id]/_component/event-info-card';
 import EventMeetingCard from '@/app/event/[id]/_component/event-meeting-card';
-import Loading from '@/app/loading';
 
 import TitleLayout from '@/component/layout/title';
 
@@ -81,9 +80,8 @@ export default function Page(props: Props) {
   return (
     <TitleLayout
       title="행사 정보"
+      loading={isApiProcessing || !event}
       button={
-        !isApiProcessing &&
-        event &&
         user && (
           <Button
             variant="ghost"
@@ -103,21 +101,15 @@ export default function Page(props: Props) {
         )
       }
     >
-      {isApiProcessing || !event ? (
-        <Loading />
-      ) : (
-        <>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
-            <div className="lg:col-span-2">
-              <EventInfoCard event={event} />
-            </div>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-6">
+        <div className="lg:col-span-2">
+          <EventInfoCard event={event!} />
+        </div>
 
-            <div className="flex flex-col gap-4 lg:gap-6">
-              <EventMeetingCard event={event} />
-            </div>
-          </div>
-        </>
-      )}
+        <div className="flex flex-col gap-4 lg:gap-6">
+          <EventMeetingCard event={event!} />
+        </div>
+      </div>
     </TitleLayout>
   );
 }

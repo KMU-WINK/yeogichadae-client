@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 
-import Loading from '@/app/loading';
 import MeetingCard from '@/app/profile/meeting/_component/meeting-card';
 
 import TitleLayout from '@/component/layout/title';
@@ -41,6 +40,7 @@ export default function Page() {
     <UserGuard>
       <TitleLayout
         title="내 모임"
+        loading={isApiProcessing}
         button={
           <Tabs value={tab} onValueChange={(value) => setTab(value as TabValue)}>
             <TabsList className="h-auto">
@@ -60,17 +60,13 @@ export default function Page() {
           </Tabs>
         }
       >
-        {isApiProcessing ? (
-          <Loading />
-        ) : (
-          <div className="flex flex-col gap-4">
-            {meetings.length > 0 ? (
-              meetings.map((meeting) => <MeetingCard key={meeting.id} meeting={meeting} />)
-            ) : (
-              <p className="py-8 text-center text-neutral-500 sm:py-16">모임이 없습니다</p>
-            )}
-          </div>
-        )}
+        <div className="flex flex-col gap-4">
+          {meetings.length > 0 ? (
+            meetings.map((meeting) => <MeetingCard key={meeting.id} meeting={meeting} />)
+          ) : (
+            <p className="py-8 text-center text-neutral-500 sm:py-16">모임이 없습니다</p>
+          )}
+        </div>
       </TitleLayout>
     </UserGuard>
   );

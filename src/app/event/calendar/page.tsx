@@ -43,6 +43,7 @@ export default function CalendarPage() {
   return (
     <TitleLayout
       title="행사 캘린더"
+      loading={false}
       button={
         <FilterPopover
           categories={categories}

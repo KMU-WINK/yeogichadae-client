@@ -14,7 +14,7 @@ export default function HostedMeetingCard({ meetings }: MeetingCardProps) {
       </div>
       {meetings.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          {meetings.map((meeting) => (
+          {meetings.slice(0, 2).map((meeting) => (
             <MeetingCard key={meeting.id} meeting={meeting} />
           ))}
         </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
+import { RedirectType, redirect } from 'next/navigation';
 
 import {
   NotificationIcon as _NotificationIcon,
@@ -60,7 +60,7 @@ export default function NotificationIcon() {
           onClick={async (e) => {
             if (isMobile) e.preventDefault();
             await requestNotificationPermission();
-            if (isMobile) redirect('/notifications');
+            if (isMobile) redirect('/notifications', RedirectType.push);
           }}
         >
           <Bell className="size-5" />
