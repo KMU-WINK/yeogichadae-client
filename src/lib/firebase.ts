@@ -27,20 +27,20 @@ export const getMessaging = async () => {
 export const requestNotificationPermission = async () => {
   const messaging = await getMessaging();
 
-  if (!('Notification' in window) || !messaging) return;
+  if (!('Notification' in window) || !messaging) return false;
 
   const permission = await Notification.requestPermission();
-  if (permission !== 'granted') return;
+  if (permission !== 'granted') return false;
 
   const token = await getToken(messaging, {
     vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
   });
 
-  if (sessionStorage.getItem('fcmToken') === token) return;
-
   await Api.Domain.Notification.subscribe({ token });
   await registerForeground();
   sessionStorage.setItem('fcmToken', token);
+
+  return true;
 };
 
 let unsubscribe: () => void | undefined;

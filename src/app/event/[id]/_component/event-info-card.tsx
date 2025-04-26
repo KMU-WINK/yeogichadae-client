@@ -6,7 +6,7 @@ import { Event } from '@/api/schema/event';
 
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { Calendar, MapPin } from 'lucide-react';
+import { Calendar1, CalendarClock, Crown, LayoutList, MapPin, Rss } from 'lucide-react';
 
 interface EventInfoCardProps {
   event: Event;
@@ -28,9 +28,9 @@ export default function EventInfoCard({ event }: EventInfoCardProps) {
         <p className="text-neutral-700">{event.description}</p>
       </div>
 
-      <div className="grid grid-cols-1 justify-between gap-x-4 gap-y-2 text-xs sm:grid-cols-2 sm:text-sm">
+      <div className="grid grid-cols-1 justify-between gap-4 text-xs sm:grid-cols-2 sm:text-sm">
         <div className="flex items-center gap-2">
-          <Calendar className="text-primary size-5" />
+          <LayoutList className="text-primary size-5" />
           <div>
             <p className="font-medium">분류</p>
             <p className="text-neutral-500">{event.category}</p>
@@ -38,7 +38,7 @@ export default function EventInfoCard({ event }: EventInfoCardProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          <Calendar className="text-primary size-5" />
+          <Crown className="text-primary size-5" />
           <div>
             <p className="font-medium">주최</p>
             <p className="text-neutral-500">{event.host}</p>
@@ -46,7 +46,7 @@ export default function EventInfoCard({ event }: EventInfoCardProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          <Calendar className="text-primary size-5" />
+          <Calendar1 className="text-primary size-5" />
           <div>
             <p className="font-medium">행사일</p>
             <p className="text-neutral-500">
@@ -57,7 +57,7 @@ export default function EventInfoCard({ event }: EventInfoCardProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          <Calendar className="text-primary size-5" />
+          <CalendarClock className="text-primary size-5" />
           <div>
             <p className="font-medium">신청일</p>
             <p className="text-neutral-500">
@@ -81,7 +81,7 @@ export default function EventInfoCard({ event }: EventInfoCardProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          <MapPin className="text-primary size-5" />
+          <Rss className="text-primary size-5" />
           <div>
             <p className="font-medium">홈페이지</p>
             <Link href={event.homepage} target="_blank" className="text-primary hover:underline">
@@ -94,25 +94,21 @@ export default function EventInfoCard({ event }: EventInfoCardProps) {
       <div className="flex flex-col gap-1">
         <h3 className="font-semibold">비용</h3>
         <p className="text-xs whitespace-pre-line sm:text-sm">
-          {event.free ? '무료' : (event.cost?.split('/').join('\n') ?? '유료')}
+          {event.free ? '무료' : event.cost || '유료'}
         </p>
       </div>
 
       {event.target && event.target !== '누구나' && (
         <div className="flex flex-col gap-1">
           <h3 className="font-semibold">대상</h3>
-          <p className="text-xs whitespace-pre-line sm:text-sm">
-            {event.target.split('/').join('\n')}
-          </p>
+          <p className="text-xs whitespace-pre-line sm:text-sm">{event.target}</p>
         </div>
       )}
 
       {event.cast && (
         <div className="flex flex-col gap-1">
           <h3 className="font-semibold">배우</h3>
-          <p className="text-xs whitespace-pre-line sm:text-sm">
-            {event.cast.split('/').join('\n')}
-          </p>
+          <p className="text-xs whitespace-pre-line sm:text-sm">{event.cast}</p>
         </div>
       )}
 

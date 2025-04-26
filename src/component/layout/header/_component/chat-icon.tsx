@@ -4,15 +4,13 @@ import { Button } from '@/component/ui/button';
 
 import { useRoomStore } from '@/store/chat.store';
 
-import { requestNotificationPermission } from '@/lib/firebase';
-
 import { MessageSquare } from 'lucide-react';
 
 export default function ChatIcon() {
   const { rooms } = useRoomStore();
 
   return (
-    <Link href="/chat" onClick={requestNotificationPermission}>
+    <Link href="/chat">
       <Button variant="ghost" size="icon" className="relative rounded-full">
         <MessageSquare className="size-5" />
         {rooms.find((room) => room.unread > 0) && (

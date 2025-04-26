@@ -30,7 +30,7 @@ export default function MeetingInfoCard({ meeting }: MeetingInfoCardProps) {
         <p className="text-neutral-700">{meeting.description}</p>
       </div>
 
-      <div className="grid grid-cols-1 justify-between gap-x-4 gap-y-2 text-xs sm:grid-cols-2 sm:text-sm">
+      <div className="grid grid-cols-1 justify-between gap-4 text-xs sm:grid-cols-2 sm:text-sm">
         <div className="flex items-center gap-2">
           <Calendar className="text-primary size-5" />
           <div>

@@ -1,5 +1,5 @@
 import Api from '@/api';
-import { Type as NType, Notification } from '@/api/schema/notification';
+import { Notification } from '@/api/schema/notification';
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
@@ -46,9 +46,5 @@ export const useNotificationStore = create(
 export async function initNotificationStore() {
   const { notifications } = await Api.Domain.Notification.getNotifications();
 
-  useNotificationStore
-    .getState()
-    .setNotifications(
-      notifications.filter((notification) => notification.type !== NType.CHAT_MESSAGE),
-    );
+  useNotificationStore.getState().setNotifications(notifications);
 }

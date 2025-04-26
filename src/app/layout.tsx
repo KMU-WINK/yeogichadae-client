@@ -10,6 +10,7 @@ import Api from '@/api';
 import { initRoomStore } from '@/store/chat.store';
 import { useInitStore } from '@/store/init.store';
 import { initNotificationStore } from '@/store/notification.store';
+import { useUserStore } from '@/store/user.store';
 
 import '@/lib/register-service-worker';
 
@@ -24,6 +25,7 @@ interface LayoutProps {
 
 export default function RootLayout({ children }: LayoutProps) {
   const { isInit, setInit } = useInitStore();
+  const { user } = useUserStore();
 
   useEffect(() => {
     setInit(false);
@@ -33,13 +35,21 @@ export default function RootLayout({ children }: LayoutProps) {
 
       if (token) {
         await Api.Request.setToken(token);
-        initRoomStore().then();
-        initNotificationStore().then();
       }
 
       setInit(true);
     })();
   }, []);
+
+  useEffect(() => {
+    if (!user) return;
+
+    initRoomStore().then();
+    initNotificationStore().then();
+    if (sessionStorage.getItem('fcmToken')) {
+      Api.Domain.Notification.subscribe({ token: sessionStorage.getItem('fcmToken')! }).then();
+    }
+  }, [user]);
 
   return (
     <html lang="ko" suppressHydrationWarning>

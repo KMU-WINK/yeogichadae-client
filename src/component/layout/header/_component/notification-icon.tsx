@@ -19,7 +19,6 @@ import { useNotificationStore } from '@/store/notification.store';
 import { useApi } from '@/hook/use-api';
 import useMobile from '@/hook/use-mobile';
 
-import { requestNotificationPermission } from '@/lib/firebase';
 import { cn } from '@/lib/utils';
 
 import { Bell } from 'lucide-react';
@@ -45,9 +44,9 @@ export default function NotificationIcon() {
           size="icon"
           className="relative rounded-full"
           onClick={async (e) => {
-            if (isMobile) e.preventDefault();
-            await requestNotificationPermission();
-            if (isMobile) redirect('/notifications', RedirectType.push);
+            if (!isMobile) return;
+            e.preventDefault();
+            redirect('/notifications', RedirectType.push);
           }}
         >
           <Bell className="size-5" />

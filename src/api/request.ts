@@ -86,6 +86,7 @@ export default class ApiRequest {
       headers: {
         Authorization: `Bearer ${this.token}`,
       },
+      heartbeatTimeout: 1000 * 60 * 60 * 24,
       withCredentials: true,
     });
   }
