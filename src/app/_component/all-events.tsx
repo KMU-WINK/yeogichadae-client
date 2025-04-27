@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import EventFilter from '@/app/_component/event-filter';
 
@@ -11,7 +11,7 @@ import EventCard from '@/component/event-card';
 interface AllEventsProps {
   categories: Category[] | undefined;
   districts: District[] | undefined;
-  isFree: undefined | boolean;
+  isFree: boolean | undefined;
   setCategories: Dispatch<SetStateAction<Category[] | undefined>>;
   setDistricts: Dispatch<SetStateAction<District[] | undefined>>;
   setIsFree: Dispatch<SetStateAction<boolean | undefined>>;
@@ -27,6 +27,23 @@ export default function AllEvents({
   setIsFree,
   events,
 }: AllEventsProps) {
+  const [visibleCount, setVisibleCount] = useState(0);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sentinelRef.current) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && visibleCount < events.length) {
+        setVisibleCount((prev) => Math.min(prev + 24, events.length));
+      }
+    });
+
+    observer.observe(sentinelRef.current);
+
+    return () => observer.disconnect();
+  }, [visibleCount, events.length]);
+
   return (
     <section className="flex max-w-screen-xl flex-col justify-center gap-2 sm:gap-4">
       <h2 className="text-2xl font-bold sm:text-3xl">전체 행사</h2>
@@ -42,13 +59,15 @@ export default function AllEvents({
 
       {events.length > 0 ? (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {events.map((event) => (
-            <EventCard key={event.event.id} event={event} />
+          {events.slice(0, visibleCount).map((ev) => (
+            <EventCard key={ev.event.id} event={ev} />
           ))}
         </div>
       ) : (
         <p className="py-8 text-center text-neutral-500 sm:py-16">검색 결과가 없습니다</p>
       )}
+
+      <div ref={sentinelRef} />
     </section>
   );
 }

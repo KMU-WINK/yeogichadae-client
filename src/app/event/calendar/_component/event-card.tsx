@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -15,6 +17,23 @@ interface EventCardProps {
 }
 
 export default function EventCard({ loading, events }: EventCardProps) {
+  const [visibleCount, setVisibleCount] = useState(0);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sentinelRef.current) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && visibleCount < events.length) {
+        setVisibleCount((prev) => Math.min(prev + 10, events.length));
+      }
+    });
+
+    observer.observe(sentinelRef.current);
+
+    return () => observer.disconnect();
+  }, [visibleCount, events.length]);
+
   return (
     <div className="flex flex-col items-center overflow-y-auto rounded-2xl border px-3 py-4 lg:h-[calc(100dvh-64px-64px-32px-24px)]">
       {loading ? (
@@ -23,7 +42,7 @@ export default function EventCard({ loading, events }: EventCardProps) {
         </div>
       ) : events.length > 0 ? (
         <div className="flex w-full flex-col">
-          {events.map((event) => (
+          {events.slice(0, visibleCount).map((event) => (
             <Link
               key={event.id}
               href={`/event/${event.id}`}
@@ -53,7 +72,6 @@ export default function EventCard({ loading, events }: EventCardProps) {
 
                 <div className="flex flex-col">
                   <h3 className="line-clamp-1 font-medium">{event.title}</h3>
-
                   <div className="flex items-center gap-1 text-xs text-neutral-500 sm:text-sm">
                     <MapPin className="size-4" />
                     <span className="line-clamp-1">{event.location}</span>
@@ -62,6 +80,7 @@ export default function EventCard({ loading, events }: EventCardProps) {
               </div>
             </Link>
           ))}
+          <div ref={sentinelRef} />
         </div>
       ) : (
         <div className="flex items-center justify-center py-10 text-sm text-neutral-600">
