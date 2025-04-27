@@ -11,7 +11,7 @@ import { Spinner } from '@/app/loading';
 import Api from '@/api';
 import { Chat } from '@/api/schema/chat';
 
-import { useRoomStore } from '@/store/chat.store';
+import { useChatStore } from '@/store/chat.store';
 
 import { useApi } from '@/hook/use-api';
 import useMobile from '@/hook/use-mobile';
@@ -26,7 +26,7 @@ export default function Page() {
 
   const isMobile = useMobile();
 
-  const { rooms, readRoom, readAllRoom } = useRoomStore();
+  const { rooms, readRoom, readAllRoom } = useChatStore();
 
   const [isApiProcessing, startApi] = useApi();
   const [chats, setChats] = useState<Chat[]>([]);

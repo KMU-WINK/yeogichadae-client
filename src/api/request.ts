@@ -1,6 +1,8 @@
 import { GetMyTokenInfoResponse } from '@/api/dto/auth';
 import ApiResponse from '@/api/dto/common';
 
+import { useChatStore } from '@/store/chat.store';
+import { useNotificationStore } from '@/store/notification.store';
 import { useUserStore } from '@/store/user.store';
 
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
@@ -35,6 +37,8 @@ export default class ApiRequest {
     localStorage.removeItem('token');
 
     useUserStore.getState().setUser(undefined);
+    useChatStore.getState().setRooms([]);
+    useNotificationStore.getState().setNotifications([]);
   }
 
   // ================================================================================

@@ -19,7 +19,7 @@ const initialState: Type = {
   rooms: [],
 };
 
-export const useRoomStore = create(
+export const useChatStore = create(
   persist<Type & Action>(
     (set) => ({
       ...initialState,
@@ -47,7 +47,7 @@ export async function initRoomStore() {
   const { rooms } = await Api.Domain.Chat.getRoomList();
   const sse = Api.Domain.Chat.openSseTunnel();
 
-  useRoomStore.getState().setRooms(
+  useChatStore.getState().setRooms(
     rooms.sort((a, b) => {
       if (a.last && b.last)
         return new Date(b.last.createdAt).getTime() - new Date(a.last.createdAt).getTime();
@@ -61,8 +61,8 @@ export async function initRoomStore() {
   sse.addEventListener('send_chat', (e) => {
     const chat = JSON.parse(e.data) as Chat;
 
-    useRoomStore.getState().setRooms(
-      useRoomStore
+    useChatStore.getState().setRooms(
+      useChatStore
         .getState()
         .rooms.map((room) =>
           room.meeting.id === chat.meeting.id

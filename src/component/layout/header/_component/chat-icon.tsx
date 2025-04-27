@@ -2,12 +2,12 @@ import Link from 'next/link';
 
 import { Button } from '@/component/ui/button';
 
-import { useRoomStore } from '@/store/chat.store';
+import { useChatStore } from '@/store/chat.store';
 
 import { MessageSquare } from 'lucide-react';
 
 export default function ChatIcon() {
-  const { rooms } = useRoomStore();
+  const { rooms } = useChatStore();
 
   return (
     <Link href="/chat">
