@@ -14,6 +14,7 @@ import { District } from '@/api/schema/user';
 
 import { useApi } from '@/hook/use-api';
 
+import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 
 export default function Page() {
@@ -29,14 +30,19 @@ export default function Page() {
 
   useEffect(() => {
     startApi(async () => {
-      const { events } = await Api.Domain.Event.getEvents();
+      const { events } = await Api.Domain.Event.getEvents(format(new Date(), 'yyyy-MM-dd'));
       setHotEvents(events);
     });
   }, []);
 
   useEffect(() => {
     startApi2(async () => {
-      const { events } = await Api.Domain.Event.getEvents(undefined, categories, districts, isFree);
+      const { events } = await Api.Domain.Event.getEvents(
+        format(new Date(), 'yyyy-MM-dd'),
+        categories,
+        districts,
+        isFree,
+      );
       setAllEvents(events);
     });
   }, [categories, districts, isFree]);
