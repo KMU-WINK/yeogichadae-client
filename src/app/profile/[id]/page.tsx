@@ -2,6 +2,8 @@
 
 import { use, useEffect, useState } from 'react';
 
+import { redirect } from 'next/navigation';
+
 import HostedMeetingCard from '@/app/profile/_component/hosted-meeting-card';
 import ProfileCard from '@/app/profile/_component/profile-card';
 import ReviewCard from '@/app/profile/_component/review-card';
@@ -12,6 +14,8 @@ import Api from '@/api';
 import { Meeting } from '@/api/schema/meeting';
 import { Review } from '@/api/schema/review';
 import { User } from '@/api/schema/user';
+
+import { useUserStore } from '@/store/user.store';
 
 import { useApi } from '@/hook/use-api';
 
@@ -24,12 +28,19 @@ export default function Page({ params }: Props) {
 
   const [isApiProcessing, startApi] = useApi();
 
+  const { user: me } = useUserStore();
+
   const [user, setUser] = useState<User>();
   const [bookmarks, setBookmarks] = useState<number>(0);
   const [joinedMeetings, setJoinedMeetings] = useState<number>(0);
   const [hostedMeetings, setHostedMeetings] = useState<Meeting[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [score, setScore] = useState<number>(0);
+
+  useEffect(() => {
+    if (me?.id !== userId) return;
+    redirect('/profile');
+  }, [me, userId]);
 
   useEffect(() => {
     startApi(async () => {
@@ -60,7 +71,7 @@ export default function Page({ params }: Props) {
 
         <div className="flex flex-col gap-4 lg:col-span-2 lg:gap-6">
           <ReviewCard reviews={reviews} isMyAccount={false} />
-          <HostedMeetingCard meetings={hostedMeetings} />
+          <HostedMeetingCard user={user!} meetings={hostedMeetings} />
         </div>
       </div>
     </TitleLayout>

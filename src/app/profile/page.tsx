@@ -78,7 +78,7 @@ export default function Page() {
 
           <div className="flex flex-col gap-4 lg:col-span-2 lg:gap-6">
             <ReviewCard reviews={reviews} isMyAccount={true} />
-            <HostedMeetingCard meetings={hostedMeetings} />
+            <HostedMeetingCard user={user!} meetings={hostedMeetings} />
             <BookmarkCard bookmarks={bookmarks} />
           </div>
         </div>
