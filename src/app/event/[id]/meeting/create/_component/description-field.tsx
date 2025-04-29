@@ -18,7 +18,7 @@ export default function DescriptionField({ form }: DescriptionFieldProps) {
       name="description"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>모임 제목</FormLabel>
+          <FormLabel>모임 설명</FormLabel>
           <FormControl>
             <Textarea placeholder="모임 설명을 입력해주세요" className="resize-none" {...field} />
           </FormControl>
