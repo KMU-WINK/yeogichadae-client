@@ -149,12 +149,10 @@ export default function Page() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {Object.keys(District)
-                        .map((district) => district as District)
-                        .map((district) => (
-                          <SelectItem value={district} key={district}>
-                            {district}
-                          </SelectItem>
+                        {Object.entries(District).map(([key, label]) => (
+                            <SelectItem value={label} key={key}>
+                                {label}
+                            </SelectItem>
                         ))}
                     </SelectContent>
                   </Select>

@@ -32,6 +32,7 @@ export enum District {
   종로구 = '종로구',
   중구 = '중구',
   중랑구 = '중랑구',
+  그외 = '그 외'
 }
 
 export interface User extends BaseSchema {
