@@ -28,7 +28,7 @@ export default function ProfileCard({
   return (
     <div className="flex flex-col items-center gap-4 rounded-2xl border p-6">
       <Avatar className="size-28">
-        <AvatarImage src={user.avatar} />
+        <AvatarImage src={user.avatar} className="object-cover"/>
         <AvatarFallback className="text-2xl">{user.nickname.charAt(0)}</AvatarFallback>
       </Avatar>
 
