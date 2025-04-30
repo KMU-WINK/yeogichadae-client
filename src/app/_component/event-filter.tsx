@@ -40,7 +40,7 @@ export default function EventFilter({
       startTransition(() => {
         setSearchQuery(localSearch);
       });
-    }, 50);
+    }, 300);
 
     return () => clearTimeout(handler);
   }, [localSearch, setSearchQuery, startTransition]);
