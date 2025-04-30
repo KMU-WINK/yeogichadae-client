@@ -92,8 +92,7 @@ export default function EventFilter({
           </div>
           <div className="flex gap-2">
             <Select
-              onValueChange={(value) =>
-                  setDistricts((prev) => {
+              onValueChange={(value) => setDistricts((prev) => {
                     const district = value as District;
 
                     if (!prev) return [district];
