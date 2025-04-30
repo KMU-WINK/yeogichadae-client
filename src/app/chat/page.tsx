@@ -12,6 +12,7 @@ import Api from '@/api';
 import { Chat } from '@/api/schema/chat';
 
 import { useChatStore } from '@/store/chat.store';
+import { useUserStore } from '@/store/user.store';
 
 import { useApi } from '@/hook/use-api';
 import useMobile from '@/hook/use-mobile';
@@ -26,6 +27,7 @@ export default function Page() {
 
   const isMobile = useMobile();
 
+  const { user } = useUserStore();
   const { rooms, readRoom, readAllRoom } = useChatStore();
 
   const [isApiProcessing, startApi] = useApi();
@@ -43,6 +45,21 @@ export default function Page() {
       });
     });
   }, [meetingId]);
+
+  useEffect(() => {
+    const sse = Api.Domain.Chat.openSseTunnel();
+
+    sse.addEventListener('send_chat', (e) => {
+      const chat = JSON.parse(e.data) as Chat;
+
+      if (chat.meeting.id !== meetingId) return;
+      if (chat.user.id === user?.id) return;
+
+      setChats((prev) => [...prev, chat]);
+    });
+
+    return () => sse.close();
+  }, [user, meetingId]);
 
   useEffect(() => {
     if (!meetingId || !chats || chats.length === 0) return;
