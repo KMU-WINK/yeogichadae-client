@@ -75,7 +75,7 @@ export default function RootLayout({ children }: LayoutProps) {
         {isInit && (
           <>
             <Header />
-            <main className="h-full overflow-x-clip px-4 pt-14 pb-4 sm:px-8 sm:pt-16 sm:pb-8">
+            <main className="h-full overflow-x-clip px-6 pt-14 pb-4 sm:px-8 sm:pt-16 sm:pb-8">
               <AnimatePresence>{children}</AnimatePresence>
             </main>
           </>
