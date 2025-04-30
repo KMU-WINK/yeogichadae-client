@@ -20,7 +20,7 @@ import { useUserStore } from '@/store/user.store';
 import { useApi } from '@/hook/use-api';
 import useMobile from '@/hook/use-mobile';
 
-import { Info, MessageSquare } from 'lucide-react';
+import { Info, MessageSquare, Star } from 'lucide-react';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -61,6 +61,14 @@ export default function Page(props: Props) {
               <span className="hidden sm:block">행사 정보</span>
             </Button>
           </Link>
+          {meeting?.end && (
+            <Link href={`/meeting/${meeting?.id}/review`}>
+              <Button size={isMobile ? 'icon' : 'default'} variant="outline">
+                <Star />
+                <span className="hidden sm:block">리뷰</span>
+              </Button>
+            </Link>
+          )}
           {isParticipating && (
             <Link href={`/chat?id=${meeting?.id}`}>
               <Button size={isMobile ? 'icon' : 'default'} variant="default">
