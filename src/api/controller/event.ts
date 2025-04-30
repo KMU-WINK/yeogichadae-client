@@ -8,12 +8,14 @@ export default class Event {
 
   public async getEvents(
     date?: string,
+    searchQuery?: string,
     categories?: Category[],
     districts?: District[],
     isFree?: boolean,
   ): Promise<EventsResponse> {
     const params = new URLSearchParams();
     if (date !== undefined) params.append('date', date);
+    if (searchQuery !== undefined) params.append('searchQuery', searchQuery);
     if (categories !== undefined) params.append('categories', categories.join(','));
     if (districts !== undefined) params.append('districts', districts.join(','));
     if (isFree !== undefined) params.append('isFree', isFree.toString());

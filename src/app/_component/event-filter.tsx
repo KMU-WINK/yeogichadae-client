@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState, useTransition } from 'react';
 
 import { Badge } from '@/component/ui/badge';
 import { Label } from '@/component/ui/label';
@@ -12,6 +12,8 @@ import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
 
 interface EventFilterProps {
+  searchQuery: string | undefined;
+  setSearchQuery: Dispatch<SetStateAction<string | undefined>>;
   categories?: Category[];
   setCategories: Dispatch<SetStateAction<Category[] | undefined>>;
   districts?: District[];
@@ -21,6 +23,8 @@ interface EventFilterProps {
 }
 
 export default function EventFilter({
+  searchQuery,
+  setSearchQuery,
   categories,
   setCategories,
   districts,
@@ -28,8 +32,32 @@ export default function EventFilter({
   isFree,
   setIsFree,
 }: EventFilterProps) {
+  const [localSearch, setLocalSearch] = useState(searchQuery ?? '');
+  const [, startTransition] = useTransition();
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      startTransition(() => {
+        setSearchQuery(localSearch);
+      });
+    }, 50);
+
+    return () => clearTimeout(handler);
+  }, [localSearch, setSearchQuery, startTransition]);
+
   return (
     <div className="flex flex-col gap-4 rounded-2xl border p-6">
+      <div className="flex flex-col gap-2">
+        <Label className="text-sm font-medium">검색</Label>
+        <input
+          type="text"
+          placeholder="행사 제목, 주최자, 장소 검색"
+          className="focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
+          value={localSearch}
+          onChange={(e) => setLocalSearch(e.target.value)}
+        />
+      </div>
+
       <div className="flex flex-col gap-2">
         <Label className="text-sm font-medium">분류</Label>
         <div className="flex flex-wrap gap-2">

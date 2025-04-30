@@ -24,6 +24,7 @@ export default function Page() {
   const [hotEvents, setHotEvents] = useState<EventDto[]>([]);
   const [allEvents, setAllEvents] = useState<EventDto[]>([]);
 
+  const [searchQuery, setSearchQuery] = useState<string>();
   const [categories, setCategories] = useState<Category[]>();
   const [districts, setDistricts] = useState<District[]>();
   const [isFree, setIsFree] = useState<boolean>();
@@ -39,13 +40,14 @@ export default function Page() {
     startApi2(async () => {
       const { events } = await Api.Domain.Event.getEvents(
         format(new Date(), 'yyyy-MM-dd'),
+        searchQuery,
         categories,
         districts,
         isFree,
       );
       setAllEvents(events);
     });
-  }, [categories, districts, isFree]);
+  }, [searchQuery, categories, districts, isFree]);
 
   if (isApiProcessing) return <Loading />;
 
@@ -58,6 +60,8 @@ export default function Page() {
       <Hero />
       <HotEvent events={hotEvents} />
       <AllEvents
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
         categories={categories}
         districts={districts}
         isFree={isFree}
