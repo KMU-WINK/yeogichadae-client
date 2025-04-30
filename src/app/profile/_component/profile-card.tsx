@@ -7,6 +7,7 @@ import { Gender, User } from '@/api/schema/user';
 
 import { format } from 'date-fns';
 import { MapPin, Star, UserIcon } from 'lucide-react';
+import { districtLabel } from '@/lib/district-label';
 
 interface ProfileCardProps {
   user: User;
@@ -46,7 +47,7 @@ export default function ProfileCard({
       <div className="flex w-full justify-around">
         <div className="flex items-center gap-1">
           <MapPin className="text-primary size-4" />
-          {user.district}
+          {districtLabel(user.district)}
         </div>
         <div className="flex items-center gap-1">
           <UserIcon className="text-primary size-4" />
