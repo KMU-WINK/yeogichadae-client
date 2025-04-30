@@ -58,7 +58,7 @@ export default function CalendarPage() {
     >
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8">
         <div className="lg:col-span-1">
-          <DatePickerCard date={date} setDate={setDate} />
+          <DatePickerCard date={date} setDate={setDate} events={events} />
         </div>
 
         <div className="lg:col-span-2">
