@@ -106,9 +106,14 @@ export default function FilterPopover({
             <div className="flex gap-2">
               <Select
                 onValueChange={(value) =>
-                  setDistricts((prev) =>
-                    prev ? [...prev, value as District] : [value as District],
-                  )
+                  setDistricts((prev) => {
+                        const district = value as District;
+
+                        if (!prev) return [district];
+                        if (prev.includes(district)) return prev;
+
+                        return [...prev, district];
+                      })
                 }
               >
                 <SelectTrigger className="w-full rounded-xl">지역 선택</SelectTrigger>
