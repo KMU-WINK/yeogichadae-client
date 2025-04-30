@@ -24,10 +24,17 @@ export default function RoomCard({ room, meetingId }: RoomCardProps) {
       onClick={() => redirect(`/chat?id=${room.meeting.id}`, RedirectType.push)}
     >
       <div className="flex items-center justify-between">
-        <div className="line-clamp-1 font-medium">{room.meeting.title}</div>
+        <div className="line-clamp-1 flex gap-1 text-sm font-medium sm:text-base">
+          {room.meeting.end && (
+            <Badge className="text-[10px] sm:text-xs" variant="outline">
+              종료됨
+            </Badge>
+          )}
+          {room.meeting.title}
+        </div>
         <div className="flex items-center gap-2">
           {room.unread > 0 && (
-            <Badge className="bg-primary text-primary-foreground">{room.unread}</Badge>
+            <Badge className="bg-primary text-primary-foreground text-xs">{room.unread}</Badge>
           )}
           <p className="text-xs text-neutral-500">
             {room.last?.createdAt &&
