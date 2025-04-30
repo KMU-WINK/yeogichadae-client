@@ -91,7 +91,7 @@ export default function Page(props: Props) {
         >
           <TitleField form={form} />
           <DescriptionField form={form} />
-          <DateField form={form} />
+          <DateField event={event!} form={form} />
           <MaxPeopleField form={form} />
           <AgeRangeField form={form} />
           <GenderField form={form} />
