@@ -3,11 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { RedirectType, redirect } from 'next/navigation';
 
-import {
-  NotificationIcon as _NotificationIcon,
-  generateBody,
-  generateTitle,
-} from '@/app/notifications/_util';
+import { NotificationIcon as _NotificationIcon } from '@/app/notifications/_util';
 
 import { Button } from '@/component/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/component/ui/popover';
@@ -101,12 +97,8 @@ export default function NotificationIcon() {
                   <div className="flex items-center gap-3">
                     <_NotificationIcon notification={notification} />
                     <div className="flex flex-1 flex-col">
-                      <p className="line-clamp-1 text-sm font-medium">
-                        {generateTitle(notification)}
-                      </p>
-                      <p className="line-clamp-1 text-xs text-neutral-500">
-                        {generateBody(notification)}
-                      </p>
+                      <p className="line-clamp-1 text-sm font-medium">{notification.title}</p>
+                      <p className="line-clamp-1 text-xs text-neutral-500">{notification.body}</p>
                     </div>
                   </div>
                 </div>

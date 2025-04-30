@@ -44,7 +44,7 @@ export const requestNotificationPermission = async () => {
 };
 
 let unsubscribe: () => void | undefined;
-async function registerForeground() {
+export async function registerForeground() {
   const message = await getMessaging();
   if (!message) return;
 

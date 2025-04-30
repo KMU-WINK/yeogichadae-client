@@ -2,11 +2,7 @@
 
 import Link from 'next/link';
 
-import {
-  NotificationIcon as _NotificationIcon,
-  generateBody,
-  generateTitle,
-} from '@/app/notifications/_util';
+import { NotificationIcon as _NotificationIcon } from '@/app/notifications/_util';
 
 import TitleLayout from '@/component/layout/title';
 
@@ -72,9 +68,7 @@ export default function Page() {
                   <_NotificationIcon notification={notification} />
                   <div className="flex flex-1 flex-col">
                     <div className="flex items-center justify-between">
-                      <p className="line-clamp-1 text-sm font-medium">
-                        {generateTitle(notification)}
-                      </p>
+                      <p className="line-clamp-1 text-sm font-medium">{notification.title}</p>
                       <p className="text-xs text-neutral-500">
                         {formatDistanceToNow(notification.createdAt, {
                           locale: ko,
@@ -82,9 +76,7 @@ export default function Page() {
                         })}
                       </p>
                     </div>
-                    <p className="line-clamp-1 text-xs text-neutral-500">
-                      {generateBody(notification)}
-                    </p>
+                    <p className="line-clamp-1 text-xs text-neutral-500">{notification.body}</p>
                   </div>
                 </div>
               </div>
