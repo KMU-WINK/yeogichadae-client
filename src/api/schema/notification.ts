@@ -7,6 +7,7 @@ export enum Type {
   MEETING_JOIN = 'MEETING_JOIN',
   MEETING_LEAVE = 'MEETING_LEAVE',
   MEETING_HOST_DELEGATE = 'MEETING_HOST_DELEGATE',
+  MEETING_SUCCESS = 'MEETING_SUCCESS',
   MEETING_REVIEW = 'MEETING_REVIEW',
   CHAT_MESSAGE = 'CHAT_MESSAGE',
 }
@@ -33,6 +34,10 @@ export interface MeetingLeaveDetail extends NotificationDetail {
 }
 
 export interface MeetingHostDelegateDetail extends NotificationDetail {
+  meeting: Meeting;
+}
+
+export interface MeetingSuccessDetail extends NotificationDetail {
   meeting: Meeting;
 }
 
