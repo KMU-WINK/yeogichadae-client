@@ -51,7 +51,7 @@ export default function EventFilter({
         <Label className="text-sm font-medium">검색</Label>
         <input
           type="text"
-          placeholder="행사 제목, 주최자, 장소 검색"
+          placeholder="행사 검색"
           className="focus:ring-primary w-full rounded-xl border px-4 py-2 text-sm focus:ring-2 focus:outline-none"
           value={localSearch}
           onChange={(e) => setLocalSearch(e.target.value)}
@@ -121,7 +121,14 @@ export default function EventFilter({
           <div className="flex gap-2">
             <Select
               onValueChange={(value) =>
-                setDistricts((prev) => (prev ? [...prev, value as District] : [value as District]))
+                setDistricts((prev) => {
+                  const district = value as District;
+
+                  if (!prev) return [district];
+                  if (prev.includes(district)) return prev;
+
+                  return [...prev, district];
+                })
               }
             >
               <SelectTrigger className="w-full rounded-xl">지역 선택</SelectTrigger>
