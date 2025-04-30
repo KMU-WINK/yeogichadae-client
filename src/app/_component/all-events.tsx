@@ -9,6 +9,8 @@ import { District } from '@/api/schema/user';
 import EventCard from '@/component/event-card';
 
 interface AllEventsProps {
+  searchQuery: string | undefined;
+  setSearchQuery: Dispatch<SetStateAction<string | undefined>>;
   categories: Category[] | undefined;
   districts: District[] | undefined;
   isFree: boolean | undefined;
@@ -19,6 +21,8 @@ interface AllEventsProps {
 }
 
 export default function AllEvents({
+  searchQuery,
+  setSearchQuery,
   categories,
   districts,
   isFree,
@@ -49,6 +53,8 @@ export default function AllEvents({
       <h2 className="text-2xl font-bold sm:text-3xl">전체 행사</h2>
 
       <EventFilter
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
         categories={categories}
         setCategories={setCategories}
         districts={districts}

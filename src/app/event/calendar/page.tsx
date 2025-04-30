@@ -28,14 +28,26 @@ export default function CalendarPage() {
 
   const applyFilter = useCallback(() => {
     startApi(async () => {
-      const { events } = await Api.Domain.Event.getEvents(date, categories, districts, isFree);
+      const { events } = await Api.Domain.Event.getEvents(
+        date,
+        undefined,
+        categories,
+        districts,
+        isFree,
+      );
       setEvents(events.map((dto) => dto.event));
     });
   }, [date, categories, districts, isFree]);
 
   useEffect(() => {
     startApi(async () => {
-      const { events } = await Api.Domain.Event.getEvents(date, categories, districts, isFree);
+      const { events } = await Api.Domain.Event.getEvents(
+        date,
+        undefined,
+        categories,
+        districts,
+        isFree,
+      );
       setEvents(events.map((dto) => dto.event));
     });
   }, [date]);
