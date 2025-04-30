@@ -204,7 +204,10 @@ export default function Page() {
                       placeholder="나이를 입력해주세요"
                       disabled={!permitModifyAge}
                       {...field}
-                      onChange={(event) => field.onChange(+event.target.value)}
+                      onChange={(event) =>
+                      {const value = event.target.value;
+                          field.onChange(value == '' ? undefined : +value)}
+                    }
                     />
                   </FormControl>
                   {permitModifyAge && (
