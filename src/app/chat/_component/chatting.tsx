@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { RedirectType, redirect } from 'next/navigation';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/component/ui/avatar';
+import { Badge } from '@/component/ui/badge';
 import { Button } from '@/component/ui/button';
 import { Input } from '@/component/ui/input';
 
@@ -61,7 +62,14 @@ export default function Chatting({ room, chats, setChats }: ChattingProps) {
             </Button>
           )}
           <div className="flex flex-col">
-            <div className="font-medium">{room.meeting.title}</div>
+            <div className="flex gap-1">
+              {room.meeting.end && (
+                <Badge className="text-[10px] sm:text-xs" variant="outline">
+                  종료됨
+                </Badge>
+              )}
+              <div className="text-sm font-medium sm:text-base">{room.meeting.title}</div>
+            </div>
             <div className="flex items-center gap-2 text-xs text-neutral-500">
               <span className="line-clamp-1">{room.meeting.event.title}</span>
               <span>•</span>
