@@ -7,16 +7,18 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/component/ui/popover'
 import { ScrollArea, ScrollBar } from '@/component/ui/scroll-area';
 
 import { CreateMeetingRequest } from '@/api/dto/meeting';
+import { Event } from '@/api/schema/event';
 
-import { format, parse } from 'date-fns';
+import { format, parse, startOfDay } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { UseFormReturn } from 'react-hook-form';
 
 interface DateFieldProps {
+  event: Event;
   form: UseFormReturn<CreateMeetingRequest>;
 }
 
-export default function DateField({ form }: DateFieldProps) {
+export default function DateField({ event, form }: DateFieldProps) {
   return (
     <FormField
       control={form.control}
@@ -49,6 +51,10 @@ export default function DateField({ form }: DateFieldProps) {
                     field.onChange(format(raw, "yyyy-MM-dd'T'HH:mm:ss"));
                   }}
                   locale={ko}
+                  disabled={(date) =>
+                    startOfDay(date) < startOfDay(event.startDate) ||
+                    startOfDay(date) > startOfDay(event.endDate)
+                  }
                 />
                 <div className="flex flex-col divide-y sm:h-[300px] sm:flex-row sm:divide-x sm:divide-y-0">
                   <ScrollArea className="w-64 sm:w-auto">
