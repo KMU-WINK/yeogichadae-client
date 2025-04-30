@@ -40,6 +40,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Camera, Edit } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
+import { districtLabel } from '@/lib/district-label';
+
 export default function Page() {
   const [isApiProcessing, startApi] = useApiWithToast();
   const avatarRef = useRef<HTMLInputElement>(null);
@@ -149,12 +151,12 @@ export default function Page() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {Object.keys(District)
-                        .map((district) => district as District)
-                        .map((district) => (
-                          <SelectItem value={district} key={district}>
-                            {district}
-                          </SelectItem>
+                        {Object.keys(District)
+                            .map((district) => district as District)
+                            .map((district) => (
+                                <SelectItem value={district} key={district}>
+                                    {districtLabel(district)}
+                                </SelectItem>
                         ))}
                     </SelectContent>
                   </Select>
