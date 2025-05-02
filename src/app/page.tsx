@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import AdModal from '@/app/_component/ad-modal';
 import AllEvents from '@/app/_component/all-events';
 import Hero from '@/app/_component/hero';
 import HotEvent from '@/app/_component/hot-event';
@@ -16,8 +17,6 @@ import { useApi } from '@/hook/use-api';
 
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
-
-import AdModal from '@/app/_component/ad-modal';
 
 export default function Page() {
   const [isApiProcessing, startApi] = useApi();
@@ -54,33 +53,33 @@ export default function Page() {
   if (isApiProcessing) return <Loading />;
 
   return (
-      <>
-        <AdModal
-            slides={[
-                { id: 1, content: <img src="/" alt="광고1" /> },
-                { id: 2, content: <img src="/" alt="광고2" /> },
-                { id: 3, content: <img src="/" alt="광고3" /> },
-            ]}
+    <>
+      <AdModal
+        slides={[
+          { id: 1, content: <img src="/" alt="광고1" /> },
+          { id: 2, content: <img src="/" alt="광고2" /> },
+          { id: 3, content: <img src="/" alt="광고3" /> },
+        ]}
+      />
+      <motion.div
+        className="flex flex-col items-center gap-8 sm:gap-16"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <Hero />
+        <HotEvent events={hotEvents} />
+        <AllEvents
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          categories={categories}
+          districts={districts}
+          isFree={isFree}
+          setCategories={setCategories}
+          setDistricts={setDistricts}
+          setIsFree={setIsFree}
+          events={allEvents}
         />
-        <motion.div
-            className="flex flex-col items-center gap-8 sm:gap-16"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-        >
-          <Hero />
-          <HotEvent events={hotEvents} />
-          <AllEvents
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              categories={categories}
-              districts={districts}
-              isFree={isFree}
-              setCategories={setCategories}
-              setDistricts={setDistricts}
-              setIsFree={setIsFree}
-              events={allEvents}
-          />
-        </motion.div>
-      </>
+      </motion.div>
+    </>
   );
 }
