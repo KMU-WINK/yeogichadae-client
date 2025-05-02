@@ -17,6 +17,8 @@ import { useApi } from '@/hook/use-api';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 
+import AdModal from '@/app/_component/ad-modal';
+
 export default function Page() {
   const [isApiProcessing, startApi] = useApi();
   const [, startApi2] = useApi();
@@ -52,24 +54,33 @@ export default function Page() {
   if (isApiProcessing) return <Loading />;
 
   return (
-    <motion.div
-      className="flex flex-col items-center gap-8 sm:gap-16"
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
-      <Hero />
-      <HotEvent events={hotEvents} />
-      <AllEvents
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        categories={categories}
-        districts={districts}
-        isFree={isFree}
-        setCategories={setCategories}
-        setDistricts={setDistricts}
-        setIsFree={setIsFree}
-        events={allEvents}
-      />
-    </motion.div>
+      <>
+        <AdModal
+            slides={[
+                { id: 1, content: <img src="/" alt="광고1" /> },
+                { id: 2, content: <img src="/" alt="광고2" /> },
+                { id: 3, content: <img src="/" alt="광고3" /> },
+            ]}
+        />
+        <motion.div
+            className="flex flex-col items-center gap-8 sm:gap-16"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+        >
+          <Hero />
+          <HotEvent events={hotEvents} />
+          <AllEvents
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              categories={categories}
+              districts={districts}
+              isFree={isFree}
+              setCategories={setCategories}
+              setDistricts={setDistricts}
+              setIsFree={setIsFree}
+              events={allEvents}
+          />
+        </motion.div>
+      </>
   );
 }
