@@ -1,37 +1,46 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { Button } from '@/component/ui/button';
 import { DialogDescription, DialogHeader, DialogTitle } from '@/component/ui/dialog';
 
-import Api from '@/api';
 import { Meeting } from '@/api/schema/meeting';
 
 import { useModalStore } from '@/store/modal.store';
+import { useUserStore } from '@/store/user.store';
 
-import { useApiWithToast } from '@/hook/use-api';
+import { depositAmount, tossPayments } from '@/lib/toss.sdk';
+
+import { v4 as uuidv4 } from 'uuid';
 
 interface JoinMeetingModalProps {
   meeting: Meeting;
-  callback: Dispatch<SetStateAction<Meeting | undefined>>;
 }
 
-export default function JoinMeetingModal({ meeting, callback }: JoinMeetingModalProps) {
-  const [isApiProcessing, startApi] = useApiWithToast();
+export default function JoinMeetingModal({ meeting }: JoinMeetingModalProps) {
+  const { user } = useUserStore();
 
   const { closeModal } = useModalStore();
 
   const handleJoinMeeting = useCallback((meeting: Meeting) => {
-    startApi(
-      async () => {
-        const { meeting: newMeeting } = await Api.Domain.Meeting.joinMeeting(meeting.id);
-        callback(newMeeting);
-      },
-      {
-        loading: '모임에 참여하고 있습니다.',
-        success: '모임에 참여했습니다.',
-        finally: closeModal,
-      },
-    );
+    closeModal();
+
+    const payment = tossPayments.payment({ customerKey: user?.id ?? 'GUEST' });
+
+    payment
+      .requestPayment({
+        method: 'CARD',
+        amount: {
+          currency: 'KRW',
+          value: depositAmount,
+        },
+        orderName: '모임 참가 보증금',
+        orderId: uuidv4(),
+        customerName: user?.nickname ?? 'GUEST',
+        customerEmail: user?.email ?? 'guest@example.com',
+        successUrl: `${window.location.origin}/meeting/${meeting.id}/join/success`,
+        failUrl: `${window.location.origin}/meeting/${meeting.id}/join/fail`,
+      })
+      .then();
   }, []);
 
   return (
@@ -45,9 +54,7 @@ export default function JoinMeetingModal({ meeting, callback }: JoinMeetingModal
         <Button variant="outline" onClick={closeModal}>
           아니요
         </Button>
-        <Button disabled={isApiProcessing} onClick={() => handleJoinMeeting(meeting)}>
-          네
-        </Button>
+        <Button onClick={() => handleJoinMeeting(meeting)}>네</Button>
       </div>
     </>
   );

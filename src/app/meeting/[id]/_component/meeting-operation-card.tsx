@@ -1,7 +1,5 @@
 import { Dispatch, SetStateAction, useMemo } from 'react';
 
-import { RedirectType, redirect } from 'next/navigation';
-
 import DelegateHostModal from '@/app/meeting/[id]/_modal/delegate-host.modal';
 import DeleteMeetingModal from '@/app/meeting/[id]/_modal/delete-meeting.modal';
 import FinishMeetingModal from '@/app/meeting/[id]/_modal/finish-meeting.modal';
@@ -72,14 +70,7 @@ export default function MeetingOperationCard({
                 variant="outline"
                 className="w-full rounded-xl text-red-400"
                 disabled={meeting.end}
-                onClick={() =>
-                  openModal(
-                    <DeleteMeetingModal
-                      meeting={meeting}
-                      callback={() => redirect('/event/' + meeting.event.id, RedirectType.push)}
-                    />,
-                  )
-                }
+                onClick={() => openModal(<DeleteMeetingModal meeting={meeting} />)}
               >
                 모임 삭제하기
               </Button>
@@ -106,7 +97,7 @@ export default function MeetingOperationCard({
           <Button
             variant="default"
             className="w-full rounded-xl"
-            onClick={() => openModal(<JoinMeetingModal meeting={meeting} callback={setMeeting} />)}
+            onClick={() => openModal(<JoinMeetingModal meeting={meeting} />)}
           >
             모임 참여하기
           </Button>

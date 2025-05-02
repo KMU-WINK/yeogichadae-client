@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 
+import { RedirectType, redirect } from 'next/navigation';
+
 import { Button } from '@/component/ui/button';
 import { DialogDescription, DialogHeader, DialogTitle } from '@/component/ui/dialog';
 
@@ -12,10 +14,9 @@ import { useApiWithToast } from '@/hook/use-api';
 
 interface DeleteMeetingModalProps {
   meeting: Meeting;
-  callback: () => void;
 }
 
-export default function DeleteMeetingModal({ meeting, callback }: DeleteMeetingModalProps) {
+export default function DeleteMeetingModal({ meeting }: DeleteMeetingModalProps) {
   const [isApiProcessing, startApi] = useApiWithToast();
 
   const { closeModal } = useModalStore();
@@ -24,12 +25,14 @@ export default function DeleteMeetingModal({ meeting, callback }: DeleteMeetingM
     startApi(
       async () => {
         await Api.Domain.Meeting.deleteMeeting(meeting.id);
-        callback();
       },
       {
         loading: '모임을 삭제하고 있습니다.',
         success: '모임을 삭제했습니다.',
-        finally: closeModal,
+        finally: () => {
+          closeModal();
+          redirect('/event/' + meeting.event.id, RedirectType.push);
+        },
       },
     );
   }, []);
