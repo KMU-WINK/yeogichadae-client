@@ -11,7 +11,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 interface AdModalProps {
   slides: {
     id: string;
-    content: React.ReactNode;
+    content: React.ReactElement;
   }[];
 }
 
@@ -48,50 +48,52 @@ export default function AdModal({ slides }: AdModalProps) {
       interval={8000}
       swipeable
       showIndicators={true}
-      showArrows={true} //일단 둘 다 화살표 뜨게
+      showArrows={true}
       // showArrows={!isMobile}
     >
       {slides.map((slide) => (
-        <div key={slide.id} className="p-6">
-          {slide.content}
-        </div>
+          <div key={slide.id} className="flex h-[200px] items-center justify-center bg-white">
+              <div className="max-h-full max-w-full overflow-hidden flex items-center justify-center">
+                  {slide.content}
+              </div>
+          </div>
       ))}
     </Carousel>
   );
 
-  return isMobile ? (
-    <div className="fixed inset-0 z-50 flex items-end bg-black/50">
-      <div className="w-full rounded-t-2xl bg-white px-4 pt-6 pb-8 shadow-xl">
-        <AdCarousel />
-        <div className="mt-4 flex w-full justify-between text-sm text-gray-600">
-          <button onClick={hideModalForNDays} className="hover:underline">
-            7일 동안 안보기
-          </button>
-          <button onClick={handleClose} className="hover:underline">
-            닫기
-          </button>
+    return isMobile ? (
+        <div className="fixed inset-0 z-50 flex items-end bg-black/50">
+            <div className="w-full rounded-t-2xl bg-white px-4 pt-6 pb-4 shadow-xl">
+            <AdCarousel/>
+                <div className="mt-6 flex w-full justify-between text-sm text-gray-600">
+                    <button onClick={hideModalForNDays} className="hover:underline">
+                        7일 동안 안보기
+                    </button>
+                    <button onClick={handleClose} className="hover:underline">
+                        닫기
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  ) : (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="relative w-[90%] max-w-md rounded-xl bg-white px-6 pt-6 pb-8 shadow-lg">
-        <button
-          className="absolute top-3 right-3 text-gray-500 hover:text-black"
-          onClick={handleClose}
-        >
-          <X className="size-5" />
-        </button>
-        <AdCarousel />
-        <div className="mt-4 flex w-full justify-between text-sm text-gray-600">
-          <button onClick={hideModalForNDays} className="hover:underline">
-            7일 동안 안보기
-          </button>
-          <button onClick={handleClose} className="hover:underline">
-            닫기
-          </button>
+    ) : (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <div className="relative w-[90%] max-w-md rounded-xl bg-white px-6 pt-6 pb-5 shadow-lg">
+                <button
+                    className="absolute top-3 right-3 text-gray-500 hover:text-black"
+                    onClick={handleClose}
+                >
+                    <X className="size-5" />
+                </button>
+                <AdCarousel />
+                <div className="mt-4 flex w-full justify-between text-sm text-gray-600">
+                    <button onClick={hideModalForNDays} className="hover:underline">
+                        7일 동안 안보기
+                    </button>
+                    <button onClick={handleClose} className="hover:underline">
+                        닫기
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
