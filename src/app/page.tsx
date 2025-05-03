@@ -21,6 +21,7 @@ import { motion } from 'framer-motion';
 export default function Page() {
   const [isApiProcessing, startApi] = useApi();
   const [, startApi2] = useApi();
+  const [, startApi3] = useApi();
 
   const [hotEvents, setHotEvents] = useState<EventDto[]>([]);
   const [allEvents, setAllEvents] = useState<EventDto[]>([]);
@@ -35,9 +36,6 @@ export default function Page() {
     startApi(async () => {
       const { events } = await Api.Domain.Event.getEvents(format(new Date(), 'yyyy-MM-dd'));
       setHotEvents(events);
-
-      // isAdvertised === true인 행사만 포함
-      setAdEvents(events.filter((e) => e.event.isAdvertised));
     });
   }, []);
 
@@ -53,6 +51,20 @@ export default function Page() {
       setAllEvents(events);
     });
   }, [searchQuery, categories, districts, isFree]);
+
+  useEffect(() => {
+    startApi3(async () => {
+      const { events } = await Api.Domain.Event.getEvents(
+          format(new Date(), 'yyyy-MM-dd'),
+          undefined, // searchQuery
+          undefined, // categories
+          undefined, // districts
+          undefined, // isFree
+          true       // isAdvertised
+      );
+      setAdEvents(events);
+    });
+  }, []);
 
   if (isApiProcessing) return <Loading />;
 
