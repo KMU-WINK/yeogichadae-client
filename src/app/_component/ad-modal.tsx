@@ -1,6 +1,7 @@
 'use client';
 
 import React, {useEffect, useState} from 'react';
+import Link from 'next/link';
 
 import useMobile from '@/hook/use-mobile';
 
@@ -53,9 +54,11 @@ export default function AdModal({ slides }: AdModalProps) {
     >
       {slides.map((slide) => (
           <div key={slide.id} className="flex h-[200px] items-center justify-center bg-white">
-              <div className="max-h-full max-w-full overflow-hidden flex items-center justify-center">
-                  {slide.content}
-              </div>
+              <Link href={`/event/${slide.id}`} className="h-full w-full flex items-center justify-center">
+                  <div className="max-h-full max-w-full overflow-hidden flex items-center justify-center">
+                      {slide.content}
+                  </div>
+              </Link>
           </div>
       ))}
     </Carousel>
