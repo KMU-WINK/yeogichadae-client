@@ -55,12 +55,12 @@ export default function Page() {
   useEffect(() => {
     startApi3(async () => {
       const { events } = await Api.Domain.Event.getEvents(
-          format(new Date(), 'yyyy-MM-dd'),
-          undefined, // searchQuery
-          undefined, // categories
-          undefined, // districts
-          undefined, // isFree
-          true       // isAdvertised
+        format(new Date(), 'yyyy-MM-dd'),
+        undefined, // searchQuery
+        undefined, // categories
+        undefined, // districts
+        undefined, // isFree
+        true, // isAdvertised
       );
       setAdEvents(events);
     });
@@ -70,20 +70,20 @@ export default function Page() {
 
   return (
     <>
-        {adEvents.length > 0 && (
-            <AdModal
-                slides={adEvents.map((e) => ({
-                    id: e.event.id,
-                    content: (
-                        <img
-                            src={e.event.image}
-                            alt={e.event.title}
-                            className="h-48 w-full object-cover rounded-xl"
-                        />
-                    ),
-                }))}
-            />
-        )}
+      {adEvents.length > 0 && (
+        <AdModal
+          slides={adEvents.map((e) => ({
+            id: e.event.id,
+            content: (
+              <img
+                src={e.event.image}
+                alt={e.event.title}
+                className="h-48 w-full rounded-xl object-cover"
+              />
+            ),
+          }))}
+        />
+      )}
 
       <motion.div
         className="flex flex-col items-center gap-8 sm:gap-16"
