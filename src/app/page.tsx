@@ -24,6 +24,7 @@ export default function Page() {
 
   const [hotEvents, setHotEvents] = useState<EventDto[]>([]);
   const [allEvents, setAllEvents] = useState<EventDto[]>([]);
+  const [adEvents, setAdEvents] = useState<EventDto[]>([]);
 
   const [searchQuery, setSearchQuery] = useState<string>();
   const [categories, setCategories] = useState<Category[]>();
@@ -34,6 +35,9 @@ export default function Page() {
     startApi(async () => {
       const { events } = await Api.Domain.Event.getEvents(format(new Date(), 'yyyy-MM-dd'));
       setHotEvents(events);
+
+      // isAdvertised === true인 행사만 포함
+      setAdEvents(events.filter((e) => e.event.isAdvertised));
     });
   }, []);
 
@@ -54,13 +58,21 @@ export default function Page() {
 
   return (
     <>
-      <AdModal
-        slides={[
-          { id: 1, content: <img src="/" alt="광고1" /> },
-          { id: 2, content: <img src="/" alt="광고2" /> },
-          { id: 3, content: <img src="/" alt="광고3" /> },
-        ]}
-      />
+        {adEvents.length > 0 && (
+            <AdModal
+                slides={adEvents.map((e) => ({
+                    id: e.event.id,
+                    content: (
+                        <img
+                            src={e.event.image}
+                            alt={e.event.title}
+                            className="h-48 w-full object-cover rounded-xl"
+                        />
+                    ),
+                }))}
+            />
+        )}
+
       <motion.div
         className="flex flex-col items-center gap-8 sm:gap-16"
         initial={{ opacity: 0, y: -20 }}

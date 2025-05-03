@@ -40,4 +40,5 @@ export interface Event extends BaseSchema {
   cast: string | null;
   description: string | null;
   other: string | null;
+  isAdvertised: boolean;
 }

@@ -10,7 +10,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 interface AdModalProps {
   slides: {
-    id: number;
+    id: string;
     content: React.ReactNode;
   }[];
 }
