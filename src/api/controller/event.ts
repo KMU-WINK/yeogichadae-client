@@ -12,7 +12,6 @@ export default class Event {
     categories?: Category[],
     districts?: District[],
     isFree?: boolean,
-    isAdvertised?: boolean,
   ): Promise<EventsResponse> {
     const params = new URLSearchParams();
     if (date !== undefined) params.append('date', date);
@@ -20,12 +19,15 @@ export default class Event {
     if (categories !== undefined) params.append('categories', categories.join(','));
     if (districts !== undefined) params.append('districts', districts.join(','));
     if (isFree !== undefined) params.append('isFree', isFree.toString());
-    if (isAdvertised !== undefined) params.append('isAdvertised', isAdvertised.toString());
 
     return this.request.get(`/event?${params}`);
   }
 
   public async getEvent(eventId: string): Promise<EventResponse> {
     return this.request.get(`/event/${eventId}`);
+  }
+
+  public async getAdvertisedEvents(): Promise<EventsResponse> {
+    return this.request.get(`/event/advertised`);
   }
 }

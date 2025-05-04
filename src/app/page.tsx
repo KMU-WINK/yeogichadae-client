@@ -54,14 +54,7 @@ export default function Page() {
 
   useEffect(() => {
     startApi3(async () => {
-      const { events } = await Api.Domain.Event.getEvents(
-        format(new Date(), 'yyyy-MM-dd'),
-        undefined, // searchQuery
-        undefined, // categories
-        undefined, // districts
-        undefined, // isFree
-        true, // isAdvertised
-      );
+      const { events } = await Api.Domain.Event.getAdvertisedEvents();
       setAdEvents(events);
     });
   }, []);
