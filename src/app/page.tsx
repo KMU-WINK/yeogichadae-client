@@ -17,7 +17,6 @@ import { useApi } from '@/hook/use-api';
 
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
-import Image from "next/image";
 
 export default function Page() {
   const [isApiProcessing, startApi] = useApi();
@@ -64,36 +63,18 @@ export default function Page() {
 
   return (
     <>
-      {adEvents.length > 0 && (
-        <AdModal
-          slides={adEvents.map((e) => ({
-            id: e.event.id,
-            content: (
-                <div className="relative w-full h-48">
-                  <Image
-                      src={e.event.image}
-                      alt={e.event.title}
-                      fill
-                      className="object-cover rounded-xl"
-                      sizes="100vw"
-                      priority
-                  />
-                </div>
-            ),
-          }))}
-        />
-      )}
+      {adEvents.length > 0 && <AdModal events={adEvents} />}
 
       <motion.div
-          className="flex flex-col items-center gap-8 sm:gap-16"
-          initial={{opacity: 0, y: -20}}
-          animate={{opacity: 1, y: 0}}
+        className="flex flex-col items-center gap-8 sm:gap-16"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
       >
-        <Hero/>
-        <HotEvent events={hotEvents}/>
+        <Hero />
+        <HotEvent events={hotEvents} />
         <AllEvents
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
           categories={categories}
           districts={districts}
           isFree={isFree}

@@ -1,102 +1,79 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+
+import Image from 'next/image';
 import Link from 'next/link';
 
-import useMobile from '@/hook/use-mobile';
+import { EventDto } from '@/api/dto/event';
 
-import { X } from 'lucide-react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 interface AdModalProps {
-  slides: {
-    id: string;
-    content: React.ReactElement;
-  }[];
+  events: EventDto[];
 }
 
-export default function AdModal({ slides }: AdModalProps) {
-  const isMobile = useMobile();
+export default function AdModal({ events }: AdModalProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClose = () => { setIsOpen(false); };
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
-  // 렌더 시 localstorage 확인
   useEffect(() => {
     const adHiddenStr = localStorage.getItem('adHiddenUntil');
-    if (!adHiddenStr || new Date() > new Date(adHiddenStr)){ //없거나(최초) 기존 날짜 값을 넘으면
+
+    if (!adHiddenStr || new Date() > new Date(adHiddenStr)) {
       setIsOpen(true);
     }
   }, []);
 
-
-  const hideModalForNDays = ()=> {
+  const hideModalForNDays = () => {
     const untilDate = new Date();
-    untilDate.setDate((untilDate.getDate())+ 7);
-    localStorage.setItem('adHiddenUntil', untilDate.toISOString()); //로컬 스토리지에 저장해두기
+    untilDate.setDate(untilDate.getDate() + 7);
+    localStorage.setItem('adHiddenUntil', untilDate.toISOString());
     setIsOpen(false);
   };
 
   if (!isOpen) return null;
 
-  const AdCarousel = () => (
-    <Carousel
-      showThumbs={false}
-      showStatus={false}
-      infiniteLoop
-      autoPlay
-      interval={8000}
-      swipeable
-      showIndicators={true}
-      showArrows={true}
-      // showArrows={!isMobile}
-    >
-      {slides.map((slide) => (
-          <div key={slide.id} className="flex h-[200px] items-center justify-center bg-white">
-              <Link href={`/event/${slide.id}`} className="h-full w-full flex items-center justify-center">
-                  <div className="max-h-full max-w-full overflow-hidden flex items-center justify-center">
-                      {slide.content}
-                  </div>
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 sm:items-center">
+      <div className="flex flex-col gap-4 rounded-t-2xl bg-white p-6 pb-3 shadow-lg sm:max-w-[400px] sm:rounded-2xl">
+        <Carousel
+          showThumbs={false}
+          showStatus={false}
+          infiniteLoop
+          autoPlay
+          interval={8000}
+          swipeable
+          showIndicators={true}
+          showArrows={true}
+        >
+          {events.map((event) => (
+            <div key={event.event.id} className="flex items-center justify-center bg-white">
+              <Link href={`/event/${event.event.id}`} className="flex items-center justify-center">
+                <Image
+                  src={event.event.image}
+                  alt={event.event.title}
+                  width={300}
+                  height={400}
+                  className="h-[400px] w-[300px] object-cover"
+                />
               </Link>
-          </div>
-      ))}
-    </Carousel>
+            </div>
+          ))}
+        </Carousel>
+        <div className="flex w-full justify-between text-sm text-gray-600">
+          <button onClick={hideModalForNDays} className="cursor-pointer hover:underline">
+            7일 동안 안보기
+          </button>
+          <button onClick={handleClose} className="cursor-pointer hover:underline">
+            닫기
+          </button>
+        </div>
+      </div>
+    </div>
   );
-
-    return isMobile ? (
-        <div className="fixed inset-0 z-50 flex items-end bg-black/50">
-            <div className="w-full rounded-t-2xl bg-white px-4 pt-6 pb-4 shadow-xl">
-            <AdCarousel/>
-                <div className="mt-6 flex w-full justify-between text-sm text-gray-600">
-                    <button onClick={hideModalForNDays} className="hover:underline">
-                        7일 동안 안보기
-                    </button>
-                    <button onClick={handleClose} className="hover:underline">
-                        닫기
-                    </button>
-                </div>
-            </div>
-        </div>
-    ) : (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="relative w-[90%] max-w-md rounded-xl bg-white px-6 pt-6 pb-5 shadow-lg">
-                <button
-                    className="absolute top-3 right-3 text-gray-500 hover:text-black"
-                    onClick={handleClose}
-                >
-                    <X className="size-5" />
-                </button>
-                <AdCarousel />
-                <div className="mt-4 flex w-full justify-between text-sm text-gray-600">
-                    <button onClick={hideModalForNDays} className="hover:underline">
-                        7일 동안 안보기
-                    </button>
-                    <button onClick={handleClose} className="hover:underline">
-                        닫기
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
 }
