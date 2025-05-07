@@ -26,4 +26,8 @@ export default class Event {
   public async getEvent(eventId: string): Promise<EventResponse> {
     return this.request.get(`/event/${eventId}`);
   }
+
+  public async getAdvertisedEvents(): Promise<EventsResponse> {
+    return this.request.get(`/event/advertised`);
+  }
 }
