@@ -38,7 +38,7 @@ export default function JoinMeetingModal({ meeting }: JoinMeetingModalProps) {
         customerName: user?.nickname ?? 'GUEST',
         customerEmail: user?.email ?? 'guest@example.com',
         successUrl: `${window.location.origin}/meeting/${meeting.id}/join/success`,
-        failUrl: `${window.location.origin}/meeting/${meeting.id}/join/fail`,
+        failUrl: `${window.location.origin}/meeting/${meeting.id}`,
       })
       .then();
   }, []);
@@ -49,6 +49,12 @@ export default function JoinMeetingModal({ meeting }: JoinMeetingModalProps) {
         <DialogTitle>모임에 참여하시겠습니까?</DialogTitle>
         <DialogDescription>{meeting.title}</DialogDescription>
       </DialogHeader>
+
+      <p className="text-sm text-neutral-600">
+        모임 참여 시 노쇼 방지를 위해 보증금을 결제합니다.
+        <br />
+        보증금은 모임이 성공적으로 종료되면 다시 반환됩니다.
+      </p>
 
       <div className="flex justify-end gap-2">
         <Button variant="outline" onClick={closeModal}>
