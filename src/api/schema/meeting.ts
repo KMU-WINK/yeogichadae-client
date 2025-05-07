@@ -14,4 +14,5 @@ export interface Meeting extends BaseSchema {
   host: User;
   participants: User[];
   end: boolean;
+  boostedAt: string | null;
 }

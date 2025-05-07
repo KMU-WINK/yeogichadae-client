@@ -27,6 +27,10 @@ export function MeetingBadge({ meeting }: MeetingBadgeProps) {
 
   return (
     <div className="flex gap-1">
+      {meeting.boostedAt && (
+        <Badge className="border-amber-200 bg-amber-50 text-xs text-amber-700">부스팅</Badge>
+      )}
+
       <Badge
         className={
           !satisfied(meeting) && !meeting.end

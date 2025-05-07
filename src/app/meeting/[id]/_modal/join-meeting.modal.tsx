@@ -21,27 +21,30 @@ export default function JoinMeetingModal({ meeting }: JoinMeetingModalProps) {
 
   const { closeModal } = useModalStore();
 
-  const handleJoinMeeting = useCallback((meeting: Meeting) => {
-    closeModal();
+  const handleJoinMeeting = useCallback(
+    (meeting: Meeting) => {
+      closeModal();
 
-    const payment = tossPayments.payment({ customerKey: user?.id ?? 'GUEST' });
+      const payment = tossPayments.payment({ customerKey: user?.id ?? 'GUEST' });
 
-    payment
-      .requestPayment({
-        method: 'CARD',
-        amount: {
-          currency: 'KRW',
-          value: depositAmount,
-        },
-        orderName: '모임 참가 보증금',
-        orderId: uuidv4(),
-        customerName: user?.nickname ?? 'GUEST',
-        customerEmail: user?.email ?? 'guest@example.com',
-        successUrl: `${window.location.origin}/meeting/${meeting.id}/join/success`,
-        failUrl: `${window.location.origin}/meeting/${meeting.id}`,
-      })
-      .then();
-  }, []);
+      payment
+        .requestPayment({
+          method: 'CARD',
+          amount: {
+            currency: 'KRW',
+            value: depositAmount,
+          },
+          orderName: '모임 참가 보증금',
+          orderId: uuidv4(),
+          customerName: user?.nickname ?? 'GUEST',
+          customerEmail: user?.email ?? 'guest@example.com',
+          successUrl: `${window.location.origin}/meeting/${meeting.id}/join/success`,
+          failUrl: `${window.location.origin}/meeting/${meeting.id}`,
+        })
+        .then();
+    },
+    [user],
+  );
 
   return (
     <>

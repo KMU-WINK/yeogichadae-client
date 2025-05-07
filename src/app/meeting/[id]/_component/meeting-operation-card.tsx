@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useMemo } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 
 import DelegateHostModal from '@/app/meeting/[id]/_modal/delegate-host.modal';
 import DeleteMeetingModal from '@/app/meeting/[id]/_modal/delete-meeting.modal';
@@ -12,6 +12,11 @@ import { Meeting } from '@/api/schema/meeting';
 
 import { useModalStore } from '@/store/modal.store';
 import { useUserStore } from '@/store/user.store';
+
+import { boostAmount, tossPayments } from '@/lib/toss.sdk';
+
+import { addDays, intervalToDuration, isBefore } from 'date-fns';
+import { v4 as uuidv4 } from 'uuid';
 
 interface MeetingOperationCardProps {
   meeting: Meeting;
@@ -37,6 +42,68 @@ export default function MeetingOperationCard({
     return !(meeting.gender && user.gender !== meeting.gender);
   }, [meeting, user]);
 
+  const [remainBooster, setRemainBooster] = useState<string>();
+
+  const handleBoostMeeting = useCallback(
+    (meeting: Meeting) => {
+      const payment = tossPayments.payment({ customerKey: user?.id ?? 'GUEST' });
+
+      payment
+        .requestPayment({
+          method: 'CARD',
+          amount: {
+            currency: 'KRW',
+            value: boostAmount,
+          },
+          orderName: '모임 부스트',
+          orderId: uuidv4(),
+          customerName: user?.nickname ?? 'GUEST',
+          customerEmail: user?.email ?? 'guest@example.com',
+          successUrl: `${window.location.origin}/meeting/${meeting.id}/boost/success`,
+          failUrl: `${window.location.origin}/meeting/${meeting.id}`,
+        })
+        .then();
+    },
+    [user],
+  );
+
+  useEffect(() => {
+    if (!meeting || !meeting.boostedAt) return;
+
+    const interval = setInterval(func, 1000);
+    func();
+
+    function func() {
+      const now = new Date();
+      const boostedAtDate = new Date(meeting.boostedAt!);
+
+      const endTime = addDays(boostedAtDate, 1);
+
+      if (isBefore(endTime, now)) {
+        setRemainBooster(undefined);
+        clearInterval(interval);
+        return;
+      }
+
+      const {
+        hours = 0,
+        minutes = 0,
+        seconds = 0,
+      } = intervalToDuration({
+        start: now,
+        end: endTime,
+      });
+
+      const formattedTime = [hours, minutes, seconds]
+        .map((unit) => String(unit).padStart(2, '0'))
+        .join(':');
+
+      setRemainBooster(formattedTime);
+    }
+
+    return () => clearInterval(interval);
+  }, [meeting]);
+
   return (
     <div className="flex flex-col gap-2 rounded-2xl border p-6">
       <h2 className="font-medium sm:text-lg">
@@ -54,6 +121,14 @@ export default function MeetingOperationCard({
               }
             >
               모임 완료하기
+            </Button>
+            <Button
+              variant="secondary"
+              className="w-full rounded-xl"
+              disabled={!!remainBooster}
+              onClick={() => handleBoostMeeting(meeting)}
+            >
+              {remainBooster ? remainBooster : '모임 부스트'}
             </Button>
             <div className="flex gap-2">
               <Button

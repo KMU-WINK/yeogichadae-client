@@ -66,4 +66,18 @@ export default class Meeting {
   public async deleteMeeting(meetingId: string): Promise<void> {
     return this.request.delete(`/meeting/${meetingId}`);
   }
+
+  public async boostMeeting(
+    meetingId: string,
+    orderId: string,
+    paymentKey: string,
+    amount: number,
+  ): Promise<GetMeetingResponse> {
+    const params = new URLSearchParams();
+    params.append('orderId', orderId);
+    params.append('paymentKey', paymentKey);
+    params.append('amount', amount.toString());
+
+    return this.request.post(`/meeting/${meetingId}/boost?${params.toString()}`);
+  }
 }
